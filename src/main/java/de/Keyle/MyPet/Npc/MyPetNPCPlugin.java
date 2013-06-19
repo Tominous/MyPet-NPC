@@ -20,18 +20,21 @@
 
 package de.Keyle.MyPet.Npc;
 
+import de.Keyle.MyPet.Npc.npc.MyPetNpc;
 import de.Keyle.MyPet.Npc.util.MyPetNpcVersion;
 import de.Keyle.MyPet.util.logger.DebugLogger;
 import de.Keyle.MyPet.util.logger.MyPetLogger;
+import net.citizensnpcs.api.CitizensAPI;
+import net.citizensnpcs.api.trait.TraitInfo;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.mcstats.MetricsLite;
 
 import java.io.IOException;
 
-public class MyPetNPCPlugin extends JavaPlugin
+public class MyPetNpcPlugin extends JavaPlugin
 {
-    private static MyPetNPCPlugin plugin;
+    private static MyPetNpcPlugin plugin;
 
     public void onDisable()
     {
@@ -41,7 +44,7 @@ public class MyPetNPCPlugin extends JavaPlugin
     {
         plugin = this;
 
-        DebugLogger.info("----------- loading MyPet-NPC ... -----------", "MyPet-Npc");
+        DebugLogger.info("----------- loading MyPet-Npc ... -----------", "MyPet-Npc");
 
         try
         {
@@ -55,11 +58,13 @@ public class MyPetNPCPlugin extends JavaPlugin
             DebugLogger.info(e.getMessage(), "MyPet-Npc");
         }
 
+        CitizensAPI.getTraitFactory().registerTrait(TraitInfo.create(MyPetNpc.class).withName("mypetnpc"));
+
         MyPetLogger.write("version " + MyPetNpcVersion.getMyPetNpcVersion() + "-b" + MyPetNpcVersion.getMyPetNpcBuild() + ChatColor.GREEN + " ENABLED", "MyPet-Npc");
         DebugLogger.info("----------- MyPet-Npc ready -----------", "MyPet-Npc");
     }
 
-    public static MyPetNPCPlugin getPlugin()
+    public static MyPetNpcPlugin getPlugin()
     {
         return plugin;
     }

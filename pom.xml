@@ -16,12 +16,11 @@
         <mypetnpc.version>0.0.1</mypetnpc.version>
         <minecraft.version>1.5.2</minecraft.version>
         <bukkit.version>R1.0</bukkit.version>
-        <mypet.build>282</mypet.build>
+        <mypet.build>289</mypet.build>
 
         <mypet.version>1.1.0-SNAPSHOT</mypet.version>
         <citizensapi.version>2.0.8-SNAPSHOT</citizensapi.version>
         <metrics-lite.version>R6</metrics-lite.version>
-        <junit.version>4.8.2</junit.version>
     </properties>
 
     <repositories>
@@ -80,12 +79,6 @@
             <version>${mypet.version}</version>
             <type>jar</type>
             <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>${junit.version}</version>
-            <scope>test</scope>
         </dependency>
     </dependencies>
 
@@ -179,7 +172,7 @@
                             <relocations>
                                 <relocation>
                                     <pattern>org.mcstats</pattern>
-                                    <shadedPattern>de.Keyle.MyPet.Spout.util</shadedPattern>
+                                    <shadedPattern>de.Keyle.MyPet.Npc.util</shadedPattern>
                                 </relocation>
                             </relocations>
                         </configuration>
@@ -189,5 +182,5 @@
         </plugins>
     </build>
 
-    
+
 </project>

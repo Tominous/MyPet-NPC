@@ -1,5 +1,5 @@
 name: MyPet-NPC
-main: de.Keyle.MyPet.MyPetNpcPlugin
+main: de.Keyle.MyPet.Npc.MyPetNpcPlugin
 version: ${mypetnpc.version}
 author: Keyle
 website: http://dev.bukkit.org/server-mods/mywolf/
