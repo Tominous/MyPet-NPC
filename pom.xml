@@ -43,6 +43,9 @@
         <repository>
             <id>mypet-repo</id>
             <url>http://repo.keyle.de/</url>
+            <snapshots>
+                <updatePolicy>always</updatePolicy>
+            </snapshots>
         </repository>
     </repositories>
 
