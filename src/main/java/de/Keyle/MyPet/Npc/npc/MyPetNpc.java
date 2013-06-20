@@ -139,8 +139,14 @@ public class MyPetNpc extends Trait
                     }
                 }, MyPetNpcPlugin.getPlugin());
 
+                MyPetWorldGroup wg = MyPetWorldGroup.getGroup(myPetPlayer.getPlayer().getWorld().getName());
                 for (InactiveMyPet mypet : myPetPlayer.getInactiveMyPets())
                 {
+                    if (!mypet.getWorldGroup().equals("") && !mypet.getWorldGroup().equals(wg.getName()))
+                    {
+                        continue;
+                    }
+
                     List<String> lore = new ArrayList<String>();
                     lore.add(ChatColor.RESET + MyPetLocales.getString("Name.Hunger", myPetPlayer) + ": " + ChatColor.GOLD + mypet.getHungerValue());
                     if (mypet.getRespawnTime() > 0)
