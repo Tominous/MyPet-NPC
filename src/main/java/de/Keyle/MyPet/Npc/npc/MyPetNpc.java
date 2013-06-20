@@ -25,9 +25,13 @@ import de.Keyle.MyPet.Npc.util.IconMenu;
 import de.Keyle.MyPet.Npc.util.SpawnerEggTypes;
 import de.Keyle.MyPet.entity.types.InactiveMyPet;
 import de.Keyle.MyPet.entity.types.MyPet;
+import de.Keyle.MyPet.entity.types.MyPetList;
 import de.Keyle.MyPet.event.MyPetSpoutEvent;
 import de.Keyle.MyPet.event.MyPetSpoutEvent.MyPetSpoutEventReason;
-import de.Keyle.MyPet.util.*;
+import de.Keyle.MyPet.util.MyPetBukkitUtil;
+import de.Keyle.MyPet.util.MyPetConfiguration;
+import de.Keyle.MyPet.util.MyPetPlayer;
+import de.Keyle.MyPet.util.MyPetWorldGroup;
 import de.Keyle.MyPet.util.locale.MyPetLocales;
 import net.citizensnpcs.api.event.NPCRightClickEvent;
 import net.citizensnpcs.api.trait.Trait;
@@ -116,16 +120,16 @@ public class MyPetNpc extends Trait
                                         }
                                         break;
                                     case Canceled:
-                                        event.getPlayer().sendMessage(MyPetBukkitUtil.setColors(MyPetLocales.getString("Message.SpawnPrevent", myPetPlayer)).replace("%petname%", activePet.petName));
+                                        event.getPlayer().sendMessage(MyPetBukkitUtil.setColors(MyPetLocales.getString("Message.SpawnPrevent", myPetPlayer)).replace("%petname%", activePet.getPetName()));
                                         break;
                                     case NoSpace:
-                                        event.getPlayer().sendMessage(MyPetBukkitUtil.setColors(MyPetLocales.getString("Message.SpawnNoSpace", myPetPlayer)).replace("%petname%", activePet.petName));
+                                        event.getPlayer().sendMessage(MyPetBukkitUtil.setColors(MyPetLocales.getString("Message.SpawnNoSpace", myPetPlayer)).replace("%petname%", activePet.getPetName()));
                                         break;
                                     case NotAllowed:
-                                        event.getPlayer().sendMessage(MyPetBukkitUtil.setColors(MyPetLocales.getString("Message.NotAllowedHere", myPetPlayer)).replace("%petname%", activePet.petName));
+                                        event.getPlayer().sendMessage(MyPetBukkitUtil.setColors(MyPetLocales.getString("Message.NotAllowedHere", myPetPlayer)).replace("%petname%", activePet.getPetName()));
                                         break;
                                     case Dead:
-                                        event.getPlayer().sendMessage(MyPetBukkitUtil.setColors(MyPetLocales.getString("Message.RespawnIn", myPetPlayer)).replace("%petname%", activePet.petName).replace("%time%", "" + activePet.respawnTime));
+                                        event.getPlayer().sendMessage(MyPetBukkitUtil.setColors(MyPetLocales.getString("Message.RespawnIn", myPetPlayer)).replace("%petname%", activePet.getPetName()).replace("%time%", "" + activePet.getRespawnTime()));
                                         break;
                                 }
                             }
