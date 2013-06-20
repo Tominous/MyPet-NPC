@@ -22,6 +22,7 @@ package de.Keyle.MyPet.Npc;
 
 import de.Keyle.MyPet.Npc.npc.MyPetNpc;
 import de.Keyle.MyPet.Npc.util.MyPetNpcVersion;
+import de.Keyle.MyPet.util.MyPetVersion;
 import de.Keyle.MyPet.util.logger.DebugLogger;
 import de.Keyle.MyPet.util.logger.MyPetLogger;
 import net.citizensnpcs.api.CitizensAPI;
@@ -36,32 +37,35 @@ public class MyPetNpcPlugin extends JavaPlugin
 {
     private static MyPetNpcPlugin plugin;
 
-    public void onDisable()
-    {
-    }
-
     public void onEnable()
     {
         plugin = this;
 
-        DebugLogger.info("----------- loading MyPet-Npc ... -----------", "MyPet-Npc");
+        DebugLogger.info("----------- loading MyPet-NPC ... -----------", "MyPet-NPC");
+
+        if (Integer.parseInt(MyPetVersion.getMyPetBuild()) < Integer.parseInt(MyPetNpcVersion.getRequiredMyPetBuild()))
+        {
+            MyPetLogger.write(ChatColor.RED + "This version of MyPet-NPC requires MyPet build-#" + MyPetNpcVersion.getRequiredMyPetBuild() + " or higher", "MyPet-NPC");
+            this.setEnabled(false);
+            return;
+        }
 
         try
         {
             MetricsLite metrics = new MetricsLite(this);
             metrics.start();
-            DebugLogger.info("MetricsLite activated", "MyPet-Npc");
+            DebugLogger.info("MetricsLite activated", "MyPet-NPC");
         }
         catch (IOException e)
         {
-            DebugLogger.info("MetricsLite not activated", "MyPet-Npc");
-            DebugLogger.info(e.getMessage(), "MyPet-Npc");
+            DebugLogger.info("MetricsLite not activated", "MyPet-NPC");
+            DebugLogger.info(e.getMessage(), "MyPet-NPC");
         }
 
         CitizensAPI.getTraitFactory().registerTrait(TraitInfo.create(MyPetNpc.class).withName("mypetnpc"));
 
-        MyPetLogger.write("version " + MyPetNpcVersion.getMyPetNpcVersion() + "-b" + MyPetNpcVersion.getMyPetNpcBuild() + ChatColor.GREEN + " ENABLED", "MyPet-Npc");
-        DebugLogger.info("----------- MyPet-Npc ready -----------", "MyPet-Npc");
+        MyPetLogger.write("version " + MyPetNpcVersion.getMyPetNpcVersion() + "-b" + MyPetNpcVersion.getMyPetNpcBuild() + ChatColor.GREEN + " ENABLED", "MyPet-NPC");
+        DebugLogger.info("----------- MyPet-NPC ready -----------", "MyPet-NPC");
     }
 
     public static MyPetNpcPlugin getPlugin()
