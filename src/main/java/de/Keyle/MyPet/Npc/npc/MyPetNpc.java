@@ -28,10 +28,7 @@ import de.Keyle.MyPet.entity.types.MyPet;
 import de.Keyle.MyPet.entity.types.MyPetList;
 import de.Keyle.MyPet.event.MyPetSpoutEvent;
 import de.Keyle.MyPet.event.MyPetSpoutEvent.MyPetSpoutEventReason;
-import de.Keyle.MyPet.util.MyPetBukkitUtil;
-import de.Keyle.MyPet.util.MyPetConfiguration;
-import de.Keyle.MyPet.util.MyPetPlayer;
-import de.Keyle.MyPet.util.MyPetWorldGroup;
+import de.Keyle.MyPet.util.*;
 import de.Keyle.MyPet.util.locale.MyPetLocales;
 import net.citizensnpcs.api.event.NPCRightClickEvent;
 import net.citizensnpcs.api.trait.Trait;
@@ -61,12 +58,13 @@ public class MyPetNpc extends Trait
         }
 
         Player player = npcEvent.getClicker();
-        /*
-        if (!player.hasPermission("mypet.npc.interact"))
+
+        if (!MyPetPermissions.has(player, "MyPet.Npc.interact"))
         {
+            player.sendMessage(MyPetBukkitUtil.setColors(MyPetLocales.getString("Message.NotAllowed", player)));
             return;
         }
-        */
+
         if (MyPetPlayer.isMyPetPlayer(player))
         {
             final MyPetPlayer myPetPlayer = MyPetPlayer.getMyPetPlayer(player);
@@ -167,7 +165,6 @@ public class MyPetNpc extends Trait
                 menu.open(player);
             }
         }
-
-
+        player.sendMessage(MyPetBukkitUtil.setColors(MyPetLocales.getString("Message.DontHavePet", player)));
     }
 }
