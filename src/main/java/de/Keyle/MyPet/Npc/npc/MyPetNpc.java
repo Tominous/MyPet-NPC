@@ -70,6 +70,20 @@ public class MyPetNpc extends Trait
             final MyPetPlayer myPetPlayer = MyPetPlayer.getMyPetPlayer(player);
             if (myPetPlayer.hasMyPet())
             {
+                MyPetWorldGroup wg = MyPetWorldGroup.getGroup(myPetPlayer.getPlayer().getWorld().getName());
+                int inactivePetCount = 0;
+                for (InactiveMyPet mypet : myPetPlayer.getInactiveMyPets())
+                {
+                    if (!mypet.getWorldGroup().equals("") && !mypet.getWorldGroup().equals(wg.getName()))
+                    {
+                        continue;
+                    }
+                    inactivePetCount++;
+                }
+                if (inactivePetCount > 54)
+                {
+                    player.sendMessage(MyPetBukkitUtil.setColors(MyPetLocales.getString("Message.Npc.StorageFull", myPetPlayer)));
+                }
                 IconMenu menu = new IconMenu(MyPetBukkitUtil.setColors(MyPetLocales.getString("Message.Npc.HandOverTitle", myPetPlayer)), 9, new IconMenu.OptionClickEventHandler()
                 {
                     @Override
@@ -138,8 +152,9 @@ public class MyPetNpc extends Trait
                 }, MyPetNpcPlugin.getPlugin());
 
                 MyPetWorldGroup wg = MyPetWorldGroup.getGroup(myPetPlayer.getPlayer().getWorld().getName());
-                for (InactiveMyPet mypet : myPetPlayer.getInactiveMyPets())
+                for (int i = 0 ; i < myPetPlayer.getInactiveMyPets().length && i < 54 ; i++)
                 {
+                    InactiveMyPet mypet = myPetPlayer.getInactiveMyPets()[i];
                     if (!mypet.getWorldGroup().equals("") && !mypet.getWorldGroup().equals(wg.getName()))
                     {
                         continue;
@@ -164,6 +179,7 @@ public class MyPetNpc extends Trait
 
                 menu.open(player);
             }
+            return;
         }
         player.sendMessage(MyPetBukkitUtil.setColors(MyPetLocales.getString("Message.DontHavePet", player)));
     }
