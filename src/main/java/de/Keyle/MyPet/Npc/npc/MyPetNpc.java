@@ -170,7 +170,7 @@ public class MyPetNpc extends Trait
                     {
                         lore.add(ChatColor.RESET + MyPetLocales.getString("Name.HP", myPetPlayer) + ": " + ChatColor.GOLD + mypet.getHealth());
                     }
-                    lore.add(ChatColor.RESET + MyPetLocales.getString("Name.Exp", myPetPlayer) + ": " + ChatColor.GOLD + mypet.getExp());
+                    lore.add(ChatColor.RESET + MyPetLocales.getString("Name.Exp", myPetPlayer) + ": " + ChatColor.GOLD + String.format("%1.2f", mypet.getExp()));
                     lore.add(ChatColor.RESET + MyPetLocales.getString("Name.Type", myPetPlayer) + ": " + ChatColor.GOLD + mypet.getPetType().getTypeName());
                     lore.add(ChatColor.RESET + MyPetLocales.getString("Name.Skilltree", myPetPlayer) + ": " + ChatColor.GOLD + (mypet.getSkillTree() != null ? mypet.getSkillTree().getDisplayName() : "-"));
                     int pos = menu.addOption(new ItemStack(Material.MONSTER_EGG, 0, SpawnerEggTypes.getColor(mypet.getPetType())), ChatColor.AQUA + mypet.getPetName(), lore);
