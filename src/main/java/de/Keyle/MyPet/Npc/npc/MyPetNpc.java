@@ -91,6 +91,10 @@ public class MyPetNpc extends Trait
                     {
                         if (event.getPosition() == 3)
                         {
+                            // remove pet from world groups
+                            String wg = myPetPlayer.getWorldGroupForMyPet(myPetPlayer.getMyPet().getUUID());
+                            myPetPlayer.setMyPetForWorldGroup(wg, null);
+
                             event.getPlayer().sendMessage(MyPetBukkitUtil.setColors(MyPetLocales.getString("Message.Npc.HandOver", myPetPlayer)).replace("%petname%", myPetPlayer.getMyPet().getPetName()).replace("%npcname%", npcEvent.getNPC().getName()));
                             MyPetList.setMyPetInactive(myPetPlayer);
                         }
