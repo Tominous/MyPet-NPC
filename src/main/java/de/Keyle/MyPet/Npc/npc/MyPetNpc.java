@@ -82,7 +82,7 @@ public class MyPetNpc extends Trait
                 }
                 if (inactivePetCount > 54)
                 {
-                    player.sendMessage(MyPetBukkitUtil.setColors(MyPetLocales.getString("Message.Npc.StorageFull", myPetPlayer)));
+                    player.sendMessage(MyPetBukkitUtil.setColors(MyPetLocales.getString("Message.Npc.StorageFull", myPetPlayer)).replace("%petcount%", "54"));
                 }
                 IconMenu menu = new IconMenu(MyPetBukkitUtil.setColors(MyPetLocales.getString("Message.Npc.HandOverTitle", myPetPlayer)), 9, new IconMenu.OptionClickEventHandler()
                 {
