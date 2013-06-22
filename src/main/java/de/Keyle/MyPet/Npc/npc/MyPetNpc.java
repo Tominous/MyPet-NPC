@@ -80,9 +80,19 @@ public class MyPetNpc extends Trait
                     }
                     inactivePetCount++;
                 }
-                if (inactivePetCount > 54)
+                int maxPetCount = 0;
+                for (int i = 54 ; i >= 0 ; i -= 9)
                 {
-                    player.sendMessage(MyPetBukkitUtil.setColors(MyPetLocales.getString("Message.Npc.StorageFull", myPetPlayer)).replace("%petcount%", "54"));
+                    if (MyPetPermissions.has(player, "MyPet.Npc.max." + i))
+                    {
+                        maxPetCount = i;
+                        break;
+                    }
+                }
+                if (inactivePetCount >= maxPetCount)
+                {
+                    player.sendMessage(MyPetBukkitUtil.setColors(MyPetLocales.getString("Message.Npc.StorageFull", myPetPlayer)).replace("%petcount%", "" + maxPetCount).replace("%npcname%", this.npc.getFullName()));
+                    return;
                 }
                 IconMenu menu = new IconMenu(MyPetBukkitUtil.setColors(MyPetLocales.getString("Message.Npc.HandOverTitle", myPetPlayer)), 9, new IconMenu.OptionClickEventHandler()
                 {
