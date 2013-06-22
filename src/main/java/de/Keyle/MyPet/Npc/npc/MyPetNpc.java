@@ -81,7 +81,7 @@ public class MyPetNpc extends Trait
                     inactivePetCount++;
                 }
                 int maxPetCount = 0;
-                for (int i = 54 ; i >= 0 ; i -= 9)
+                for (int i = 54 ; i >= 9 ; i -= 9)
                 {
                     if (MyPetPermissions.has(player, "MyPet.Npc.max." + i))
                     {
