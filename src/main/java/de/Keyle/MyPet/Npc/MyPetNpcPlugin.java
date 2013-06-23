@@ -43,6 +43,13 @@ public class MyPetNpcPlugin extends JavaPlugin
 
         DebugLogger.info("----------- loading MyPet-NPC ... -----------", "MyPet-NPC");
 
+        if (!getServer().getPluginManager().isPluginEnabled("MyPet"))
+        {
+            MyPetLogger.write(ChatColor.RED + "MyPet plugin isn't enabled. Disable MyPet-NPC.", "MyPet-NPC");
+            this.setEnabled(false);
+            return;
+        }
+
         if (Integer.parseInt(MyPetVersion.getMyPetBuild()) < Integer.parseInt(MyPetNpcVersion.getRequiredMyPetBuild()))
         {
             MyPetLogger.write(ChatColor.RED + "This version of MyPet-NPC requires MyPet build-#" + MyPetNpcVersion.getRequiredMyPetBuild() + " or higher", "MyPet-NPC");
