@@ -18,7 +18,7 @@
         <bukkit.version>R1.0</bukkit.version>
         <mypet.build>296</mypet.build>
 
-        <mypet.version>1.1.0</mypet.version>
+        <mypet.version>1.1.1-SNAPSHOT</mypet.version>
         <citizensapi.version>2.0.8-SNAPSHOT</citizensapi.version>
         <metrics-lite.version>R6</metrics-lite.version>
     </properties>
