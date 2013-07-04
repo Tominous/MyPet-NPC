@@ -135,8 +135,6 @@ public class MyPetNpc extends Trait
                                 MyPetWorldGroup wg = MyPetWorldGroup.getGroup(event.getPlayer().getWorld().getName());
                                 myPetPlayer.setMyPetForWorldGroup(wg.getName(), activePet.getUUID());
 
-                                activePet.setLocation(myPetPlayer.getPlayer().getLocation());
-
                                 switch (activePet.createPet())
                                 {
                                     case Success:
