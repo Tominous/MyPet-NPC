@@ -182,7 +182,7 @@ public class MyPetNpc extends Trait
                     }
                     else
                     {
-                        lore.add(ChatColor.RESET + MyPetLocales.getString("Name.HP", myPetPlayer) + ": " + ChatColor.GOLD + mypet.getHealth());
+                        lore.add(ChatColor.RESET + MyPetLocales.getString("Name.HP", myPetPlayer) + ": " + ChatColor.GOLD + String.format("%1.2f", mypet.getHealth()));
                     }
                     lore.add(ChatColor.RESET + MyPetLocales.getString("Name.Exp", myPetPlayer) + ": " + ChatColor.GOLD + String.format("%1.2f", mypet.getExp()));
                     lore.add(ChatColor.RESET + MyPetLocales.getString("Name.Type", myPetPlayer) + ": " + ChatColor.GOLD + mypet.getPetType().getTypeName());

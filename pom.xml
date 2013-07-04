@@ -14,13 +14,13 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <mypetnpc.version>0.0.1</mypetnpc.version>
-        <minecraft.version>1.5.2</minecraft.version>
-        <bukkit.version>R1.0</bukkit.version>
-        <mypet.build>296</mypet.build>
+        <minecraft.version>1.6.1</minecraft.version>
+        <bukkit.version>R0.1-SNAPSHOT</bukkit.version>
+        <mypet.build>325</mypet.build>
 
-        <mypet.version>1.1.1-SNAPSHOT</mypet.version>
-        <citizensapi.version>2.0.8-SNAPSHOT</citizensapi.version>
-        <metrics-lite.version>R6</metrics-lite.version>
+        <mypet.version>1.1.2-SNAPSHOT</mypet.version>
+        <citizensapi.version>2.0.9-SNAPSHOT</citizensapi.version>
+        <metrics-lite.version>R7</metrics-lite.version>
     </properties>
 
     <repositories>
@@ -54,14 +54,6 @@
             <groupId>org.bukkit</groupId>
             <artifactId>bukkit</artifactId>
             <version>${minecraft.version}-${bukkit.version}</version>
-            <type>jar</type>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.bukkit</groupId>
-            <artifactId>craftbukkit</artifactId>
-            <version>${minecraft.version}-${bukkit.version}</version>
-            <type>jar</type>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -80,7 +72,6 @@
             <groupId>de.Keyle</groupId>
             <artifactId>MyPet</artifactId>
             <version>${mypet.version}</version>
-            <type>jar</type>
             <scope>provided</scope>
         </dependency>
     </dependencies>
@@ -184,6 +175,4 @@
             </plugin>
         </plugins>
     </build>
-
-
 </project>
