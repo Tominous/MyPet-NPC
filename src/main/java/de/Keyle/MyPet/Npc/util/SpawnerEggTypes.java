@@ -33,6 +33,7 @@ public enum SpawnerEggTypes
     Enderman(MyPetType.Enderman, 58),
     Ghast(MyPetType.Ghast, 56),
     Giant(MyPetType.Giant, 54),
+    Horse(MyPetType.Horse, 100),
     IronGolem(MyPetType.IronGolem, 60),
     MagmaCube(MyPetType.MagmaCube, 62),
     Mooshroom(MyPetType.Mooshroom, 96),
