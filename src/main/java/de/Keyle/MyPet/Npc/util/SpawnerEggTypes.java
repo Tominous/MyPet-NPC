@@ -46,6 +46,7 @@ public enum SpawnerEggTypes
     Slime(MyPetType.Slime, 55),
     Snowman(MyPetType.Snowman, 97),
     Spider(MyPetType.Spider, 52),
+    Squid(MyPetType.Squid, 94),
     Witch(MyPetType.Witch, 66),
     Wither(MyPetType.Wither, 58),
     Wolf(MyPetType.Wolf, 95),
