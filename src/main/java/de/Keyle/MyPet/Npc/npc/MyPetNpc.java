@@ -164,9 +164,9 @@ public class MyPetNpc extends Trait
                 }, MyPetNpcPlugin.getPlugin());
 
                 MyPetWorldGroup wg = MyPetWorldGroup.getGroup(myPetPlayer.getPlayer().getWorld().getName());
-                for (int i = 0 ; i < myPetPlayer.getInactiveMyPets().length && i < 54 ; i++)
+                for (int i = 0 ; i < myPetPlayer.getInactiveMyPets().size() && i < 54 ; i++)
                 {
-                    InactiveMyPet mypet = myPetPlayer.getInactiveMyPets()[i];
+                    InactiveMyPet mypet = myPetPlayer.getInactiveMyPets().get(i);
                     if (!mypet.getWorldGroup().equals("") && !mypet.getWorldGroup().equals(wg.getName()))
                     {
                         continue;
