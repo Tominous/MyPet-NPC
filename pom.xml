@@ -8,7 +8,7 @@
     <artifactId>MyPet-NPC</artifactId>
     <version>${mypetnpc.version}-SNAPSHOT</version>
 
-    <url>http://mypet.keyle.de</url>
+    <url>http://mypet.keyle.de/doku.php?id=en:plugins:npc</url>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

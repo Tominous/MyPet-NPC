@@ -2,5 +2,5 @@ name: MyPet-NPC
 main: de.Keyle.MyPet.Npc.MyPetNpcPlugin
 version: ${mypetnpc.version}
 author: Keyle
-website: http://dev.bukkit.org/server-mods/mywolf/
+website: ${project.url}
 depend: [Citizens, MyPet]
