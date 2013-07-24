@@ -93,9 +93,9 @@
     </ciManagement>
 
     <scm>
-        <connection>scm:git:git@github.com:xXKeyleXx/MyPet-Spout.git</connection>
-        <developerConnection>scm:git:git@github.com:xXKeyleXx/MyPet-Spout.git</developerConnection>
-        <url>https://github.com/xXKeyleXx/MyPet-Spout/tree/master/</url>
+        <connection>scm:git:git@github.com:xXKeyleXx/MyPet-NPC.git</connection>
+        <developerConnection>scm:git:git@github.com:xXKeyleXx/MyPet-NPC.git</developerConnection>
+        <url>https://github.com/xXKeyleXx/MyPet-NPC/tree/master/</url>
     </scm>
 
     <build>
