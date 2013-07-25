@@ -29,7 +29,7 @@ import de.Keyle.MyPet.entity.types.InactiveMyPet;
 import de.Keyle.MyPet.entity.types.MyPet;
 import de.Keyle.MyPet.entity.types.MyPetList;
 import de.Keyle.MyPet.util.*;
-import de.Keyle.MyPet.util.locale.MyPetLocales;
+import de.Keyle.MyPet.util.locale.Locales;
 import net.citizensnpcs.api.event.NPCRightClickEvent;
 import net.citizensnpcs.api.trait.Trait;
 import org.bukkit.ChatColor;
@@ -59,9 +59,9 @@ public class MyPetNpc extends Trait
 
         Player player = npcEvent.getClicker();
 
-        if (!MyPetPermissions.has(player, "MyPet.Npc.interact"))
+        if (!Permissions.has(player, "MyPet.Npc.interact"))
         {
-            player.sendMessage(MyPetLocales.getString("Message.NotAllowed", player));
+            player.sendMessage(Locales.getString("Message.NotAllowed", player));
             return;
         }
 
@@ -70,7 +70,7 @@ public class MyPetNpc extends Trait
             final MyPetPlayer myPetPlayer = MyPetPlayer.getMyPetPlayer(player);
             if (myPetPlayer.hasMyPet())
             {
-                MyPetWorldGroup wg = MyPetWorldGroup.getGroup(myPetPlayer.getPlayer().getWorld().getName());
+                WorldGroup wg = WorldGroup.getGroup(myPetPlayer.getPlayer().getWorld().getName());
                 int inactivePetCount = 0;
                 for (InactiveMyPet mypet : myPetPlayer.getInactiveMyPets())
                 {
@@ -83,7 +83,7 @@ public class MyPetNpc extends Trait
                 int maxPetCount = 0;
                 for (int i = 54 ; i >= 9 ; i -= 9)
                 {
-                    if (MyPetPermissions.has(player, "MyPet.Npc.max." + i))
+                    if (Permissions.has(player, "MyPet.Npc.max." + i))
                     {
                         maxPetCount = i;
                         break;
@@ -91,10 +91,10 @@ public class MyPetNpc extends Trait
                 }
                 if (inactivePetCount >= maxPetCount)
                 {
-                    player.sendMessage(MyPetUtil.formatText(MyPetLocales.getString("Message.Npc.StorageFull", myPetPlayer), this.npc.getFullName(), maxPetCount));
+                    player.sendMessage(Util.formatText(Locales.getString("Message.Npc.StorageFull", myPetPlayer), this.npc.getFullName(), maxPetCount));
                     return;
                 }
-                IconMenu menu = new IconMenu(MyPetLocales.getString("Message.Npc.HandOverTitle", myPetPlayer), 9, new IconMenu.OptionClickEventHandler()
+                IconMenu menu = new IconMenu(Locales.getString("Message.Npc.HandOverTitle", myPetPlayer), 9, new IconMenu.OptionClickEventHandler()
                 {
                     @Override
                     public void onOptionClick(IconMenu.OptionClickEvent event)
@@ -105,7 +105,7 @@ public class MyPetNpc extends Trait
                             String wg = myPetPlayer.getWorldGroupForMyPet(myPetPlayer.getMyPet().getUUID());
                             myPetPlayer.setMyPetForWorldGroup(wg, null);
 
-                            event.getPlayer().sendMessage(MyPetUtil.formatText(MyPetLocales.getString("Message.Npc.HandOver", myPetPlayer), myPetPlayer.getMyPet().getPetName(), npcEvent.getNPC().getName()));
+                            event.getPlayer().sendMessage(Util.formatText(Locales.getString("Message.Npc.HandOver", myPetPlayer), myPetPlayer.getMyPet().getPetName(), npcEvent.getNPC().getName()));
                             MyPetList.setMyPetInactive(myPetPlayer);
                         }
                         event.setWillClose(true);
@@ -113,14 +113,14 @@ public class MyPetNpc extends Trait
                     }
                 }, MyPetNpcPlugin.getPlugin());
 
-                menu.setOption(3, new ItemStack(Material.WOOL, 0, (short) 5), ChatColor.GREEN + MyPetLocales.getString("Name.Yes", myPetPlayer), new String[]{ChatColor.RESET + MyPetUtil.formatText(MyPetLocales.getString("Message.Npc.YesHandOver", myPetPlayer), myPetPlayer.getMyPet().getPetName())});
-                menu.setOption(5, new ItemStack(Material.WOOL, 0, (short) 14), ChatColor.RED + MyPetLocales.getString("Name.No", myPetPlayer), new String[]{ChatColor.RESET + MyPetUtil.formatText(MyPetLocales.getString("Message.Npc.NoHandOver", myPetPlayer), myPetPlayer.getMyPet().getPetName())});
+                menu.setOption(3, new ItemStack(Material.WOOL, 0, (short) 5), ChatColor.GREEN + Locales.getString("Name.Yes", myPetPlayer), new String[]{ChatColor.RESET + Util.formatText(Locales.getString("Message.Npc.YesHandOver", myPetPlayer), myPetPlayer.getMyPet().getPetName())});
+                menu.setOption(5, new ItemStack(Material.WOOL, 0, (short) 14), ChatColor.RED + Locales.getString("Name.No", myPetPlayer), new String[]{ChatColor.RESET + Util.formatText(Locales.getString("Message.Npc.NoHandOver", myPetPlayer), myPetPlayer.getMyPet().getPetName())});
                 menu.open(player);
             }
             else if (myPetPlayer.hasInactiveMyPets())
             {
                 final Map<Integer, UUID> petSlotList = new HashMap<Integer, UUID>();
-                IconMenu menu = new IconMenu(MyPetLocales.getString("Message.Npc.TakeTitle", myPetPlayer), 54, new IconMenu.OptionClickEventHandler()
+                IconMenu menu = new IconMenu(Locales.getString("Message.Npc.TakeTitle", myPetPlayer), 54, new IconMenu.OptionClickEventHandler()
                 {
                     @Override
                     public void onOptionClick(IconMenu.OptionClickEvent event)
@@ -131,29 +131,29 @@ public class MyPetNpc extends Trait
                             if (myPet != null)
                             {
                                 MyPet activePet = MyPetList.setMyPetActive(myPet);
-                                event.getPlayer().sendMessage(MyPetUtil.formatText(MyPetLocales.getString("Message.Npc.ChosenPet", myPetPlayer), activePet.getPetName()));
-                                MyPetWorldGroup wg = MyPetWorldGroup.getGroup(event.getPlayer().getWorld().getName());
+                                event.getPlayer().sendMessage(Util.formatText(Locales.getString("Message.Npc.ChosenPet", myPetPlayer), activePet.getPetName()));
+                                WorldGroup wg = WorldGroup.getGroup(event.getPlayer().getWorld().getName());
                                 myPetPlayer.setMyPetForWorldGroup(wg.getName(), activePet.getUUID());
 
                                 switch (activePet.createPet())
                                 {
                                     case Success:
-                                        if (MyPetConfiguration.ENABLE_EVENTS)
+                                        if (Configuration.ENABLE_EVENTS)
                                         {
                                             getPluginManager().callEvent(new MyPetSpoutEvent(activePet, MyPetSpoutEventReason.Call));
                                         }
                                         break;
                                     case Canceled:
-                                        event.getPlayer().sendMessage(MyPetUtil.formatText(MyPetLocales.getString("Message.SpawnPrevent", myPetPlayer), activePet.getPetName()));
+                                        event.getPlayer().sendMessage(Util.formatText(Locales.getString("Message.SpawnPrevent", myPetPlayer), activePet.getPetName()));
                                         break;
                                     case NoSpace:
-                                        event.getPlayer().sendMessage(MyPetUtil.formatText(MyPetLocales.getString("Message.SpawnNoSpace", myPetPlayer), activePet.getPetName()));
+                                        event.getPlayer().sendMessage(Util.formatText(Locales.getString("Message.SpawnNoSpace", myPetPlayer), activePet.getPetName()));
                                         break;
                                     case NotAllowed:
-                                        event.getPlayer().sendMessage(Colorizer.setColors(MyPetLocales.getString("Message.NotAllowedHere", myPetPlayer)).replace("%petname%", activePet.getPetName()));
+                                        event.getPlayer().sendMessage(Colorizer.setColors(Locales.getString("Message.NotAllowedHere", myPetPlayer)).replace("%petname%", activePet.getPetName()));
                                         break;
                                     case Dead:
-                                        event.getPlayer().sendMessage(Colorizer.setColors(MyPetLocales.getString("Message.RespawnIn", myPetPlayer)).replace("%petname%", activePet.getPetName()).replace("%time%", "" + activePet.getRespawnTime()));
+                                        event.getPlayer().sendMessage(Colorizer.setColors(Locales.getString("Message.RespawnIn", myPetPlayer)).replace("%petname%", activePet.getPetName()).replace("%time%", "" + activePet.getRespawnTime()));
                                         break;
                                 }
                             }
@@ -163,7 +163,7 @@ public class MyPetNpc extends Trait
                     }
                 }, MyPetNpcPlugin.getPlugin());
 
-                MyPetWorldGroup wg = MyPetWorldGroup.getGroup(myPetPlayer.getPlayer().getWorld().getName());
+                WorldGroup wg = WorldGroup.getGroup(myPetPlayer.getPlayer().getWorld().getName());
                 for (int i = 0 ; i < myPetPlayer.getInactiveMyPets().size() && i < 54 ; i++)
                 {
                     InactiveMyPet mypet = myPetPlayer.getInactiveMyPets().get(i);
@@ -173,18 +173,18 @@ public class MyPetNpc extends Trait
                     }
 
                     List<String> lore = new ArrayList<String>();
-                    lore.add(ChatColor.RESET + MyPetLocales.getString("Name.Hunger", myPetPlayer) + ": " + ChatColor.GOLD + mypet.getHungerValue());
+                    lore.add(ChatColor.RESET + Locales.getString("Name.Hunger", myPetPlayer) + ": " + ChatColor.GOLD + mypet.getHungerValue());
                     if (mypet.getRespawnTime() > 0)
                     {
-                        lore.add(ChatColor.RESET + MyPetLocales.getString("Name.Respawntime", myPetPlayer) + ": " + ChatColor.GOLD + mypet.getRespawnTime() + "sec");
+                        lore.add(ChatColor.RESET + Locales.getString("Name.Respawntime", myPetPlayer) + ": " + ChatColor.GOLD + mypet.getRespawnTime() + "sec");
                     }
                     else
                     {
-                        lore.add(ChatColor.RESET + MyPetLocales.getString("Name.HP", myPetPlayer) + ": " + ChatColor.GOLD + String.format("%1.2f", mypet.getHealth()));
+                        lore.add(ChatColor.RESET + Locales.getString("Name.HP", myPetPlayer) + ": " + ChatColor.GOLD + String.format("%1.2f", mypet.getHealth()));
                     }
-                    lore.add(ChatColor.RESET + MyPetLocales.getString("Name.Exp", myPetPlayer) + ": " + ChatColor.GOLD + String.format("%1.2f", mypet.getExp()));
-                    lore.add(ChatColor.RESET + MyPetLocales.getString("Name.Type", myPetPlayer) + ": " + ChatColor.GOLD + mypet.getPetType().getTypeName());
-                    lore.add(ChatColor.RESET + MyPetLocales.getString("Name.Skilltree", myPetPlayer) + ": " + ChatColor.GOLD + (mypet.getSkillTree() != null ? mypet.getSkillTree().getDisplayName() : "-"));
+                    lore.add(ChatColor.RESET + Locales.getString("Name.Exp", myPetPlayer) + ": " + ChatColor.GOLD + String.format("%1.2f", mypet.getExp()));
+                    lore.add(ChatColor.RESET + Locales.getString("Name.Type", myPetPlayer) + ": " + ChatColor.GOLD + mypet.getPetType().getTypeName());
+                    lore.add(ChatColor.RESET + Locales.getString("Name.Skilltree", myPetPlayer) + ": " + ChatColor.GOLD + (mypet.getSkillTree() != null ? mypet.getSkillTree().getDisplayName() : "-"));
                     int pos = menu.addOption(new ItemStack(Material.MONSTER_EGG, 0, SpawnerEggTypes.getColor(mypet.getPetType())), ChatColor.AQUA + mypet.getPetName(), lore);
                     petSlotList.put(pos, mypet.getUUID());
                 }
@@ -193,6 +193,6 @@ public class MyPetNpc extends Trait
             }
             return;
         }
-        player.sendMessage(MyPetLocales.getString("Message.DontHavePet", player));
+        player.sendMessage(Locales.getString("Message.DontHavePet", player));
     }
 }
