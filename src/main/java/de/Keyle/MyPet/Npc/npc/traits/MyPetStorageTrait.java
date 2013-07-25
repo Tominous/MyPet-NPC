@@ -18,7 +18,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.Keyle.MyPet.Npc.npc;
+package de.Keyle.MyPet.Npc.npc.traits;
 
 import de.Keyle.MyPet.Npc.MyPetNpcPlugin;
 import de.Keyle.MyPet.Npc.util.IconMenu;
@@ -42,11 +42,11 @@ import java.util.*;
 
 import static org.bukkit.Bukkit.getPluginManager;
 
-public class MyPetNpc extends Trait
+public class MyPetStorageTrait extends Trait
 {
-    public MyPetNpc()
+    public MyPetStorageTrait()
     {
-        super("mypetnpc");
+        super("mypet-storage");
     }
 
     @EventHandler
