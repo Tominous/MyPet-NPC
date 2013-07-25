@@ -4,3 +4,7 @@ version: ${mypetnpc.version}
 author: Keyle
 website: ${project.url}
 depend: [Citizens, MyPet]
+commands:
+  mypetnpcconfig:
+    aliases: [mpnpcc]
+    description: Configuration command for MyPet-NPC

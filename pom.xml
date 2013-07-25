@@ -20,6 +20,7 @@
 
         <mypet.version>1.1.2-SNAPSHOT</mypet.version>
         <citizensapi.version>2.0.9-SNAPSHOT</citizensapi.version>
+        <vault.version>1.2.26-SNAPSHOT</vault.version>
         <metrics-lite.version>R7</metrics-lite.version>
     </properties>
 
@@ -39,6 +40,10 @@
         <repository>
             <id>citizens-repo</id>
             <url>http://repo.citizensnpcs.com</url>
+        </repository>
+        <repository>
+            <id>vault-repo</id>
+            <url>http://ci.herocraftonline.com/plugin/repository/everything</url>
         </repository>
         <repository>
             <id>mypet-repo</id>
@@ -66,6 +71,13 @@
             <groupId>net.citizensnpcs</groupId>
             <artifactId>citizensapi</artifactId>
             <version>${citizensapi.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.milkbowl.vault</groupId>
+            <artifactId>Vault</artifactId>
+            <version>${vault.version}</version>
+            <type>jar</type>
             <scope>provided</scope>
         </dependency>
         <dependency>

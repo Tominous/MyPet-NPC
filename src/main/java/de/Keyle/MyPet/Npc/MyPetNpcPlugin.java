@@ -20,7 +20,9 @@
 
 package de.Keyle.MyPet.Npc;
 
+import de.Keyle.MyPet.Npc.commands.CommandConfig;
 import de.Keyle.MyPet.Npc.npc.traits.MyPetStorageTrait;
+import de.Keyle.MyPet.Npc.npc.traits.MyPetWalletTrait;
 import de.Keyle.MyPet.Npc.util.MyPetNpcVersion;
 import de.Keyle.MyPet.util.MyPetVersion;
 import de.Keyle.MyPet.util.logger.DebugLogger;
@@ -69,7 +71,10 @@ public class MyPetNpcPlugin extends JavaPlugin
             DebugLogger.info(e.getMessage(), "MyPet-NPC");
         }
 
-        CitizensAPI.getTraitFactory().registerTrait(TraitInfo.create(MyPetStorageTrait.class).withName("mypetnpc"));
+        CitizensAPI.getTraitFactory().registerTrait(TraitInfo.create(MyPetStorageTrait.class).withName("mypet-storage"));
+        CitizensAPI.getTraitFactory().registerTrait(TraitInfo.create(MyPetWalletTrait.class).withName("mypet-wallet"));
+
+        getCommand("mypetnpcconfig").setExecutor(new CommandConfig());
 
         MyPetLogger.write("version " + MyPetNpcVersion.getMyPetNpcVersion() + "-b" + MyPetNpcVersion.getMyPetNpcBuild() + ChatColor.GREEN + " ENABLED", "MyPet-NPC");
         DebugLogger.info("----------- MyPet-NPC ready -----------", "MyPet-NPC");
