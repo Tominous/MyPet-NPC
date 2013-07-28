@@ -20,11 +20,14 @@
 
 package de.Keyle.MyPet.Npc;
 
+import de.Keyle.MyPet.MyPetPlugin;
 import de.Keyle.MyPet.Npc.commands.CommandConfig;
 import de.Keyle.MyPet.Npc.npc.traits.MyPetStorageTrait;
 import de.Keyle.MyPet.Npc.npc.traits.MyPetWalletTrait;
+import de.Keyle.MyPet.Npc.util.Configuration;
 import de.Keyle.MyPet.Npc.util.MyPetNpcVersion;
 import de.Keyle.MyPet.util.MyPetVersion;
+import de.Keyle.MyPet.util.configuration.ConfigurationYAML;
 import de.Keyle.MyPet.util.logger.DebugLogger;
 import de.Keyle.MyPet.util.logger.MyPetLogger;
 import net.citizensnpcs.api.CitizensAPI;
@@ -33,6 +36,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.mcstats.MetricsLite;
 
+import java.io.File;
 import java.io.IOException;
 
 public class MyPetNpcPlugin extends JavaPlugin
@@ -70,6 +74,13 @@ public class MyPetNpcPlugin extends JavaPlugin
             DebugLogger.info("MetricsLite not activated", "MyPet-NPC");
             DebugLogger.info(e.getMessage(), "MyPet-NPC");
         }
+
+        File configFile = new File(MyPetPlugin.getPlugin().getDataFolder().getPath() + File.separator + "plugins" + File.separator + "NPC" + File.separator + "config.yml");
+        configFile.getParentFile().mkdirs();
+        Configuration.yamlConfig = new ConfigurationYAML(configFile);
+
+        Configuration.setDefault();
+        Configuration.loadConfiguration();
 
         CitizensAPI.getTraitFactory().registerTrait(TraitInfo.create(MyPetStorageTrait.class).withName("mypet-storage"));
         CitizensAPI.getTraitFactory().registerTrait(TraitInfo.create(MyPetWalletTrait.class).withName("mypet-wallet"));
