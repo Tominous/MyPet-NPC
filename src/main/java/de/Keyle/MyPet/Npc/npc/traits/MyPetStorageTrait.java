@@ -21,7 +21,6 @@
 package de.Keyle.MyPet.Npc.npc.traits;
 
 import de.Keyle.MyPet.Npc.MyPetNpcPlugin;
-import de.Keyle.MyPet.Npc.util.IconMenu;
 import de.Keyle.MyPet.Npc.util.SpawnerEggTypes;
 import de.Keyle.MyPet.api.event.MyPetSpoutEvent;
 import de.Keyle.MyPet.api.event.MyPetSpoutEvent.MyPetSpoutEventReason;
