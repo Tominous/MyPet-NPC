@@ -31,7 +31,6 @@ import de.Keyle.MyPet.util.*;
 import de.Keyle.MyPet.util.locale.Locales;
 import net.citizensnpcs.api.event.NPCRightClickEvent;
 import net.citizensnpcs.api.trait.Trait;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -39,7 +38,10 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
 
+import static de.Keyle.MyPet.Npc.util.Configuration.NPC_STORAGE_COSTS_FACTOR;
+import static de.Keyle.MyPet.Npc.util.Configuration.NPC_STORAGE_COSTS_FIXED;
 import static org.bukkit.Bukkit.getPluginManager;
+import static org.bukkit.ChatColor.*;
 
 public class MyPetStorageTrait extends Trait
 {
@@ -56,7 +58,7 @@ public class MyPetStorageTrait extends Trait
             return;
         }
 
-        Player player = npcEvent.getClicker();
+        final Player player = npcEvent.getClicker();
 
         if (!Permissions.has(player, "MyPet.Npc.interact"))
         {
@@ -100,20 +102,55 @@ public class MyPetStorageTrait extends Trait
                     {
                         if (event.getPosition() == 3)
                         {
-                            // remove pet from world groups
-                            String wg = myPetPlayer.getWorldGroupForMyPet(myPetPlayer.getMyPet().getUUID());
-                            myPetPlayer.setMyPetForWorldGroup(wg, null);
+                            boolean store = true;
+                            if (Economy.canUseEconomy() && npc.hasTrait(MyPetWalletTrait.class))
+                            {
+                                MyPetWalletTrait walletTrait = npc.getTrait(MyPetWalletTrait.class);
+                                double costs = calculateStorageCosts(myPetPlayer.getMyPet());
+                                if (!Economy.canPay(myPetPlayer, costs))
+                                {
+                                    player.sendMessage(Util.formatText(Locales.getString("Message.NoMoney", myPetPlayer), myPetPlayer.getMyPet().getPetName(), npcEvent.getNPC().getName()));
+                                    store = false;
+                                }
+                                if (Economy.pay(myPetPlayer, costs))
+                                {
+                                    walletTrait.deposit(costs);
+                                }
+                                else
+                                {
+                                    store = false;
+                                }
+                            }
 
-                            event.getPlayer().sendMessage(Util.formatText(Locales.getString("Message.Npc.HandOver", myPetPlayer), myPetPlayer.getMyPet().getPetName(), npcEvent.getNPC().getName()));
-                            MyPetList.setMyPetInactive(myPetPlayer);
+                            if (store)
+                            {
+                                // remove pet from world groups
+                                String wg = myPetPlayer.getWorldGroupForMyPet(myPetPlayer.getMyPet().getUUID());
+                                myPetPlayer.setMyPetForWorldGroup(wg, null);
+
+                                player.sendMessage(Util.formatText(Locales.getString("Message.Npc.HandOver", myPetPlayer), myPetPlayer.getMyPet().getPetName(), npcEvent.getNPC().getName()));
+                                MyPetList.setMyPetInactive(myPetPlayer);
+                            }
                         }
                         event.setWillClose(true);
                         event.setWillDestroy(true);
                     }
                 }, MyPetNpcPlugin.getPlugin());
-
-                menu.setOption(3, new ItemStack(Material.WOOL, 0, (short) 5), ChatColor.GREEN + Locales.getString("Name.Yes", myPetPlayer), new String[]{ChatColor.RESET + Util.formatText(Locales.getString("Message.Npc.YesHandOver", myPetPlayer), myPetPlayer.getMyPet().getPetName())});
-                menu.setOption(5, new ItemStack(Material.WOOL, 0, (short) 14), ChatColor.RED + Locales.getString("Name.No", myPetPlayer), new String[]{ChatColor.RESET + Util.formatText(Locales.getString("Message.Npc.NoHandOver", myPetPlayer), myPetPlayer.getMyPet().getPetName())});
+                String[] lore;
+                double storageCosts = calculateStorageCosts(myPetPlayer.getMyPet());
+                if (Economy.canUseEconomy() && npc.hasTrait(MyPetWalletTrait.class) && storageCosts > 0)
+                {
+                    lore = new String[3];
+                    lore[1] = "";
+                    lore[2] = RESET + Locales.getString("Name.Costs", myPetPlayer) + ": " + (Economy.canPay(myPetPlayer, storageCosts) ? GREEN : RED) + storageCosts + DARK_GREEN + " " + Economy.getEconomy().currencyNameSingular();
+                }
+                else
+                {
+                    lore = new String[1];
+                }
+                lore[0] = RESET + Util.formatText(Locales.getString("Message.Npc.YesHandOver", myPetPlayer), myPetPlayer.getMyPet().getPetName());
+                menu.setOption(3, new ItemStack(Material.WOOL, 0, (short) 5), GREEN + Locales.getString("Name.Yes", myPetPlayer), lore);
+                menu.setOption(5, new ItemStack(Material.WOOL, 0, (short) 14), RED + Locales.getString("Name.No", myPetPlayer), new String[]{RESET + Util.formatText(Locales.getString("Message.Npc.NoHandOver", myPetPlayer), myPetPlayer.getMyPet().getPetName())});
                 menu.open(player);
             }
             else if (myPetPlayer.hasInactiveMyPets())
@@ -172,19 +209,19 @@ public class MyPetStorageTrait extends Trait
                     }
 
                     List<String> lore = new ArrayList<String>();
-                    lore.add(ChatColor.RESET + Locales.getString("Name.Hunger", myPetPlayer) + ": " + ChatColor.GOLD + mypet.getHungerValue());
+                    lore.add(RESET + Locales.getString("Name.Hunger", myPetPlayer) + ": " + GOLD + mypet.getHungerValue());
                     if (mypet.getRespawnTime() > 0)
                     {
-                        lore.add(ChatColor.RESET + Locales.getString("Name.Respawntime", myPetPlayer) + ": " + ChatColor.GOLD + mypet.getRespawnTime() + "sec");
+                        lore.add(RESET + Locales.getString("Name.Respawntime", myPetPlayer) + ": " + GOLD + mypet.getRespawnTime() + "sec");
                     }
                     else
                     {
-                        lore.add(ChatColor.RESET + Locales.getString("Name.HP", myPetPlayer) + ": " + ChatColor.GOLD + String.format("%1.2f", mypet.getHealth()));
+                        lore.add(RESET + Locales.getString("Name.HP", myPetPlayer) + ": " + GOLD + String.format("%1.2f", mypet.getHealth()));
                     }
-                    lore.add(ChatColor.RESET + Locales.getString("Name.Exp", myPetPlayer) + ": " + ChatColor.GOLD + String.format("%1.2f", mypet.getExp()));
-                    lore.add(ChatColor.RESET + Locales.getString("Name.Type", myPetPlayer) + ": " + ChatColor.GOLD + mypet.getPetType().getTypeName());
-                    lore.add(ChatColor.RESET + Locales.getString("Name.Skilltree", myPetPlayer) + ": " + ChatColor.GOLD + (mypet.getSkillTree() != null ? mypet.getSkillTree().getDisplayName() : "-"));
-                    int pos = menu.addOption(new ItemStack(Material.MONSTER_EGG, 0, SpawnerEggTypes.getColor(mypet.getPetType())), ChatColor.AQUA + mypet.getPetName(), lore);
+                    lore.add(RESET + Locales.getString("Name.Exp", myPetPlayer) + ": " + GOLD + String.format("%1.2f", mypet.getExp()));
+                    lore.add(RESET + Locales.getString("Name.Type", myPetPlayer) + ": " + GOLD + mypet.getPetType().getTypeName());
+                    lore.add(RESET + Locales.getString("Name.Skilltree", myPetPlayer) + ": " + GOLD + (mypet.getSkillTree() != null ? mypet.getSkillTree().getDisplayName() : "-"));
+                    int pos = menu.addOption(new ItemStack(Material.MONSTER_EGG, 0, SpawnerEggTypes.getColor(mypet.getPetType())), AQUA + mypet.getPetName(), lore);
                     petSlotList.put(pos, mypet.getUUID());
                 }
 
@@ -193,5 +230,10 @@ public class MyPetStorageTrait extends Trait
             return;
         }
         player.sendMessage(Locales.getString("Message.DontHavePet", player));
+    }
+
+    public double calculateStorageCosts(MyPet myPet)
+    {
+        return NPC_STORAGE_COSTS_FIXED + (myPet.getExperience().getLevel() * NPC_STORAGE_COSTS_FACTOR);
     }
 }
