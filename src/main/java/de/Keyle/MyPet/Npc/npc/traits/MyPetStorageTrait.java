@@ -22,8 +22,6 @@ package de.Keyle.MyPet.Npc.npc.traits;
 
 import de.Keyle.MyPet.Npc.MyPetNpcPlugin;
 import de.Keyle.MyPet.Npc.util.SpawnerEggTypes;
-import de.Keyle.MyPet.api.event.MyPetSpoutEvent;
-import de.Keyle.MyPet.api.event.MyPetSpoutEvent.MyPetSpoutEventReason;
 import de.Keyle.MyPet.entity.types.InactiveMyPet;
 import de.Keyle.MyPet.entity.types.MyPet;
 import de.Keyle.MyPet.entity.types.MyPetList;
@@ -40,7 +38,6 @@ import java.util.*;
 
 import static de.Keyle.MyPet.Npc.util.Configuration.NPC_STORAGE_COSTS_FACTOR;
 import static de.Keyle.MyPet.Npc.util.Configuration.NPC_STORAGE_COSTS_FIXED;
-import static org.bukkit.Bukkit.getPluginManager;
 import static org.bukkit.ChatColor.*;
 
 public class MyPetStorageTrait extends Trait
@@ -173,12 +170,6 @@ public class MyPetStorageTrait extends Trait
 
                                 switch (activePet.createPet())
                                 {
-                                    case Success:
-                                        if (Configuration.ENABLE_EVENTS)
-                                        {
-                                            getPluginManager().callEvent(new MyPetSpoutEvent(activePet, MyPetSpoutEventReason.Call));
-                                        }
-                                        break;
                                     case Canceled:
                                         event.getPlayer().sendMessage(Util.formatText(Locales.getString("Message.SpawnPrevent", myPetPlayer), activePet.getPetName()));
                                         break;
