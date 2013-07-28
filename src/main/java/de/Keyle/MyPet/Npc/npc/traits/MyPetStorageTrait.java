@@ -100,10 +100,10 @@ public class MyPetStorageTrait extends Trait
                         if (event.getPosition() == 3)
                         {
                             boolean store = true;
-                            if (Economy.canUseEconomy() && npc.hasTrait(MyPetWalletTrait.class))
+                            double costs = calculateStorageCosts(myPetPlayer.getMyPet());
+                            if (Economy.canUseEconomy() && costs > 0 && npc.hasTrait(MyPetWalletTrait.class))
                             {
                                 MyPetWalletTrait walletTrait = npc.getTrait(MyPetWalletTrait.class);
-                                double costs = calculateStorageCosts(myPetPlayer.getMyPet());
                                 if (!Economy.canPay(myPetPlayer, costs))
                                 {
                                     player.sendMessage(Util.formatText(Locales.getString("Message.NoMoney", myPetPlayer), myPetPlayer.getMyPet().getPetName(), npcEvent.getNPC().getName()));
