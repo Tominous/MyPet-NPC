@@ -59,7 +59,7 @@ public class MyPetStorageTrait extends Trait
 
         if (!Permissions.has(player, "MyPet.Npc.interact"))
         {
-            player.sendMessage(Locales.getString("Message.NotAllowed", player));
+            player.sendMessage(Locales.getString("Message.No.Allowed", player));
             return;
         }
 
@@ -106,7 +106,7 @@ public class MyPetStorageTrait extends Trait
                                 MyPetWalletTrait walletTrait = npc.getTrait(MyPetWalletTrait.class);
                                 if (!Economy.canPay(myPetPlayer, costs))
                                 {
-                                    player.sendMessage(Util.formatText(Locales.getString("Message.NoMoney", myPetPlayer), myPetPlayer.getMyPet().getPetName(), npcEvent.getNPC().getName()));
+                                    player.sendMessage(Util.formatText(Locales.getString("Message.No.Money", myPetPlayer), myPetPlayer.getMyPet().getPetName(), npcEvent.getNPC().getName()));
                                     store = false;
                                 }
                                 if (Economy.pay(myPetPlayer, costs))
@@ -171,16 +171,16 @@ public class MyPetStorageTrait extends Trait
                                 switch (activePet.createPet())
                                 {
                                     case Canceled:
-                                        event.getPlayer().sendMessage(Util.formatText(Locales.getString("Message.SpawnPrevent", myPetPlayer), activePet.getPetName()));
+                                        event.getPlayer().sendMessage(Util.formatText(Locales.getString("Message.Spawn.Prevent", myPetPlayer), activePet.getPetName()));
                                         break;
                                     case NoSpace:
-                                        event.getPlayer().sendMessage(Util.formatText(Locales.getString("Message.SpawnNoSpace", myPetPlayer), activePet.getPetName()));
+                                        event.getPlayer().sendMessage(Util.formatText(Locales.getString("Message.Spawn.NoSpace", myPetPlayer), activePet.getPetName()));
                                         break;
                                     case NotAllowed:
-                                        event.getPlayer().sendMessage(Colorizer.setColors(Locales.getString("Message.NotAllowedHere", myPetPlayer)).replace("%petname%", activePet.getPetName()));
+                                        event.getPlayer().sendMessage(Colorizer.setColors(Locales.getString("Message.No.AllowedHere", myPetPlayer)).replace("%petname%", activePet.getPetName()));
                                         break;
                                     case Dead:
-                                        event.getPlayer().sendMessage(Colorizer.setColors(Locales.getString("Message.RespawnIn", myPetPlayer)).replace("%petname%", activePet.getPetName()).replace("%time%", "" + activePet.getRespawnTime()));
+                                        event.getPlayer().sendMessage(Colorizer.setColors(Locales.getString("Message.Spawn.Respawn.In", myPetPlayer)).replace("%petname%", activePet.getPetName()).replace("%time%", "" + activePet.getRespawnTime()));
                                         break;
                                 }
                             }
@@ -220,7 +220,7 @@ public class MyPetStorageTrait extends Trait
             }
             return;
         }
-        player.sendMessage(Locales.getString("Message.DontHavePet", player));
+        player.sendMessage(Locales.getString("Message.No.HasPet", player));
     }
 
     public double calculateStorageCosts(MyPet myPet)
