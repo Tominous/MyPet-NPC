@@ -26,6 +26,13 @@
 
     <repositories>
         <repository>
+            <id>mypet-repo</id>
+            <url>http://repo.keyle.de/</url>
+            <snapshots>
+                <updatePolicy>always</updatePolicy>
+            </snapshots>
+        </repository>
+        <repository>
             <id>bukkit-repo</id>
             <url>http://repo.bukkit.org/content/groups/public/</url>
         </repository>
@@ -44,13 +51,6 @@
         <repository>
             <id>vault-repo</id>
             <url>http://ci.herocraftonline.com/plugin/repository/everything</url>
-        </repository>
-        <repository>
-            <id>mypet-repo</id>
-            <url>http://repo.keyle.de/</url>
-            <snapshots>
-                <updatePolicy>always</updatePolicy>
-            </snapshots>
         </repository>
     </repositories>
 
