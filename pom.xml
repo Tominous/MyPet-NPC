@@ -37,10 +37,6 @@
             <url>http://repo.bukkit.org/content/groups/public/</url>
         </repository>
         <repository>
-            <id>spout-repo</id>
-            <url>http://repo.spout.org/</url>
-        </repository>
-        <repository>
             <id>metrics-repo</id>
             <url>http://repo.mcstats.org/content/repositories/releases/</url>
         </repository>
