@@ -194,6 +194,8 @@ public class MyPetStorageTrait extends Trait
                 for (int i = 0 ; i < myPetPlayer.getInactiveMyPets().size() && i < 54 ; i++)
                 {
                     InactiveMyPet mypet = myPetPlayer.getInactiveMyPets().get(i);
+                    SpawnerEggTypes egg = SpawnerEggTypes.getEggType(mypet.getPetType());
+
                     if (!mypet.getWorldGroup().equals("") && !mypet.getWorldGroup().equals(wg.getName()))
                     {
                         continue;
@@ -212,7 +214,7 @@ public class MyPetStorageTrait extends Trait
                     lore.add(RESET + Locales.getString("Name.Exp", myPetPlayer) + ": " + GOLD + String.format("%1.2f", mypet.getExp()));
                     lore.add(RESET + Locales.getString("Name.Type", myPetPlayer) + ": " + GOLD + mypet.getPetType().getTypeName());
                     lore.add(RESET + Locales.getString("Name.Skilltree", myPetPlayer) + ": " + GOLD + (mypet.getSkillTree() != null ? mypet.getSkillTree().getDisplayName() : "-"));
-                    int pos = menu.addOption(new ItemStack(Material.MONSTER_EGG, 0, SpawnerEggTypes.getColor(mypet.getPetType())), AQUA + mypet.getPetName(), lore);
+                    int pos = menu.addOption(new ItemStack(Material.MONSTER_EGG, 0, egg.getColor()), RESET + mypet.getPetName(), lore, egg.isGlowing());
                     petSlotList.put(pos, mypet.getUUID());
                 }
 

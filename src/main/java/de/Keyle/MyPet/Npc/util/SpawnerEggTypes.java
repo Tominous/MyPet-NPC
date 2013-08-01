@@ -32,9 +32,9 @@ public enum SpawnerEggTypes
     Creeper(MyPetType.Creeper, 50),
     Enderman(MyPetType.Enderman, 58),
     Ghast(MyPetType.Ghast, 56),
-    Giant(MyPetType.Giant, 54),
+    Giant(MyPetType.Giant, 54, true),
     Horse(MyPetType.Horse, 100),
-    IronGolem(MyPetType.IronGolem, 60),
+    IronGolem(MyPetType.IronGolem, 60, true),
     MagmaCube(MyPetType.MagmaCube, 62),
     Mooshroom(MyPetType.Mooshroom, 96),
     Ocelot(MyPetType.Ocelot, 98),
@@ -48,34 +48,46 @@ public enum SpawnerEggTypes
     Spider(MyPetType.Spider, 52),
     Squid(MyPetType.Squid, 94),
     Witch(MyPetType.Witch, 66),
-    Wither(MyPetType.Wither, 58),
+    Wither(MyPetType.Wither, 58, true),
     Wolf(MyPetType.Wolf, 95),
     Villager(MyPetType.Villager, 120),
     Zombie(MyPetType.Zombie, 54);
 
     MyPetType type;
     short color;
+    boolean glowing;
 
     SpawnerEggTypes(MyPetType type, int color)
     {
-        this.type = type;
-        this.color = (short) color;
+        this(type, color, false);
     }
 
-    public static short getColor(MyPetType type)
+    SpawnerEggTypes(MyPetType type, int color, boolean glowing)
     {
-        for (SpawnerEggTypes color : values())
+        this.type = type;
+        this.color = (short) color;
+        this.glowing = glowing;
+    }
+
+    public static SpawnerEggTypes getEggType(MyPetType type)
+    {
+        for (SpawnerEggTypes eggType : values())
         {
-            if (color.type == type)
+            if (eggType.type == type)
             {
-                return color.color;
+                return eggType;
             }
         }
-        return 0;
+        return Zombie;
     }
 
     public short getColor()
     {
         return this.color;
+    }
+
+    public boolean isGlowing()
+    {
+        return glowing;
     }
 }
