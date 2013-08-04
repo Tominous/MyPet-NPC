@@ -58,7 +58,7 @@ public class CommandConfig implements CommandExecutor, TabCompleter
         String lang = "en";
         if (sender instanceof Player)
         {
-            if (!Permissions.has((Player) sender, "MyPet.admin", false))
+            if (!Permissions.has((Player) sender, "MyPet.npc.admin", false))
             {
                 return true;
             }
@@ -114,7 +114,7 @@ public class CommandConfig implements CommandExecutor, TabCompleter
     @Override
     public List<String> onTabComplete(CommandSender commandSender, Command command, String s, String[] strings)
     {
-        if (!Permissions.has((Player) commandSender, "MyPet.NPC.admin", false))
+        if (!Permissions.has((Player) commandSender, "MyPet.npc.admin", false))
         {
             return emptyList;
         }
