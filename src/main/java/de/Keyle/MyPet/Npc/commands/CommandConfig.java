@@ -23,6 +23,7 @@ package de.Keyle.MyPet.Npc.commands;
 import de.Keyle.MyPet.Npc.npc.traits.MyPetWalletTrait;
 import de.Keyle.MyPet.Npc.npc.traits.MyPetWalletTrait.WalletType;
 import de.Keyle.MyPet.util.BukkitUtil;
+import de.Keyle.MyPet.util.Economy;
 import de.Keyle.MyPet.util.Permissions;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
@@ -94,6 +95,23 @@ public class CommandConfig implements CommandExecutor, TabCompleter
             }
 
             MyPetWalletTrait trait = selectedNPC.getTrait(MyPetWalletTrait.class);
+
+            if (!Economy.canUseEconomy())
+            {
+                if (newWalletType == WalletType.Bank || newWalletType == WalletType.Owner)
+                {
+                    sender.sendMessage("[" + ChatColor.AQUA + "MyPet-NPC" + ChatColor.RESET + "] You can not use the \"Owner\" and \"Bank\" wallet types without an economy plugin installed!");
+                    return true;
+                }
+            }
+            else
+            {
+                if (newWalletType == WalletType.Bank && !Economy.getEconomy().hasBankSupport())
+                {
+                    sender.sendMessage("[" + ChatColor.AQUA + "MyPet-NPC" + ChatColor.RESET + "] Your economy plugin doesn't has \"Banks\" support!");
+                    return true;
+                }
+            }
 
             trait.setWalletType(newWalletType);
 

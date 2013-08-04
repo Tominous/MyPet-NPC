@@ -21,9 +21,11 @@
 package de.Keyle.MyPet.Npc.npc.traits;
 
 import de.Keyle.MyPet.util.Economy;
+import de.Keyle.MyPet.util.logger.MyPetLogger;
 import net.citizensnpcs.api.persistence.Persist;
 import net.citizensnpcs.api.trait.Trait;
 import net.citizensnpcs.api.trait.trait.Owner;
+import org.bukkit.ChatColor;
 
 public class MyPetWalletTrait extends Trait
 {
@@ -80,8 +82,18 @@ public class MyPetWalletTrait extends Trait
                 this.privateWallet += amount;
                 return true;
             case Owner:
+                if (!Economy.canUseEconomy())
+                {
+                    MyPetLogger.write(ChatColor.RED + "The MyPet-Wallet trait needs an economy plugin to use the \"Owner\" wallet type! (NPC: " + this.getNPC().getId() + ")", "MyPet-NPC");
+                    return false;
+                }
                 return Economy.getEconomy().depositPlayer(this.npc.getTrait(Owner.class).getOwner(), amount).transactionSuccess();
             case Bank:
+                if (!Economy.canUseEconomy())
+                {
+                    MyPetLogger.write(ChatColor.RED + "The MyPet-Wallet trait needs an economy plugin to use the \"Bank\" wallet type! (NPC: " + this.getNPC().getId() + ")", "MyPet-NPC");
+                    return false;
+                }
                 return Economy.getEconomy().isBankOwner(accountName, this.npc.getTrait(Owner.class).getOwner()).transactionSuccess() && Economy.getEconomy().bankDeposit(accountName, amount).transactionSuccess();
             case None:
                 return true;
@@ -106,8 +118,18 @@ public class MyPetWalletTrait extends Trait
                 this.privateWallet -= amount;
                 return true;
             case Owner:
+                if (!Economy.canUseEconomy())
+                {
+                    MyPetLogger.write(ChatColor.RED + "The MyPet-Wallet trait needs an economy plugin to use the \"Owner\" wallet type! (NPC: " + this.getNPC().getId() + ")", "MyPet-NPC");
+                    return false;
+                }
                 return Economy.getEconomy().withdrawPlayer(this.npc.getTrait(Owner.class).getOwner(), amount).transactionSuccess();
             case Bank:
+                if (!Economy.canUseEconomy())
+                {
+                    MyPetLogger.write(ChatColor.RED + "The MyPet-Wallet trait needs an economy plugin to use the \"Bank\" wallet type! (NPC: " + this.getNPC().getId() + ")", "MyPet-NPC");
+                    return false;
+                }
                 return Economy.getEconomy().isBankOwner(accountName, this.npc.getTrait(Owner.class).getOwner()).transactionSuccess() && Economy.getEconomy().bankWithdraw(accountName, amount).transactionSuccess();
             case None:
                 return true;
@@ -126,8 +148,18 @@ public class MyPetWalletTrait extends Trait
             case Private:
                 return this.privateWallet >= amount;
             case Owner:
+                if (!Economy.canUseEconomy())
+                {
+                    MyPetLogger.write(ChatColor.RED + "The MyPet-Wallet trait needs an economy plugin to use the \"Owner\" wallet type! (NPC: " + this.getNPC().getId() + ")", "MyPet-NPC");
+                    return false;
+                }
                 return Economy.getEconomy().has(this.npc.getTrait(Owner.class).getOwner(), amount);
             case Bank:
+                if (!Economy.canUseEconomy())
+                {
+                    MyPetLogger.write(ChatColor.RED + "The MyPet-Wallet trait needs an economy plugin to use the \"Bank\" wallet type! (NPC: " + this.getNPC().getId() + ")", "MyPet-NPC");
+                    return false;
+                }
                 return Economy.getEconomy().isBankOwner(accountName, this.npc.getTrait(Owner.class).getOwner()).transactionSuccess() && Economy.getEconomy().bankHas(accountName, amount).transactionSuccess();
             case None:
                 return true;
