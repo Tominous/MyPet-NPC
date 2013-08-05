@@ -68,7 +68,7 @@ public class MyPetStorageTrait extends Trait
             final MyPetPlayer myPetPlayer = MyPetPlayer.getMyPetPlayer(player);
             if (myPetPlayer.hasMyPet())
             {
-                WorldGroup wg = WorldGroup.getGroup(myPetPlayer.getPlayer().getWorld().getName());
+                WorldGroup wg = WorldGroup.getGroupByWorld(myPetPlayer.getPlayer().getWorld().getName());
                 int inactivePetCount = 0;
                 for (InactiveMyPet mypet : myPetPlayer.getInactiveMyPets())
                 {
@@ -165,7 +165,7 @@ public class MyPetStorageTrait extends Trait
                             {
                                 MyPet activePet = MyPetList.setMyPetActive(myPet);
                                 event.getPlayer().sendMessage(Util.formatText(Locales.getString("Message.Npc.ChosenPet", myPetPlayer), activePet.getPetName()));
-                                WorldGroup wg = WorldGroup.getGroup(event.getPlayer().getWorld().getName());
+                                WorldGroup wg = WorldGroup.getGroupByWorld(event.getPlayer().getWorld().getName());
                                 myPetPlayer.setMyPetForWorldGroup(wg.getName(), activePet.getUUID());
 
                                 switch (activePet.createPet())
@@ -190,7 +190,7 @@ public class MyPetStorageTrait extends Trait
                     }
                 }, MyPetNpcPlugin.getPlugin());
 
-                WorldGroup wg = WorldGroup.getGroup(myPetPlayer.getPlayer().getWorld().getName());
+                WorldGroup wg = WorldGroup.getGroupByWorld(myPetPlayer.getPlayer().getWorld().getName());
                 for (int i = 0 ; i < myPetPlayer.getInactiveMyPets().size() && i < 54 ; i++)
                 {
                     InactiveMyPet mypet = myPetPlayer.getInactiveMyPets().get(i);
