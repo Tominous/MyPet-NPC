@@ -6,14 +6,14 @@
 
     <groupId>de.Keyle</groupId>
     <artifactId>MyPet-NPC</artifactId>
-    <version>${mypetnpc.version}</version>
+    <version>${mypetnpc.version}-SNAPSHOT</version>
 
     <url>http://mypet.keyle.de/doku.php?id=en:plugins:npc</url>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <mypetnpc.version>0.0.1</mypetnpc.version>
+        <mypetnpc.version>0.0.2</mypetnpc.version>
         <minecraft.version>1.6.2</minecraft.version>
         <bukkit.version>R0.1</bukkit.version>
         <mypet.build>406</mypet.build>
