@@ -15,10 +15,10 @@
 
         <mypetnpc.version>0.0.2</mypetnpc.version>
         <minecraft.version>1.6.2</minecraft.version>
-        <bukkit.version>R0.1</bukkit.version>
+        <bukkit.version>R1.0</bukkit.version>
         <mypet.build>406</mypet.build>
 
-        <mypet.version>1.1.3-SNAPSHOT</mypet.version>
+        <mypet.version>1.1.4-SNAPSHOT</mypet.version>
         <citizensapi.version>2.0.9-SNAPSHOT</citizensapi.version>
         <vault.version>1.2.26-SNAPSHOT</vault.version>
         <metrics-lite.version>R7</metrics-lite.version>
