@@ -40,87 +40,70 @@ import static de.Keyle.MyPet.Npc.util.Configuration.NPC_STORAGE_COSTS_FACTOR;
 import static de.Keyle.MyPet.Npc.util.Configuration.NPC_STORAGE_COSTS_FIXED;
 import static org.bukkit.ChatColor.*;
 
-public class MyPetStorageTrait extends Trait
-{
-    public MyPetStorageTrait()
-    {
+public class MyPetStorageTrait extends Trait {
+    public MyPetStorageTrait() {
         super("mypet-storage");
     }
 
     @EventHandler
-    public void onRightClick(final NPCRightClickEvent npcEvent)
-    {
-        if (this.npc != npcEvent.getNPC())
-        {
+    public void onRightClick(final NPCRightClickEvent npcEvent) {
+        if (this.npc != npcEvent.getNPC()) {
             return;
         }
 
         final Player player = npcEvent.getClicker();
 
-        if (!Permissions.has(player, "MyPet.npc.storage.interact"))
-        {
+        if (!Permissions.has(player, "MyPet.npc.storage.interact")) {
             player.sendMessage(Locales.getString("Message.No.Allowed", player));
             return;
         }
 
-        if (MyPetPlayer.isMyPetPlayer(player))
-        {
+        if (MyPetPlayer.isMyPetPlayer(player)) {
             final MyPetPlayer myPetPlayer = MyPetPlayer.getMyPetPlayer(player);
-            if (myPetPlayer.hasMyPet())
-            {
+            if (myPetPlayer.hasMyPet()) {
                 WorldGroup wg = WorldGroup.getGroupByWorld(myPetPlayer.getPlayer().getWorld().getName());
                 int inactivePetCount = 0;
-                for (InactiveMyPet mypet : myPetPlayer.getInactiveMyPets())
-                {
-                    if (!mypet.getWorldGroup().equals("") && !mypet.getWorldGroup().equals(wg.getName()))
-                    {
+                for (InactiveMyPet mypet : myPetPlayer.getInactiveMyPets()) {
+                    if (!mypet.getWorldGroup().equals("") && !mypet.getWorldGroup().equals(wg.getName())) {
                         continue;
                     }
                     inactivePetCount++;
                 }
                 int maxPetCount = 0;
-                for (int i = 54 ; i >= 9 ; i -= 9)
-                {
-                    if (Permissions.has(player, "MyPet.npc.storage.max." + i))
-                    {
+                for (int i = 1; i <= 27; i++) {
+                    if (Permissions.has(player, "MyPet.npc.storage.max." + i)) {
+                        maxPetCount = i;
+                        break;
+                    }
+                    if (Permissions.has(player, "MyPet.npc.storage.max." + (55 - i))) {
                         maxPetCount = i;
                         break;
                     }
                 }
-                if (inactivePetCount >= maxPetCount)
-                {
+                if (inactivePetCount >= maxPetCount) {
                     player.sendMessage(Util.formatText(Locales.getString("Message.Npc.StorageFull", myPetPlayer), this.npc.getFullName(), maxPetCount));
                     return;
                 }
-                IconMenu menu = new IconMenu(Locales.getString("Message.Npc.HandOverTitle", myPetPlayer), 9, new IconMenu.OptionClickEventHandler()
-                {
+                IconMenu menu = new IconMenu(Locales.getString("Message.Npc.HandOverTitle", myPetPlayer), 9, new IconMenu.OptionClickEventHandler() {
                     @Override
-                    public void onOptionClick(IconMenu.OptionClickEvent event)
-                    {
-                        if (event.getPosition() == 3)
-                        {
+                    public void onOptionClick(IconMenu.OptionClickEvent event) {
+                        if (event.getPosition() == 3) {
                             boolean store = true;
                             double costs = calculateStorageCosts(myPetPlayer.getMyPet());
-                            if (Economy.canUseEconomy() && costs > 0 && npc.hasTrait(MyPetWalletTrait.class))
-                            {
+                            if (Economy.canUseEconomy() && costs > 0 && npc.hasTrait(MyPetWalletTrait.class)) {
                                 MyPetWalletTrait walletTrait = npc.getTrait(MyPetWalletTrait.class);
-                                if (!Economy.canPay(myPetPlayer, costs))
-                                {
+                                if (!Economy.canPay(myPetPlayer, costs)) {
                                     player.sendMessage(Util.formatText(Locales.getString("Message.No.Money", myPetPlayer), myPetPlayer.getMyPet().getPetName(), npcEvent.getNPC().getName()));
                                     store = false;
                                 }
-                                if (Economy.pay(myPetPlayer, costs))
-                                {
+                                if (Economy.pay(myPetPlayer, costs)) {
                                     walletTrait.deposit(costs);
-                                }
-                                else
-                                {
+                                } else {
                                     store = false;
                                 }
                             }
 
-                            if (store)
-                            {
+                            if (store) {
                                 // remove pet from world groups
                                 String wg = myPetPlayer.getWorldGroupForMyPet(myPetPlayer.getMyPet().getUUID());
                                 myPetPlayer.setMyPetForWorldGroup(wg, null);
@@ -135,41 +118,31 @@ public class MyPetStorageTrait extends Trait
                 }, MyPetNpcPlugin.getPlugin());
                 String[] lore;
                 double storageCosts = calculateStorageCosts(myPetPlayer.getMyPet());
-                if (Economy.canUseEconomy() && npc.hasTrait(MyPetWalletTrait.class) && storageCosts > 0)
-                {
+                if (Economy.canUseEconomy() && npc.hasTrait(MyPetWalletTrait.class) && storageCosts > 0) {
                     lore = new String[3];
                     lore[1] = "";
                     lore[2] = RESET + Locales.getString("Name.Costs", myPetPlayer) + ": " + (Economy.canPay(myPetPlayer, storageCosts) ? GREEN : RED) + storageCosts + DARK_GREEN + " " + Economy.getEconomy().currencyNameSingular();
-                }
-                else
-                {
+                } else {
                     lore = new String[1];
                 }
                 lore[0] = RESET + Util.formatText(Locales.getString("Message.Npc.YesHandOver", myPetPlayer), myPetPlayer.getMyPet().getPetName());
                 menu.setOption(3, new ItemStack(Material.WOOL, 0, (short) 5), GREEN + Locales.getString("Name.Yes", myPetPlayer), lore);
                 menu.setOption(5, new ItemStack(Material.WOOL, 0, (short) 14), RED + Locales.getString("Name.No", myPetPlayer), new String[]{RESET + Util.formatText(Locales.getString("Message.Npc.NoHandOver", myPetPlayer), myPetPlayer.getMyPet().getPetName())});
                 menu.open(player);
-            }
-            else if (myPetPlayer.hasInactiveMyPets())
-            {
+            } else if (myPetPlayer.hasInactiveMyPets()) {
                 final Map<Integer, UUID> petSlotList = new HashMap<Integer, UUID>();
-                IconMenu menu = new IconMenu(Locales.getString("Message.Npc.TakeTitle", myPetPlayer), 54, new IconMenu.OptionClickEventHandler()
-                {
+                IconMenu menu = new IconMenu(Locales.getString("Message.Npc.TakeTitle", myPetPlayer), 54, new IconMenu.OptionClickEventHandler() {
                     @Override
-                    public void onOptionClick(IconMenu.OptionClickEvent event)
-                    {
-                        if (petSlotList.containsKey(event.getPosition()))
-                        {
+                    public void onOptionClick(IconMenu.OptionClickEvent event) {
+                        if (petSlotList.containsKey(event.getPosition())) {
                             InactiveMyPet myPet = myPetPlayer.getInactiveMyPet(petSlotList.get(event.getPosition()));
-                            if (myPet != null)
-                            {
+                            if (myPet != null) {
                                 MyPet activePet = MyPetList.setMyPetActive(myPet);
                                 event.getPlayer().sendMessage(Util.formatText(Locales.getString("Message.Npc.ChosenPet", myPetPlayer), activePet.getPetName()));
                                 WorldGroup wg = WorldGroup.getGroupByWorld(event.getPlayer().getWorld().getName());
                                 myPetPlayer.setMyPetForWorldGroup(wg.getName(), activePet.getUUID());
 
-                                switch (activePet.createPet())
-                                {
+                                switch (activePet.createPet()) {
                                     case Canceled:
                                         event.getPlayer().sendMessage(Util.formatText(Locales.getString("Message.Spawn.Prevent", myPetPlayer), activePet.getPetName()));
                                         break;
@@ -191,24 +164,19 @@ public class MyPetStorageTrait extends Trait
                 }, MyPetNpcPlugin.getPlugin());
 
                 WorldGroup wg = WorldGroup.getGroupByWorld(myPetPlayer.getPlayer().getWorld().getName());
-                for (int i = 0 ; i < myPetPlayer.getInactiveMyPets().size() && i < 54 ; i++)
-                {
+                for (int i = 0; i < myPetPlayer.getInactiveMyPets().size() && i < 54; i++) {
                     InactiveMyPet mypet = myPetPlayer.getInactiveMyPets().get(i);
                     SpawnerEggTypes egg = SpawnerEggTypes.getEggType(mypet.getPetType());
 
-                    if (!mypet.getWorldGroup().equals("") && !mypet.getWorldGroup().equals(wg.getName()))
-                    {
+                    if (!mypet.getWorldGroup().equals("") && !mypet.getWorldGroup().equals(wg.getName())) {
                         continue;
                     }
 
                     List<String> lore = new ArrayList<String>();
                     lore.add(RESET + Locales.getString("Name.Hunger", myPetPlayer) + ": " + GOLD + mypet.getHungerValue());
-                    if (mypet.getRespawnTime() > 0)
-                    {
+                    if (mypet.getRespawnTime() > 0) {
                         lore.add(RESET + Locales.getString("Name.Respawntime", myPetPlayer) + ": " + GOLD + mypet.getRespawnTime() + "sec");
-                    }
-                    else
-                    {
+                    } else {
                         lore.add(RESET + Locales.getString("Name.HP", myPetPlayer) + ": " + GOLD + String.format("%1.2f", mypet.getHealth()));
                     }
                     lore.add(RESET + Locales.getString("Name.Exp", myPetPlayer) + ": " + GOLD + String.format("%1.2f", mypet.getExp()));
@@ -225,8 +193,7 @@ public class MyPetStorageTrait extends Trait
         player.sendMessage(Locales.getString("Message.No.HasPet", player));
     }
 
-    public double calculateStorageCosts(MyPet myPet)
-    {
+    public double calculateStorageCosts(MyPet myPet) {
         return NPC_STORAGE_COSTS_FIXED + (myPet.getExperience().getLevel() * NPC_STORAGE_COSTS_FACTOR);
     }
 }
