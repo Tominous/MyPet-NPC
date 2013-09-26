@@ -70,15 +70,19 @@ public class MyPetStorageTrait extends Trait {
                     inactivePetCount++;
                 }
                 int maxPetCount = 0;
-                for (int i = 1; i <= 27; i++) {
-                    if (Permissions.has(player, "MyPet.npc.storage.max." + (55 - i))) {
-                        maxPetCount = i;
-                        break;
+                if (!player.isOp()) {
+                    for (int i = 1; i <= 27; i++) {
+                        if (Permissions.has(player, "MyPet.npc.storage.max." + (55 - i))) {
+                            maxPetCount = i;
+                            break;
+                        }
+                        if (Permissions.has(player, "MyPet.npc.storage.max." + i)) {
+                            maxPetCount = i;
+                            break;
+                        }
                     }
-                    if (Permissions.has(player, "MyPet.npc.storage.max." + i)) {
-                        maxPetCount = i;
-                        break;
-                    }
+                } else {
+                    maxPetCount = 54;
                 }
                 if (inactivePetCount >= maxPetCount) {
                     player.sendMessage(Util.formatText(Locales.getString("Message.Npc.StorageFull", myPetPlayer), this.npc.getFullName(), maxPetCount));
