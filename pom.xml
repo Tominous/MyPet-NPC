@@ -41,7 +41,7 @@
         </repository>
         <repository>
             <id>citizens-repo</id>
-            <url>http://repo.citizensnpcs.com</url>
+            <url>http://repo.citizensnpcs.co</url>
         </repository>
         <repository>
             <id>vault-repo</id>
