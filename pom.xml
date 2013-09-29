@@ -157,7 +157,7 @@
                         <manifestEntries>
                             <Project-Author>Keyle</Project-Author>
                             <Project-Name>MyPet-NPC</Project-Name>
-                            <Project-Version>${version}</Project-Version>
+                            <Project-Version>${project.version}</Project-Version>
                             <Project-Build>${BUILD_NUMBER}</Project-Build>
                             <Git-Commit>${GIT_COMMIT}</Git-Commit>
                             <Required-MyPet-Build>${mypet.build}</Required-MyPet-Build>
