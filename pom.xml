@@ -15,7 +15,7 @@
 
         <minecraft.version>1.6.4</minecraft.version>
         <bukkit.version>R1.0</bukkit.version>
-        <mypet.build>406</mypet.build>
+        <mypet.build>489</mypet.build>
 
         <mypet.version>1.1.6-SNAPSHOT</mypet.version>
         <citizensapi.version>2.0.9-SNAPSHOT</citizensapi.version>

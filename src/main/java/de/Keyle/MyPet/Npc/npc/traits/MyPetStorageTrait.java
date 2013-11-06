@@ -26,13 +26,14 @@ import de.Keyle.MyPet.entity.types.InactiveMyPet;
 import de.Keyle.MyPet.entity.types.MyPet;
 import de.Keyle.MyPet.entity.types.MyPetList;
 import de.Keyle.MyPet.util.*;
+import de.Keyle.MyPet.util.iconmenu.IconMenu;
+import de.Keyle.MyPet.util.iconmenu.IconMenuItem;
 import de.Keyle.MyPet.util.locale.Locales;
 import net.citizensnpcs.api.event.NPCRightClickEvent;
 import net.citizensnpcs.api.trait.Trait;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
 
@@ -130,8 +131,8 @@ public class MyPetStorageTrait extends Trait {
                     lore = new String[1];
                 }
                 lore[0] = RESET + Util.formatText(Locales.getString("Message.Npc.YesHandOver", myPetPlayer), myPetPlayer.getMyPet().getPetName());
-                menu.setOption(3, new ItemStack(Material.WOOL, 0, (short) 5), GREEN + Locales.getString("Name.Yes", myPetPlayer), lore);
-                menu.setOption(5, new ItemStack(Material.WOOL, 0, (short) 14), RED + Locales.getString("Name.No", myPetPlayer), new String[]{RESET + Util.formatText(Locales.getString("Message.Npc.NoHandOver", myPetPlayer), myPetPlayer.getMyPet().getPetName())});
+                menu.setOption(3, new IconMenuItem().setMaterial(Material.WOOL).setData(5).setTitle(GREEN + Locales.getString("Name.Yes", myPetPlayer)).setLore(lore));
+                menu.setOption(5, new IconMenuItem().setMaterial(Material.WOOL).setData(14).setTitle(RED + Locales.getString("Name.No", myPetPlayer)).setLore(RESET + Util.formatText(Locales.getString("Message.Npc.NoHandOver", myPetPlayer), myPetPlayer.getMyPet().getPetName())));
                 menu.open(player);
             } else if (myPetPlayer.hasInactiveMyPets()) {
                 final Map<Integer, UUID> petSlotList = new HashMap<Integer, UUID>();
@@ -186,7 +187,7 @@ public class MyPetStorageTrait extends Trait {
                     lore.add(RESET + Locales.getString("Name.Exp", myPetPlayer) + ": " + GOLD + String.format("%1.2f", mypet.getExp()));
                     lore.add(RESET + Locales.getString("Name.Type", myPetPlayer) + ": " + GOLD + mypet.getPetType().getTypeName());
                     lore.add(RESET + Locales.getString("Name.Skilltree", myPetPlayer) + ": " + GOLD + (mypet.getSkillTree() != null ? mypet.getSkillTree().getDisplayName() : "-"));
-                    int pos = menu.addOption(new ItemStack(Material.MONSTER_EGG, 0, egg.getColor()), RESET + mypet.getPetName(), lore, egg.isGlowing());
+                    int pos = menu.addOption(new IconMenuItem().setMaterial(Material.MONSTER_EGG).setData(egg.getColor()).setTitle(RESET + mypet.getPetName()).addLore(lore).setGlowing(egg.isGlowing()));
                     petSlotList.put(pos, mypet.getUUID());
                 }
 
