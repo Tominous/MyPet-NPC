@@ -20,15 +20,14 @@
 
 package de.Keyle.MyPet.Npc.npc.traits;
 
-import de.Keyle.MyPet.util.Economy;
 import de.Keyle.MyPet.util.logger.MyPetLogger;
+import de.Keyle.MyPet.util.support.Economy;
 import net.citizensnpcs.api.persistence.Persist;
 import net.citizensnpcs.api.trait.Trait;
 import net.citizensnpcs.api.trait.trait.Owner;
 import org.bukkit.ChatColor;
 
-public class MyPetWalletTrait extends Trait
-{
+public class MyPetWalletTrait extends Trait {
     @Persist
     double privateWallet = 0.0D;
     @Persist
@@ -37,16 +36,12 @@ public class MyPetWalletTrait extends Trait
     @Persist
     public String accountName = "";
 
-    public static enum WalletType
-    {
+    public static enum WalletType {
         Private, Owner, Bank, None;
 
-        public static WalletType getByName(String name)
-        {
-            for (WalletType walletType : values())
-            {
-                if (walletType.name().equalsIgnoreCase(name))
-                {
+        public static WalletType getByName(String name) {
+            for (WalletType walletType : values()) {
+                if (walletType.name().equalsIgnoreCase(name)) {
                     return walletType;
                 }
             }
@@ -54,43 +49,35 @@ public class MyPetWalletTrait extends Trait
         }
     }
 
-    public MyPetWalletTrait()
-    {
+    public MyPetWalletTrait() {
         super("mypet-wallet");
     }
 
-    public void setWalletType(WalletType newType)
-    {
+    public void setWalletType(WalletType newType) {
         walletType = newType;
         walletTypeName = newType.name();
     }
 
-    public void setAccount(String accountName)
-    {
+    public void setAccount(String accountName) {
         this.accountName = accountName;
     }
 
-    public boolean deposit(double amount)
-    {
-        if (amount <= 0.0D)
-        {
+    public boolean deposit(double amount) {
+        if (amount <= 0.0D) {
             return false;
         }
-        switch (walletType)
-        {
+        switch (walletType) {
             case Private:
                 this.privateWallet += amount;
                 return true;
             case Owner:
-                if (!Economy.canUseEconomy())
-                {
+                if (!Economy.canUseEconomy()) {
                     MyPetLogger.write(ChatColor.RED + "The MyPet-Wallet trait needs an economy plugin to use the \"Owner\" wallet type! (NPC: " + this.getNPC().getId() + ")", "MyPet-NPC");
                     return false;
                 }
                 return Economy.getEconomy().depositPlayer(this.npc.getTrait(Owner.class).getOwner(), amount).transactionSuccess();
             case Bank:
-                if (!Economy.canUseEconomy())
-                {
+                if (!Economy.canUseEconomy()) {
                     MyPetLogger.write(ChatColor.RED + "The MyPet-Wallet trait needs an economy plugin to use the \"Bank\" wallet type! (NPC: " + this.getNPC().getId() + ")", "MyPet-NPC");
                     return false;
                 }
@@ -101,32 +88,26 @@ public class MyPetWalletTrait extends Trait
         return false;
     }
 
-    public boolean withdraw(double amount)
-    {
-        if (amount <= 0.0D)
-        {
+    public boolean withdraw(double amount) {
+        if (amount <= 0.0D) {
             return false;
         }
 
-        switch (walletType)
-        {
+        switch (walletType) {
             case Private:
-                if (amount > this.privateWallet)
-                {
+                if (amount > this.privateWallet) {
                     return false;
                 }
                 this.privateWallet -= amount;
                 return true;
             case Owner:
-                if (!Economy.canUseEconomy())
-                {
+                if (!Economy.canUseEconomy()) {
                     MyPetLogger.write(ChatColor.RED + "The MyPet-Wallet trait needs an economy plugin to use the \"Owner\" wallet type! (NPC: " + this.getNPC().getId() + ")", "MyPet-NPC");
                     return false;
                 }
                 return Economy.getEconomy().withdrawPlayer(this.npc.getTrait(Owner.class).getOwner(), amount).transactionSuccess();
             case Bank:
-                if (!Economy.canUseEconomy())
-                {
+                if (!Economy.canUseEconomy()) {
                     MyPetLogger.write(ChatColor.RED + "The MyPet-Wallet trait needs an economy plugin to use the \"Bank\" wallet type! (NPC: " + this.getNPC().getId() + ")", "MyPet-NPC");
                     return false;
                 }
@@ -137,26 +118,21 @@ public class MyPetWalletTrait extends Trait
         return false;
     }
 
-    public boolean has(double amount)
-    {
-        if (amount <= 0.0D)
-        {
+    public boolean has(double amount) {
+        if (amount <= 0.0D) {
             return false;
         }
-        switch (walletType)
-        {
+        switch (walletType) {
             case Private:
                 return this.privateWallet >= amount;
             case Owner:
-                if (!Economy.canUseEconomy())
-                {
+                if (!Economy.canUseEconomy()) {
                     MyPetLogger.write(ChatColor.RED + "The MyPet-Wallet trait needs an economy plugin to use the \"Owner\" wallet type! (NPC: " + this.getNPC().getId() + ")", "MyPet-NPC");
                     return false;
                 }
                 return Economy.getEconomy().has(this.npc.getTrait(Owner.class).getOwner(), amount);
             case Bank:
-                if (!Economy.canUseEconomy())
-                {
+                if (!Economy.canUseEconomy()) {
                     MyPetLogger.write(ChatColor.RED + "The MyPet-Wallet trait needs an economy plugin to use the \"Bank\" wallet type! (NPC: " + this.getNPC().getId() + ")", "MyPet-NPC");
                     return false;
                 }
@@ -168,8 +144,7 @@ public class MyPetWalletTrait extends Trait
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return "MyPetWalletTrait{walletType: " + walletTypeName + ", privateWallet: " + String.format("%1.4f", privateWallet) + ", account: " + accountName + "}";
     }
 }

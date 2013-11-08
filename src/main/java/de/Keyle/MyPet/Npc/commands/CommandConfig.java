@@ -23,8 +23,8 @@ package de.Keyle.MyPet.Npc.commands;
 import de.Keyle.MyPet.Npc.npc.traits.MyPetWalletTrait;
 import de.Keyle.MyPet.Npc.npc.traits.MyPetWalletTrait.WalletType;
 import de.Keyle.MyPet.util.BukkitUtil;
-import de.Keyle.MyPet.util.Economy;
-import de.Keyle.MyPet.util.Permissions;
+import de.Keyle.MyPet.util.support.Economy;
+import de.Keyle.MyPet.util.support.Permissions;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.ChatColor;
@@ -38,76 +38,60 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class CommandConfig implements CommandExecutor, TabCompleter
-{
+public class CommandConfig implements CommandExecutor, TabCompleter {
     private static List<String> optionsList = new ArrayList<String>();
     private static List<String> walletTypeList = new ArrayList<String>();
     private static List<String> emptyList = new ArrayList<String>();
 
-    static
-    {
+    static {
         optionsList.add("wallet");
 
-        for (WalletType walletType : WalletType.values())
-        {
+        for (WalletType walletType : WalletType.values()) {
             walletTypeList.add(walletType.name());
         }
     }
 
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
-    {
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         String lang = "en";
-        if (sender instanceof Player)
-        {
-            if (!Permissions.has((Player) sender, "MyPet.npc.admin", false))
-            {
+        if (sender instanceof Player) {
+            if (!Permissions.has((Player) sender, "MyPet.npc.admin", false)) {
                 return true;
             }
             lang = BukkitUtil.getPlayerLanguage((Player) sender);
         }
-        if (args.length < 1)
-        {
+        if (args.length < 1) {
             return false;
         }
         String option = args[0];
         String[] parameter = Arrays.copyOfRange(args, 1, args.length);
 
-        if (option.equalsIgnoreCase("wallet") && parameter.length >= 1)
-        {
+        if (option.equalsIgnoreCase("wallet") && parameter.length >= 1) {
             NPC selectedNPC = CitizensAPI.getDefaultNPCSelector().getSelected(sender);
-            if (selectedNPC == null)
-            {
+            if (selectedNPC == null) {
                 sender.sendMessage("[" + ChatColor.AQUA + "MyPet-NPC" + ChatColor.RESET + "] No NPC seleced!");
                 return true;
             }
 
-            if (!selectedNPC.hasTrait(MyPetWalletTrait.class))
-            {
+            if (!selectedNPC.hasTrait(MyPetWalletTrait.class)) {
                 sender.sendMessage("[" + ChatColor.AQUA + "MyPet-NPC" + ChatColor.RESET + "] This NPC doesn't has the " + ChatColor.GOLD + "mypet-wallet" + ChatColor.RESET + " trait!");
                 return true;
             }
 
             WalletType newWalletType = WalletType.getByName(parameter[0]);
-            if (newWalletType == null)
-            {
+            if (newWalletType == null) {
                 sender.sendMessage("[" + ChatColor.AQUA + "MyPet-NPC" + ChatColor.RESET + "] Invalid wallet type!");
                 return true;
             }
 
             MyPetWalletTrait trait = selectedNPC.getTrait(MyPetWalletTrait.class);
 
-            if (!Economy.canUseEconomy())
-            {
-                if (newWalletType == WalletType.Bank || newWalletType == WalletType.Owner)
-                {
+            if (!Economy.canUseEconomy()) {
+                if (newWalletType == WalletType.Bank || newWalletType == WalletType.Owner) {
                     sender.sendMessage("[" + ChatColor.AQUA + "MyPet-NPC" + ChatColor.RESET + "] You can not use the \"Owner\" and \"Bank\" wallet types without an economy plugin installed!");
                     return true;
                 }
-            }
-            else
-            {
-                if (newWalletType == WalletType.Bank && !Economy.getEconomy().hasBankSupport())
-                {
+            } else {
+                if (newWalletType == WalletType.Bank && !Economy.getEconomy().hasBankSupport()) {
                     sender.sendMessage("[" + ChatColor.AQUA + "MyPet-NPC" + ChatColor.RESET + "] Your economy plugin doesn't has \"Banks\" support!");
                     return true;
                 }
@@ -115,37 +99,27 @@ public class CommandConfig implements CommandExecutor, TabCompleter
 
             trait.setWalletType(newWalletType);
 
-            if (parameter.length >= 2)
-            {
+            if (parameter.length >= 2) {
                 trait.setAccount(parameter[1]);
             }
 
             sender.sendMessage("[" + ChatColor.AQUA + "MyPet-NPC" + ChatColor.RESET + "] wallet trait updated.");
-        }
-        else if (option.equalsIgnoreCase("test"))
-        {
+        } else if (option.equalsIgnoreCase("test")) {
 
         }
         return true;
     }
 
     @Override
-    public List<String> onTabComplete(CommandSender commandSender, Command command, String s, String[] strings)
-    {
-        if (!Permissions.has((Player) commandSender, "MyPet.npc.admin", false))
-        {
+    public List<String> onTabComplete(CommandSender commandSender, Command command, String s, String[] strings) {
+        if (!Permissions.has((Player) commandSender, "MyPet.npc.admin", false)) {
             return emptyList;
         }
-        if (strings.length == 1)
-        {
+        if (strings.length == 1) {
             return optionsList;
-        }
-        else if (strings.length >= 1)
-        {
-            if (strings[0].equalsIgnoreCase("wallet"))
-            {
-                if (strings.length == 2)
-                {
+        } else if (strings.length >= 1) {
+            if (strings[0].equalsIgnoreCase("wallet")) {
+                if (strings.length == 2) {
                     return walletTypeList;
                 }
             }
