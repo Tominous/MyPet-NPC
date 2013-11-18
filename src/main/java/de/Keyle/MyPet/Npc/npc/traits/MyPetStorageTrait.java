@@ -79,7 +79,7 @@ public class MyPetStorageTrait extends Trait {
                 if (!player.isOp()) {
                     for (int i = 1; i <= 27; i++) {
                         if (Permissions.has(player, "MyPet.npc.storage.max." + (55 - i))) {
-                            maxPetCount = i;
+                            maxPetCount = 55 - i;
                             break;
                         }
                         if (Permissions.has(player, "MyPet.npc.storage.max." + i)) {
