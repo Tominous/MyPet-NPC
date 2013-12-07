@@ -15,9 +15,9 @@
 
         <minecraft.version>1.6.4</minecraft.version>
         <bukkit.version>R1.0</bukkit.version>
-        <mypet.build>494</mypet.build>
+        <mypet.build>525</mypet.build>
 
-        <mypet.version>1.1.6-SNAPSHOT</mypet.version>
+        <mypet.version>1.1.7-SNAPSHOT</mypet.version>
         <citizensapi.version>2.0.9-SNAPSHOT</citizensapi.version>
         <vault.version>1.2.26-SNAPSHOT</vault.version>
         <metrics-lite.version>R7</metrics-lite.version>
@@ -186,7 +186,7 @@
                             <relocations>
                                 <relocation>
                                     <pattern>org.mcstats</pattern>
-                                    <shadedPattern>de.Keyle.MyPet.Npc.util</shadedPattern>
+                                    <shadedPattern>de.Keyle.MyPet.Npc.util.metrics</shadedPattern>
                                 </relocation>
                             </relocations>
                         </configuration>

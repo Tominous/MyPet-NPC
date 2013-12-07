@@ -31,8 +31,8 @@ public class MyPetNpcVersion
 {
     private static boolean updated = false;
 
-    private static String myPetNpcVersion = "0.0.0";
-    private static String myPetNpcBuild = "0";
+    private static String version = "0.0.0";
+    private static String build = "0";
     private static String requiredMyPetBuild = "0";
 
     private static void getManifestVersion()
@@ -44,11 +44,11 @@ public class MyPetNpcVersion
 
             if (attr.getValue("Project-Version") != null)
             {
-                myPetNpcVersion = attr.getValue("Project-Version");
+                version = attr.getValue("Project-Version");
             }
             if (attr.getValue("Project-Build") != null)
             {
-                myPetNpcBuild = attr.getValue("Project-Build");
+                build = attr.getValue("Project-Build");
             }
             if (attr.getValue("Required-MyPet-Build") != null)
             {
@@ -75,24 +75,22 @@ public class MyPetNpcVersion
 
     }
 
-    public static String getMyPetNpcVersion()
-    {
+    public static String getVersion() {
         if (!updated)
         {
             getManifestVersion();
             updated = true;
         }
-        return myPetNpcVersion;
+        return version;
     }
 
-    public static String getMyPetNpcBuild()
-    {
+    public static String getBuild() {
         if (!updated)
         {
             getManifestVersion();
             updated = true;
         }
-        return myPetNpcBuild;
+        return build;
     }
 
     public static String getRequiredMyPetBuild()

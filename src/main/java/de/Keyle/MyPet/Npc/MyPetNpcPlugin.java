@@ -39,38 +39,31 @@ import org.mcstats.MetricsLite;
 import java.io.File;
 import java.io.IOException;
 
-public class MyPetNpcPlugin extends JavaPlugin
-{
+public class MyPetNpcPlugin extends JavaPlugin {
     private static MyPetNpcPlugin plugin;
 
-    public void onEnable()
-    {
+    public void onEnable() {
         plugin = this;
 
         DebugLogger.info("----------- loading MyPet-NPC ... -----------", "MyPet-NPC");
 
-        if (!getServer().getPluginManager().isPluginEnabled("MyPet"))
-        {
+        if (!getServer().getPluginManager().isPluginEnabled("MyPet")) {
             MyPetLogger.write(ChatColor.RED + "MyPet plugin isn't enabled. Disable MyPet-NPC.", "MyPet-NPC");
             this.setEnabled(false);
             return;
         }
 
-        if (Integer.parseInt(MyPetVersion.getMyPetBuild()) < Integer.parseInt(MyPetNpcVersion.getRequiredMyPetBuild()))
-        {
+        if (Integer.parseInt(MyPetVersion.getBuild()) < Integer.parseInt(MyPetNpcVersion.getRequiredMyPetBuild())) {
             MyPetLogger.write(ChatColor.RED + "This version of MyPet-NPC requires MyPet build-#" + MyPetNpcVersion.getRequiredMyPetBuild() + " or higher", "MyPet-NPC");
             this.setEnabled(false);
             return;
         }
 
-        try
-        {
+        try {
             MetricsLite metrics = new MetricsLite(this);
             metrics.start();
             DebugLogger.info("MetricsLite activated", "MyPet-NPC");
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             DebugLogger.info("MetricsLite not activated", "MyPet-NPC");
             DebugLogger.info(e.getMessage(), "MyPet-NPC");
         }
@@ -87,12 +80,11 @@ public class MyPetNpcPlugin extends JavaPlugin
 
         getCommand("mypetnpcconfig").setExecutor(new CommandConfig());
 
-        MyPetLogger.write("version " + MyPetNpcVersion.getMyPetNpcVersion() + "-b" + MyPetNpcVersion.getMyPetNpcBuild() + ChatColor.GREEN + " ENABLED", "MyPet-NPC");
+        MyPetLogger.write("version " + MyPetNpcVersion.getVersion() + "-b" + MyPetNpcVersion.getBuild() + ChatColor.GREEN + " ENABLED", "MyPet-NPC");
         DebugLogger.info("----------- MyPet-NPC ready -----------", "MyPet-NPC");
     }
 
-    public static MyPetNpcPlugin getPlugin()
-    {
+    public static MyPetNpcPlugin getPlugin() {
         return plugin;
     }
 }
