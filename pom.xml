@@ -4,10 +4,10 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>de.Keyle</groupId>
-    <artifactId>MyPet-NPC</artifactId>
+    <groupId>de.keyle</groupId>
+    <artifactId>mypet-npc</artifactId>
+    <name>MyPet-NPC</name>
     <version>0.0.2-SNAPSHOT</version>
-
     <url>http://mypet.keyle.de/doku.php?id=en:plugins:npc</url>
 
     <properties>
@@ -76,8 +76,8 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>de.Keyle</groupId>
-            <artifactId>MyPet</artifactId>
+            <groupId>de.keyle</groupId>
+            <artifactId>mypet</artifactId>
             <version>${mypet.version}</version>
             <scope>provided</scope>
         </dependency>
