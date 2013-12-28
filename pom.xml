@@ -153,10 +153,11 @@
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>2.1</version>
                 <configuration>
+                    <jarName>${project.name}-${project.version}</jarName>
                     <archive>
                         <manifestEntries>
                             <Project-Author>Keyle</Project-Author>
-                            <Project-Name>MyPet-NPC</Project-Name>
+                            <Project-Name>${project.name}</Project-Name>
                             <Project-Version>${project.version}</Project-Version>
                             <Project-Build>${BUILD_NUMBER}</Project-Build>
                             <Git-Commit>${GIT_COMMIT}</Git-Commit>
