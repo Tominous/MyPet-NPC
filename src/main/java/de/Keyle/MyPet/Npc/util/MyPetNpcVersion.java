@@ -27,46 +27,35 @@ import java.util.jar.Attributes;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
 
-public class MyPetNpcVersion
-{
+public class MyPetNpcVersion {
     private static boolean updated = false;
 
     private static String version = "0.0.0";
     private static String build = "0";
     private static String requiredMyPetBuild = "0";
 
-    private static void getManifestVersion()
-    {
-        try
-        {
+    private static void getManifestVersion() {
+        try {
             String path = MyPetNpcVersion.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
             Attributes attr = getClassLoaderForExtraModule(path).getMainAttributes();
 
-            if (attr.getValue("Project-Version") != null)
-            {
+            if (attr.getValue("Project-Version") != null) {
                 version = attr.getValue("Project-Version");
             }
-            if (attr.getValue("Project-Build") != null)
-            {
+            if (attr.getValue("Project-Build") != null) {
                 build = attr.getValue("Project-Build");
             }
-            if (attr.getValue("Required-MyPet-Build") != null)
-            {
+            if (attr.getValue("Required-MyPet-Build") != null) {
                 requiredMyPetBuild = attr.getValue("Required-MyPet-Build");
             }
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             e.printStackTrace();
-        }
-        catch (URISyntaxException e)
-        {
+        } catch (URISyntaxException e) {
             e.printStackTrace();
         }
     }
 
-    private static Manifest getClassLoaderForExtraModule(String filepath) throws IOException
-    {
+    private static Manifest getClassLoaderForExtraModule(String filepath) throws IOException {
         File jar = new File(filepath);
         JarFile jf = new JarFile(jar);
         Manifest mf = jf.getManifest();
@@ -76,8 +65,7 @@ public class MyPetNpcVersion
     }
 
     public static String getVersion() {
-        if (!updated)
-        {
+        if (!updated) {
             getManifestVersion();
             updated = true;
         }
@@ -85,26 +73,22 @@ public class MyPetNpcVersion
     }
 
     public static String getBuild() {
-        if (!updated)
-        {
+        if (!updated) {
             getManifestVersion();
             updated = true;
         }
         return build;
     }
 
-    public static String getRequiredMyPetBuild()
-    {
-        if (!updated)
-        {
+    public static String getRequiredMyPetBuild() {
+        if (!updated) {
             getManifestVersion();
             updated = true;
         }
         return requiredMyPetBuild;
     }
 
-    public static void reset()
-    {
+    public static void reset() {
         updated = false;
     }
 }

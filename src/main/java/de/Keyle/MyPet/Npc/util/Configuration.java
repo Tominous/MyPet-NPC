@@ -23,15 +23,13 @@ package de.Keyle.MyPet.Npc.util;
 import de.Keyle.MyPet.util.configuration.ConfigurationYAML;
 import org.bukkit.configuration.file.FileConfiguration;
 
-public class Configuration
-{
+public class Configuration {
     public static ConfigurationYAML yamlConfig;
 
     public static double NPC_STORAGE_COSTS_FIXED = 5;
     public static double NPC_STORAGE_COSTS_FACTOR = 1;
 
-    public static void setDefault()
-    {
+    public static void setDefault() {
         FileConfiguration config = yamlConfig.getConfig();
 
         config.addDefault("Trait.Storage.Costs.Fixed", 5.0);
@@ -41,8 +39,7 @@ public class Configuration
         yamlConfig.saveConfig();
     }
 
-    public static void loadConfiguration()
-    {
+    public static void loadConfiguration() {
         FileConfiguration config = yamlConfig.getConfig();
 
         NPC_STORAGE_COSTS_FIXED = config.getDouble("Trait.Storage.Costs.Fixed", 5.0);

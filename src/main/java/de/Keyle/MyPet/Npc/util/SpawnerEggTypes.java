@@ -22,8 +22,7 @@ package de.Keyle.MyPet.Npc.util;
 
 import de.Keyle.MyPet.entity.types.MyPetType;
 
-public enum SpawnerEggTypes
-{
+public enum SpawnerEggTypes {
     Bat(MyPetType.Bat, 65),
     Blaze(MyPetType.Blaze, 61),
     CaveSpider(MyPetType.CaveSpider, 59),
@@ -57,37 +56,30 @@ public enum SpawnerEggTypes
     short color;
     boolean glowing;
 
-    SpawnerEggTypes(MyPetType type, int color)
-    {
+    SpawnerEggTypes(MyPetType type, int color) {
         this(type, color, false);
     }
 
-    SpawnerEggTypes(MyPetType type, int color, boolean glowing)
-    {
+    SpawnerEggTypes(MyPetType type, int color, boolean glowing) {
         this.type = type;
         this.color = (short) color;
         this.glowing = glowing;
     }
 
-    public static SpawnerEggTypes getEggType(MyPetType type)
-    {
-        for (SpawnerEggTypes eggType : values())
-        {
-            if (eggType.type == type)
-            {
+    public static SpawnerEggTypes getEggType(MyPetType type) {
+        for (SpawnerEggTypes eggType : values()) {
+            if (eggType.type == type) {
                 return eggType;
             }
         }
         return Zombie;
     }
 
-    public short getColor()
-    {
+    public short getColor() {
         return this.color;
     }
 
-    public boolean isGlowing()
-    {
+    public boolean isGlowing() {
         return glowing;
     }
 }
