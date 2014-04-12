@@ -61,8 +61,10 @@ public class MyPetNpcPlugin extends JavaPlugin {
 
         try {
             MetricsLite metrics = new MetricsLite(this);
-            metrics.start();
-            DebugLogger.info("MetricsLite activated", "MyPet-NPC");
+            if (!metrics.isOptOut()) {
+                metrics.start();
+            }
+            DebugLogger.info("MetricsLite " + (!metrics.isOptOut() ? "" : "not ") + "activated", "MyPet-NPC");
         } catch (IOException e) {
             DebugLogger.info("MetricsLite not activated", "MyPet-NPC");
             DebugLogger.info(e.getMessage(), "MyPet-NPC");
