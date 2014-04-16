@@ -26,12 +26,12 @@ import de.Keyle.MyPet.entity.types.InactiveMyPet;
 import de.Keyle.MyPet.entity.types.MyPet;
 import de.Keyle.MyPet.entity.types.MyPetList;
 import de.Keyle.MyPet.util.Colorizer;
-import de.Keyle.MyPet.util.MyPetPlayer;
 import de.Keyle.MyPet.util.Util;
 import de.Keyle.MyPet.util.WorldGroup;
 import de.Keyle.MyPet.util.iconmenu.IconMenu;
 import de.Keyle.MyPet.util.iconmenu.IconMenuItem;
 import de.Keyle.MyPet.util.locale.Locales;
+import de.Keyle.MyPet.util.player.MyPetPlayer;
 import de.Keyle.MyPet.util.support.Economy;
 import de.Keyle.MyPet.util.support.Permissions;
 import net.citizensnpcs.api.event.NPCRightClickEvent;
@@ -65,7 +65,7 @@ public class MyPetStorageTrait extends Trait {
         }
 
         if (MyPetPlayer.isMyPetPlayer(player)) {
-            final MyPetPlayer myPetPlayer = MyPetPlayer.getMyPetPlayer(player);
+            final MyPetPlayer myPetPlayer = MyPetPlayer.getOrCreateMyPetPlayer(player);
             if (myPetPlayer.hasMyPet()) {
                 WorldGroup wg = WorldGroup.getGroupByWorld(myPetPlayer.getPlayer().getWorld().getName());
                 int inactivePetCount = 0;
