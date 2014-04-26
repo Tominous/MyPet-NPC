@@ -32,13 +32,13 @@ import de.Keyle.MyPet.util.locale.Locales;
 import de.Keyle.MyPet.util.player.MyPetPlayer;
 import de.Keyle.MyPet.util.support.Economy;
 import de.Keyle.MyPet.util.support.Permissions;
+import de.keyle.mypet.npc.MyPetNpcPlugin;
 import de.keyle.mypet.npc.util.SpawnerEggTypes;
 import net.citizensnpcs.api.event.NPCRightClickEvent;
 import net.citizensnpcs.api.trait.Trait;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import temp.MyPetNpcPlugin;
 
 import java.util.*;
 

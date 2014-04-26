@@ -18,7 +18,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package temp;
+package de.keyle.mypet.npc;
 
 import de.Keyle.MyPet.MyPetPlugin;
 import de.Keyle.MyPet.util.MyPetVersion;
