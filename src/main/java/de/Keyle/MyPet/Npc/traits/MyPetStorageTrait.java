@@ -18,10 +18,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.Keyle.MyPet.Npc.npc.traits;
+package de.keyle.mypet.npc.traits;
 
-import de.Keyle.MyPet.Npc.MyPetNpcPlugin;
-import de.Keyle.MyPet.Npc.util.SpawnerEggTypes;
 import de.Keyle.MyPet.entity.types.InactiveMyPet;
 import de.Keyle.MyPet.entity.types.MyPet;
 import de.Keyle.MyPet.entity.types.MyPetList;
@@ -34,6 +32,8 @@ import de.Keyle.MyPet.util.locale.Locales;
 import de.Keyle.MyPet.util.player.MyPetPlayer;
 import de.Keyle.MyPet.util.support.Economy;
 import de.Keyle.MyPet.util.support.Permissions;
+import de.keyle.mypet.npc.MyPetNpcPlugin;
+import de.keyle.mypet.npc.util.SpawnerEggTypes;
 import net.citizensnpcs.api.event.NPCRightClickEvent;
 import net.citizensnpcs.api.trait.Trait;
 import org.bukkit.Material;
@@ -42,8 +42,8 @@ import org.bukkit.event.EventHandler;
 
 import java.util.*;
 
-import static de.Keyle.MyPet.Npc.util.Configuration.NPC_STORAGE_COSTS_FACTOR;
-import static de.Keyle.MyPet.Npc.util.Configuration.NPC_STORAGE_COSTS_FIXED;
+import static de.keyle.mypet.npc.util.Configuration.NPC_STORAGE_COSTS_FACTOR;
+import static de.keyle.mypet.npc.util.Configuration.NPC_STORAGE_COSTS_FIXED;
 import static org.bukkit.ChatColor.*;
 
 public class MyPetStorageTrait extends Trait {

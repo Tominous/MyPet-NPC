@@ -1,5 +1,5 @@
 name: MyPet-NPC
-main: de.Keyle.MyPet.Npc.MyPetNpcPlugin
+main: de.keyle.mypet.npc.MyPetNpcPlugin
 version: ${parsedVersion.majorVersion}.${parsedVersion.minorVersion}.${parsedVersion.incrementalVersion}
 author: Keyle
 website: ${project.url}

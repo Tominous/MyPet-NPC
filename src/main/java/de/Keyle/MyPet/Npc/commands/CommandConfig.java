@@ -18,13 +18,13 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.Keyle.MyPet.Npc.commands;
+package de.keyle.mypet.npc.commands;
 
-import de.Keyle.MyPet.Npc.npc.traits.MyPetWalletTrait;
-import de.Keyle.MyPet.Npc.npc.traits.MyPetWalletTrait.WalletType;
 import de.Keyle.MyPet.util.BukkitUtil;
 import de.Keyle.MyPet.util.support.Economy;
 import de.Keyle.MyPet.util.support.Permissions;
+import de.keyle.mypet.npc.traits.MyPetWalletTrait;
+import de.keyle.mypet.npc.traits.MyPetWalletTrait.WalletType;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.ChatColor;

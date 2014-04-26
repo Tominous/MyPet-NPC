@@ -187,7 +187,7 @@
                             <relocations>
                                 <relocation>
                                     <pattern>org.mcstats</pattern>
-                                    <shadedPattern>de.Keyle.MyPet.Npc.util.metrics</shadedPattern>
+                                    <shadedPattern>de.keyle.mypet.npc.util.metrics</shadedPattern>
                                 </relocation>
                             </relocations>
                         </configuration>

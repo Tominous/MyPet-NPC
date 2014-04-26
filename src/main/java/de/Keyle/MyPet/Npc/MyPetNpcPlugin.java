@@ -18,18 +18,18 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.Keyle.MyPet.Npc;
+package de.keyle.mypet.npc;
 
 import de.Keyle.MyPet.MyPetPlugin;
-import de.Keyle.MyPet.Npc.commands.CommandConfig;
-import de.Keyle.MyPet.Npc.npc.traits.MyPetStorageTrait;
-import de.Keyle.MyPet.Npc.npc.traits.MyPetWalletTrait;
-import de.Keyle.MyPet.Npc.util.Configuration;
-import de.Keyle.MyPet.Npc.util.MyPetNpcVersion;
 import de.Keyle.MyPet.util.MyPetVersion;
 import de.Keyle.MyPet.util.configuration.ConfigurationYAML;
 import de.Keyle.MyPet.util.logger.DebugLogger;
 import de.Keyle.MyPet.util.logger.MyPetLogger;
+import de.keyle.mypet.npc.commands.CommandConfig;
+import de.keyle.mypet.npc.traits.MyPetStorageTrait;
+import de.keyle.mypet.npc.traits.MyPetWalletTrait;
+import de.keyle.mypet.npc.util.Configuration;
+import de.keyle.mypet.npc.util.MyPetNpcVersion;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.trait.TraitInfo;
 import org.bukkit.ChatColor;
