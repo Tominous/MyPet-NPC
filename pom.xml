@@ -7,7 +7,7 @@
     <groupId>de.keyle</groupId>
     <artifactId>mypet-npc</artifactId>
     <name>MyPet-NPC</name>
-    <version>0.0.3-SNAPSHOT</version>
+    <version>0.0.3</version>
     <url>http://mypet.keyle.de/doku.php?id=en:plugins:npc</url>
 
     <properties>
