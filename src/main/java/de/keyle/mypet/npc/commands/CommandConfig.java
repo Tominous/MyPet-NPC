@@ -21,8 +21,8 @@
 package de.keyle.mypet.npc.commands;
 
 import de.Keyle.MyPet.util.BukkitUtil;
-import de.Keyle.MyPet.util.support.Economy;
-import de.Keyle.MyPet.util.support.Permissions;
+import de.Keyle.MyPet.util.hooks.Economy;
+import de.Keyle.MyPet.util.hooks.Permissions;
 import de.keyle.mypet.npc.traits.MyPetWalletTrait;
 import de.keyle.mypet.npc.traits.MyPetWalletTrait.WalletType;
 import net.citizensnpcs.api.CitizensAPI;
