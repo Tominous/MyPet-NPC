@@ -13,11 +13,11 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <minecraft.version>1.8</minecraft.version>
+        <minecraft.version>1.8.6</minecraft.version>
         <bukkit.version>R0.1-SNAPSHOT</bukkit.version>
         <mypet.build>660</mypet.build>
 
-        <mypet.version>1.2.1-SNAPSHOT</mypet.version>
+        <mypet.version>1.2.2-SNAPSHOT</mypet.version>
         <citizensapi.version>2.0.14-SNAPSHOT</citizensapi.version>
         <vault.version>1.4</vault.version>
         <metrics-lite.version>R7</metrics-lite.version>

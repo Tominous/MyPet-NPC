@@ -32,6 +32,7 @@ import de.keyle.mypet.npc.util.Configuration;
 import de.keyle.mypet.npc.util.MyPetNpcVersion;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.trait.TraitInfo;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.mcstats.MetricsLite;
@@ -44,6 +45,12 @@ public class MyPetNpcPlugin extends JavaPlugin {
 
     public void onEnable() {
         plugin = this;
+
+        if (!Bukkit.getPluginManager().isPluginEnabled("MyPet")) {
+            getLogger().info("MyPet is not installed/enabled, disabling MyPet-NPC");
+            Bukkit.getPluginManager().disablePlugin(this);
+            return;
+        }
 
         DebugLogger.info("----------- loading MyPet-NPC ... -----------", "MyPet-NPC");
 
