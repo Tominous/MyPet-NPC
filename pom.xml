@@ -13,11 +13,11 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <minecraft.version>1.8.6</minecraft.version>
+        <minecraft.version>1.8.8</minecraft.version>
         <bukkit.version>R0.1-SNAPSHOT</bukkit.version>
-        <mypet.build>660</mypet.build>
+        <mypet.build>729</mypet.build>
 
-        <mypet.version>1.2.2-SNAPSHOT</mypet.version>
+        <mypet.version>1.2.3-SNAPSHOT</mypet.version>
         <citizensapi.version>2.0.14-SNAPSHOT</citizensapi.version>
         <vault.version>1.4</vault.version>
         <metrics-lite.version>R7</metrics-lite.version>
@@ -41,7 +41,7 @@
         </repository>
         <repository>
             <id>citizens-repo</id>
-            <url>http://repo.citizensnpcs.co</url>
+            <url>http://repo.citizensnpcs.co/</url>
         </repository>
         <repository>
             <id>vault-repo</id>
@@ -52,21 +52,24 @@
     <dependencies>
         <dependency>
             <groupId>org.bukkit</groupId>
-            <artifactId>bukkit</artifactId>
+            <artifactId>craftbukkit</artifactId>
             <version>${minecraft.version}-${bukkit.version}</version>
             <scope>provided</scope>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>org.mcstats.bukkit</groupId>
             <artifactId>metrics-lite</artifactId>
             <version>${metrics-lite.version}</version>
             <scope>compile</scope>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>net.citizensnpcs</groupId>
             <artifactId>citizensapi</artifactId>
             <version>${citizensapi.version}</version>
             <scope>provided</scope>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>net.milkbowl.vault</groupId>
@@ -74,12 +77,20 @@
             <version>${vault.version}</version>
             <type>jar</type>
             <scope>provided</scope>
+            <optional>true</optional>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.bukkit</groupId>
+                    <artifactId>bukkit</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>de.keyle</groupId>
             <artifactId>mypet</artifactId>
             <version>${mypet.version}</version>
             <scope>provided</scope>
+            <optional>true</optional>
         </dependency>
     </dependencies>
 
@@ -142,16 +153,16 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.0.2</version>
+                <version>3.3</version>
                 <configuration>
-                    <source>1.6</source>
-                    <target>1.6</target>
+                    <source>1.7</source>
+                    <target>1.7</target>
                 </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
-                <version>2.1</version>
+                <version>2.6</version>
                 <configuration>
                     <jarName>${project.name}-${project.version}</jarName>
                     <archive>
@@ -170,7 +181,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>2.0</version>
+                <version>2.4.2</version>
                 <executions>
                     <execution>
                         <phase>package</phase>

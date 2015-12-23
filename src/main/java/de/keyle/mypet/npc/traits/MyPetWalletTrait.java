@@ -37,7 +37,7 @@ public class MyPetWalletTrait extends Trait {
     @Persist
     public String accountName = "";
 
-    public static enum WalletType {
+    public enum WalletType {
         Private, Owner, Bank, None;
 
         public static WalletType getByName(String name) {
