@@ -35,6 +35,7 @@ import de.Keyle.MyPet.util.iconmenu.IconMenuItem;
 import de.Keyle.MyPet.util.locale.Locales;
 import de.Keyle.MyPet.util.player.MyPetPlayer;
 import de.keyle.mypet.npc.MyPetNpcPlugin;
+import de.keyle.mypet.npc.util.Configuration;
 import de.keyle.mypet.npc.util.SpawnerEggTypes;
 import net.citizensnpcs.api.event.NPCRightClickEvent;
 import net.citizensnpcs.api.npc.NPC;
@@ -45,8 +46,6 @@ import org.bukkit.event.EventHandler;
 
 import java.util.*;
 
-import static de.keyle.mypet.npc.util.Configuration.NPC_STORAGE_COSTS_FACTOR;
-import static de.keyle.mypet.npc.util.Configuration.NPC_STORAGE_COSTS_FIXED;
 import static org.bukkit.ChatColor.*;
 
 public class MyPetStorageTrait extends Trait {
@@ -230,6 +229,6 @@ public class MyPetStorageTrait extends Trait {
     }
 
     public double calculateStorageCosts(MyPet myPet) {
-        return NPC_STORAGE_COSTS_FIXED + (myPet.getExperience().getLevel() * NPC_STORAGE_COSTS_FACTOR);
+        return Configuration.NPC_STORAGE_COSTS_FIXED + (myPet.getExperience().getLevel() * Configuration.NPC_STORAGE_COSTS_FACTOR);
     }
 }
