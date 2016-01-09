@@ -15,7 +15,7 @@
 
         <minecraft.version>1.8.8</minecraft.version>
         <bukkit.version>R0.1-SNAPSHOT</bukkit.version>
-        <mypet.build>729</mypet.build>
+        <mypet.build>740</mypet.build>
 
         <mypet.version>1.2.3-SNAPSHOT</mypet.version>
         <citizensapi.version>2.0.14-SNAPSHOT</citizensapi.version>
