@@ -203,7 +203,7 @@ public class MyPetStorageTrait extends Trait {
                                     continue;
                                 }
 
-                                List<String> lore = new ArrayList<String>();
+                                List<String> lore = new ArrayList<>();
                                 lore.add(RESET + Translation.getString("Name.Hunger", myPetPlayer) + ": " + GOLD + mypet.getHungerValue());
                                 if (mypet.getRespawnTime() > 0) {
                                     lore.add(RESET + Translation.getString("Name.Respawntime", myPetPlayer) + ": " + GOLD + mypet.getRespawnTime() + "sec");

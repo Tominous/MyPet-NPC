@@ -52,9 +52,7 @@ public class MyPetNpcVersion {
             if (attr.getValue("Required-MyPet-Premium-Build") != null) {
                 requiredMyPetPremiumBuild = attr.getValue("Required-MyPet-Premium-Build");
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (URISyntaxException e) {
+        } catch (IOException | URISyntaxException e) {
             e.printStackTrace();
         }
     }

@@ -39,9 +39,9 @@ import java.util.Arrays;
 import java.util.List;
 
 public class CommandConfig implements CommandExecutor, TabCompleter {
-    private static List<String> optionsList = new ArrayList<String>();
-    private static List<String> walletTypeList = new ArrayList<String>();
-    private static List<String> emptyList = new ArrayList<String>();
+    private static List<String> optionsList = new ArrayList<>();
+    private static List<String> walletTypeList = new ArrayList<>();
+    private static List<String> emptyList = new ArrayList<>();
 
     static {
         optionsList.add("wallet");
