@@ -46,6 +46,8 @@ public class MyPetNpcPlugin extends JavaPlugin {
     public void onEnable() {
         plugin = this;
 
+        MyPetNpcVersion.reset();
+
         if (!Bukkit.getPluginManager().isPluginEnabled("MyPet")) {
             getLogger().info("MyPet is not installed/enabled, disabling MyPet-NPC");
             Bukkit.getPluginManager().disablePlugin(this);
