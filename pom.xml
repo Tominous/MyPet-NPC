@@ -16,6 +16,7 @@
         <minecraft.version>1.8.8</minecraft.version>
         <bukkit.version>R0.1-SNAPSHOT</bukkit.version>
         <mypet.build>740</mypet.build>
+        <mypet-premium.build>13</mypet-premium.build>
 
         <mypet.version>1.2.3-SNAPSHOT</mypet.version>
         <citizensapi.version>2.0.14-SNAPSHOT</citizensapi.version>
@@ -173,6 +174,7 @@
                             <Project-Build>${BUILD_NUMBER}</Project-Build>
                             <Git-Commit>${GIT_COMMIT}</Git-Commit>
                             <Required-MyPet-Build>${mypet.build}</Required-MyPet-Build>
+                            <Required-MyPet-Premium-Build>${mypet-premium.build}</Required-MyPet-Premium-Build>
                             <Compiled-Against-MyPet-Version>${mypet.version}</Compiled-Against-MyPet-Version>
                         </manifestEntries>
                     </archive>

@@ -33,6 +33,7 @@ public class MyPetNpcVersion {
     private static String version = "0.0.0";
     private static String build = "0";
     private static String requiredMyPetBuild = "0";
+    private static String requiredMyPetPremiumBuild = "0";
 
     private static void getManifestVersion() {
         try {
@@ -47,6 +48,9 @@ public class MyPetNpcVersion {
             }
             if (attr.getValue("Required-MyPet-Build") != null) {
                 requiredMyPetBuild = attr.getValue("Required-MyPet-Build");
+            }
+            if (attr.getValue("Required-MyPet-Premium-Build") != null) {
+                requiredMyPetPremiumBuild = attr.getValue("Required-MyPet-Premium-Build");
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -86,6 +90,14 @@ public class MyPetNpcVersion {
             updated = true;
         }
         return requiredMyPetBuild;
+    }
+
+    public static String getRequiredMyPetPremiumBuild() {
+        if (!updated) {
+            getManifestVersion();
+            updated = true;
+        }
+        return requiredMyPetPremiumBuild;
     }
 
     public static void reset() {
