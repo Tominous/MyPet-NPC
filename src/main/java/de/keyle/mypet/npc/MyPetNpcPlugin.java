@@ -72,12 +72,14 @@ public class MyPetNpcPlugin extends JavaPlugin {
             if (premium) {
                 if (Integer.parseInt(MyPetVersion.getBuild()) < Integer.parseInt(MyPetNpcVersion.getRequiredMyPetPremiumBuild())) {
                     MyPetLogger.write(ChatColor.RED + "This version of MyPet-NPC requires MyPet-Premium build-#" + MyPetNpcVersion.getRequiredMyPetPremiumBuild() + " or higher", "MyPet-NPC");
+                    this.setEnabled(false);
+                    return;
                 }
             } else {
                 MyPetLogger.write(ChatColor.RED + "This version of MyPet-NPC requires MyPet build-#" + MyPetNpcVersion.getRequiredMyPetBuild() + " or higher", "MyPet-NPC");
                 this.setEnabled(false);
+                return;
             }
-            return;
         }
 
         try {
