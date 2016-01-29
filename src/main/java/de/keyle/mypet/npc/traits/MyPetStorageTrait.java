@@ -20,11 +20,12 @@
 
 package de.keyle.mypet.npc.traits;
 
+import de.Keyle.MyPet.api.player.MyPetPlayer;
+import de.Keyle.MyPet.api.repository.RepositoryCallback;
 import de.Keyle.MyPet.entity.types.InactiveMyPet;
 import de.Keyle.MyPet.entity.types.MyPet;
 import de.Keyle.MyPet.repository.MyPetList;
 import de.Keyle.MyPet.repository.PlayerList;
-import de.Keyle.MyPet.repository.RepositoryCallback;
 import de.Keyle.MyPet.util.Colorizer;
 import de.Keyle.MyPet.util.Util;
 import de.Keyle.MyPet.util.WorldGroup;
@@ -33,7 +34,6 @@ import de.Keyle.MyPet.util.hooks.Permissions;
 import de.Keyle.MyPet.util.iconmenu.IconMenu;
 import de.Keyle.MyPet.util.iconmenu.IconMenuItem;
 import de.Keyle.MyPet.util.locale.Translation;
-import de.Keyle.MyPet.util.player.MyPetPlayer;
 import de.keyle.mypet.npc.MyPetNpcPlugin;
 import de.keyle.mypet.npc.util.Configuration;
 import de.keyle.mypet.npc.util.SpawnerEggTypes;
