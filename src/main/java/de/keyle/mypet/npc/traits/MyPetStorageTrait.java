@@ -26,7 +26,6 @@ import de.Keyle.MyPet.entity.types.InactiveMyPet;
 import de.Keyle.MyPet.entity.types.MyPet;
 import de.Keyle.MyPet.repository.MyPetList;
 import de.Keyle.MyPet.repository.PlayerList;
-import de.Keyle.MyPet.util.Colorizer;
 import de.Keyle.MyPet.util.Util;
 import de.Keyle.MyPet.util.WorldGroup;
 import de.Keyle.MyPet.util.hooks.Economy;
@@ -34,9 +33,9 @@ import de.Keyle.MyPet.util.hooks.Permissions;
 import de.Keyle.MyPet.util.iconmenu.IconMenu;
 import de.Keyle.MyPet.util.iconmenu.IconMenuItem;
 import de.Keyle.MyPet.util.locale.Translation;
+import de.Keyle.MyPet.util.selectionmenu.MyPetSelectionGui;
 import de.keyle.mypet.npc.MyPetNpcPlugin;
 import de.keyle.mypet.npc.util.Configuration;
-import de.keyle.mypet.npc.util.SpawnerEggTypes;
 import net.citizensnpcs.api.event.NPCRightClickEvent;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.trait.Trait;
@@ -44,7 +43,8 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 
-import java.util.*;
+import java.util.List;
+import java.util.UUID;
 
 import static org.bukkit.ChatColor.*;
 
@@ -155,73 +155,34 @@ public class MyPetStorageTrait extends Trait {
                     }
                 });
             } else {
-                MyPetList.getInactiveMyPets(myPetPlayer, new RepositoryCallback<List<InactiveMyPet>>() {
+                MyPetSelectionGui gui = new MyPetSelectionGui(myPetPlayer, Translation.getString("Message.Npc.TakeTitle", myPetPlayer));
+                gui.open(new RepositoryCallback<InactiveMyPet>() {
                     @Override
-                    public void callback(List<InactiveMyPet> pets) {
-                        if (pets.size() > 0) {
-                            final Map<Integer, InactiveMyPet> petSlotList = new HashMap<>();
-                            IconMenu menu = new IconMenu(Translation.getString("Message.Npc.TakeTitle", myPetPlayer), 54, new IconMenu.OptionClickEventHandler() {
-                                @Override
-                                public void onOptionClick(IconMenu.OptionClickEvent event) {
-                                    if (petSlotList.containsKey(event.getPosition())) {
-                                        InactiveMyPet myPet = petSlotList.get(event.getPosition());
-                                        if (myPet != null) {
-                                            MyPet activePet = MyPetList.activateMyPet(myPet);
-                                            if (activePet != null) {
-                                                event.getPlayer().sendMessage(Util.formatText(Translation.getString("Message.Npc.ChosenPet", myPetPlayer), activePet.getPetName()));
-                                                WorldGroup wg = WorldGroup.getGroupByWorld(event.getPlayer().getWorld().getName());
-                                                myPetPlayer.setMyPetForWorldGroup(wg.getName(), activePet.getUUID());
+                    public void callback(InactiveMyPet myPet) {
+                        MyPet activePet = MyPetList.activateMyPet(myPet);
+                        if (activePet != null) {
+                            Player player = myPetPlayer.getPlayer();
+                            activePet.sendMessageToOwner(Util.formatText(Translation.getString("Message.Npc.ChosenPet", myPetPlayer), activePet.getPetName()));
+                            WorldGroup wg = WorldGroup.getGroupByWorld(player.getWorld().getName());
+                            myPetPlayer.setMyPetForWorldGroup(wg.getName(), activePet.getUUID());
 
-                                                switch (activePet.createPet()) {
-                                                    case Canceled:
-                                                        event.getPlayer().sendMessage(Util.formatText(Translation.getString("Message.Spawn.Prevent", myPetPlayer), activePet.getPetName()));
-                                                        break;
-                                                    case NoSpace:
-                                                        event.getPlayer().sendMessage(Util.formatText(Translation.getString("Message.Spawn.NoSpace", myPetPlayer), activePet.getPetName()));
-                                                        break;
-                                                    case NotAllowed:
-                                                        event.getPlayer().sendMessage(Colorizer.setColors(Translation.getString("Message.No.AllowedHere", myPetPlayer)).replace("%petname%", activePet.getPetName()));
-                                                        break;
-                                                    case Dead:
-                                                        event.getPlayer().sendMessage(Colorizer.setColors(Translation.getString("Message.Spawn.Respawn.In", myPetPlayer)).replace("%petname%", activePet.getPetName()).replace("%time%", "" + activePet.getRespawnTime()));
-                                                        break;
-                                                }
-                                            }
-                                        }
-                                    }
-                                    event.setWillClose(true);
-                                    event.setWillDestroy(true);
-                                }
-                            }, MyPetNpcPlugin.getPlugin());
-
-                            WorldGroup wg = WorldGroup.getGroupByWorld(myPetPlayer.getPlayer().getWorld().getName());
-                            for (int i = 0; i < pets.size() && i < 54; i++) {
-                                InactiveMyPet mypet = pets.get(i);
-                                SpawnerEggTypes egg = SpawnerEggTypes.getEggType(mypet.getPetType());
-
-                                if (!mypet.getWorldGroup().equals("") && !mypet.getWorldGroup().equals(wg.getName())) {
-                                    continue;
-                                }
-
-                                List<String> lore = new ArrayList<>();
-                                lore.add(RESET + Translation.getString("Name.Hunger", myPetPlayer) + ": " + GOLD + mypet.getHungerValue());
-                                if (mypet.getRespawnTime() > 0) {
-                                    lore.add(RESET + Translation.getString("Name.Respawntime", myPetPlayer) + ": " + GOLD + mypet.getRespawnTime() + "sec");
-                                } else {
-                                    lore.add(RESET + Translation.getString("Name.HP", myPetPlayer) + ": " + GOLD + String.format("%1.2f", mypet.getHealth()));
-                                }
-                                lore.add(RESET + Translation.getString("Name.Exp", myPetPlayer) + ": " + GOLD + String.format("%1.2f", mypet.getExp()));
-                                lore.add(RESET + Translation.getString("Name.Type", myPetPlayer) + ": " + GOLD + mypet.getPetType().getTypeName());
-                                lore.add(RESET + Translation.getString("Name.Skilltree", myPetPlayer) + ": " + GOLD + (mypet.getSkillTree() != null ? mypet.getSkillTree().getDisplayName() : "-"));
-                                int pos = menu.addOption(new IconMenuItem().setMaterial(Material.MONSTER_EGG).setData(egg.getColor()).setTitle(RESET + mypet.getPetName()).addLore(lore).setGlowing(egg.isGlowing()));
-                                petSlotList.put(pos, mypet);
+                            switch (activePet.createPet()) {
+                                case Canceled:
+                                    activePet.sendMessageToOwner(Util.formatText(Translation.getString("Message.Spawn.Prevent", myPetPlayer), activePet.getPetName()));
+                                    break;
+                                case NoSpace:
+                                    activePet.sendMessageToOwner(Util.formatText(Translation.getString("Message.Spawn.NoSpace", myPetPlayer), activePet.getPetName()));
+                                    break;
+                                case NotAllowed:
+                                    activePet.sendMessageToOwner(Translation.getString("Message.No.AllowedHere", myPetPlayer).replace("%petname%", activePet.getPetName()));
+                                    break;
+                                case Dead:
+                                    activePet.sendMessageToOwner(Translation.getString("Message.Spawn.Respawn.In", myPetPlayer).replace("%petname%", activePet.getPetName()).replace("%time%", "" + activePet.getRespawnTime()));
+                                    break;
                             }
-
-                            menu.open(player);
                         }
                     }
                 });
-
             }
             return;
         }
