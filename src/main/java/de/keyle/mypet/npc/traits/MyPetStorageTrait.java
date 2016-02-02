@@ -127,12 +127,14 @@ public class MyPetStorageTrait extends Trait {
                                     }
 
                                     if (store) {
-                                        // remove pet from world groups
-                                        String wg = myPetPlayer.getWorldGroupForMyPet(myPetPlayer.getMyPet().getUUID());
-                                        myPetPlayer.setMyPetForWorldGroup(wg, null);
+                                        MyPet myPet = myPetPlayer.getMyPet();
+                                        if (MyPetList.deactivateMyPet(myPetPlayer)) {
+                                            // remove pet from world groups
+                                            String wg = myPetPlayer.getWorldGroupForMyPet(myPet.getUUID());
+                                            myPetPlayer.setMyPetForWorldGroup(wg, null);
 
-                                        player.sendMessage(Util.formatText(Translation.getString("Message.Npc.HandOver", myPetPlayer), myPetPlayer.getMyPet().getPetName(), npcEvent.getNPC().getName()));
-                                        MyPetList.deactivateMyPet(myPetPlayer);
+                                            player.sendMessage(Util.formatText(Translation.getString("Message.Npc.HandOver", myPetPlayer), myPet.getPetName(), npcEvent.getNPC().getName()));
+                                        }
                                     }
                                 }
                                 event.setWillClose(true);
