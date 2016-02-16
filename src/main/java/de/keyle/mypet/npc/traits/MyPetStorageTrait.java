@@ -124,7 +124,7 @@ public class MyPetStorageTrait extends Trait {
 
                                     if (store) {
                                         MyPet myPet = myPetPlayer.getMyPet();
-                                        if (MyPetList.deactivateMyPet(myPetPlayer)) {
+                                        if (MyPetList.deactivateMyPet(myPetPlayer, true)) {
                                             // remove pet from world groups
                                             String wg = myPetPlayer.getWorldGroupForMyPet(myPet.getUUID());
                                             myPetPlayer.setMyPetForWorldGroup(wg, null);
