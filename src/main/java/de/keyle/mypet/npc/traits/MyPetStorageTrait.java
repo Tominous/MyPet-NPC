@@ -20,6 +20,7 @@
 
 package de.keyle.mypet.npc.traits;
 
+import de.Keyle.MyPet.MyPetPlugin;
 import de.Keyle.MyPet.api.player.MyPetPlayer;
 import de.Keyle.MyPet.api.repository.RepositoryCallback;
 import de.Keyle.MyPet.entity.types.InactiveMyPet;
@@ -128,6 +129,7 @@ public class MyPetStorageTrait extends Trait {
                                             // remove pet from world groups
                                             String wg = myPetPlayer.getWorldGroupForMyPet(myPet.getUUID());
                                             myPetPlayer.setMyPetForWorldGroup(wg, null);
+                                            MyPetPlugin.getPlugin().getRepository().updateMyPetPlayer(myPetPlayer, null);
 
                                             player.sendMessage(Util.formatText(Translation.getString("Message.Npc.HandOver", myPetPlayer), myPet.getPetName(), npcEvent.getNPC().getName()));
                                         }
@@ -163,6 +165,7 @@ public class MyPetStorageTrait extends Trait {
                             activePet.sendMessageToOwner(Util.formatText(Translation.getString("Message.Npc.ChosenPet", myPetPlayer), activePet.getPetName()));
                             WorldGroup wg = WorldGroup.getGroupByWorld(player.getWorld().getName());
                             myPetPlayer.setMyPetForWorldGroup(wg.getName(), activePet.getUUID());
+                            MyPetPlugin.getPlugin().getRepository().updateMyPetPlayer(myPetPlayer, null);
 
                             switch (activePet.createPet()) {
                                 case Canceled:
