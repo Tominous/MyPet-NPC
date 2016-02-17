@@ -7,7 +7,7 @@
     <groupId>de.keyle</groupId>
     <artifactId>mypet-npc</artifactId>
     <name>MyPet-NPC</name>
-    <version>1.0.4-SNAPSHOT</version>
+    <version>1.0.4</version>
     <url>http://mypet.keyle.de/doku.php?id=en:plugins:npc</url>
 
     <properties>
@@ -15,10 +15,10 @@
 
         <minecraft.version>1.8.8</minecraft.version>
         <bukkit.version>R0.1-SNAPSHOT</bukkit.version>
-        <mypet.build>818</mypet.build>
-        <mypet-premium.build>103</mypet-premium.build>
+        <mypet.build>823</mypet.build>
+        <mypet-premium.build>110</mypet-premium.build>
 
-        <mypet.version>1.3.0-SNAPSHOT</mypet.version>
+        <mypet.version>1.3.0</mypet.version>
         <citizensapi.version>2.0.14-SNAPSHOT</citizensapi.version>
         <vault.version>1.4</vault.version>
         <metrics-lite.version>R7</metrics-lite.version>
