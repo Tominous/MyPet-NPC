@@ -155,32 +155,41 @@ public class MyPetStorageTrait extends Trait {
                     }
                 });
             } else {
-                MyPetSelectionGui gui = new MyPetSelectionGui(myPetPlayer, Translation.getString("Message.Npc.TakeTitle", myPetPlayer));
-                gui.open(new RepositoryCallback<InactiveMyPet>() {
+                final MyPetSelectionGui gui = new MyPetSelectionGui(myPetPlayer, Translation.getString("Message.Npc.TakeTitle", myPetPlayer));
+                MyPetPlugin.getPlugin().getRepository().getMyPets(myPetPlayer, new RepositoryCallback<List<InactiveMyPet>>() {
                     @Override
-                    public void callback(InactiveMyPet myPet) {
-                        MyPet activePet = MyPetList.activateMyPet(myPet);
-                        if (activePet != null) {
-                            Player player = myPetPlayer.getPlayer();
-                            activePet.sendMessageToOwner(Util.formatText(Translation.getString("Message.Npc.ChosenPet", myPetPlayer), activePet.getPetName()));
-                            WorldGroup wg = WorldGroup.getGroupByWorld(player.getWorld().getName());
-                            myPetPlayer.setMyPetForWorldGroup(wg.getName(), activePet.getUUID());
-                            MyPetPlugin.getPlugin().getRepository().updateMyPetPlayer(myPetPlayer, null);
+                    public void callback(List<InactiveMyPet> pets) {
+                        if (pets.size() > 0) {
+                            gui.open(pets, new RepositoryCallback<InactiveMyPet>() {
+                                @Override
+                                public void callback(InactiveMyPet inactiveMyPet) {
+                                    MyPet myPet = MyPetList.activateMyPet(inactiveMyPet);
+                                    if (myPet != null) {
+                                        Player player = myPetPlayer.getPlayer();
+                                        myPet.sendMessageToOwner(Util.formatText(Translation.getString("Message.Npc.ChosenPet", myPetPlayer), myPet.getPetName()));
+                                        WorldGroup wg = WorldGroup.getGroupByWorld(player.getWorld().getName());
+                                        myPetPlayer.setMyPetForWorldGroup(wg.getName(), myPet.getUUID());
+                                        MyPetPlugin.getPlugin().getRepository().updateMyPetPlayer(myPetPlayer, null);
 
-                            switch (activePet.createPet()) {
-                                case Canceled:
-                                    activePet.sendMessageToOwner(Util.formatText(Translation.getString("Message.Spawn.Prevent", myPetPlayer), activePet.getPetName()));
-                                    break;
-                                case NoSpace:
-                                    activePet.sendMessageToOwner(Util.formatText(Translation.getString("Message.Spawn.NoSpace", myPetPlayer), activePet.getPetName()));
-                                    break;
-                                case NotAllowed:
-                                    activePet.sendMessageToOwner(Translation.getString("Message.No.AllowedHere", myPetPlayer).replace("%petname%", activePet.getPetName()));
-                                    break;
-                                case Dead:
-                                    activePet.sendMessageToOwner(Translation.getString("Message.Spawn.Respawn.In", myPetPlayer).replace("%petname%", activePet.getPetName()).replace("%time%", "" + activePet.getRespawnTime()));
-                                    break;
-                            }
+                                        switch (myPet.createPet()) {
+                                            case Canceled:
+                                                myPet.sendMessageToOwner(Util.formatText(Translation.getString("Message.Spawn.Prevent", myPetPlayer), myPet.getPetName()));
+                                                break;
+                                            case NoSpace:
+                                                myPet.sendMessageToOwner(Util.formatText(Translation.getString("Message.Spawn.NoSpace", myPetPlayer), myPet.getPetName()));
+                                                break;
+                                            case NotAllowed:
+                                                myPet.sendMessageToOwner(Translation.getString("Message.No.AllowedHere", myPetPlayer).replace("%petname%", myPet.getPetName()));
+                                                break;
+                                            case Dead:
+                                                myPet.sendMessageToOwner(Translation.getString("Message.Spawn.Respawn.In", myPetPlayer).replace("%petname%", myPet.getPetName()).replace("%time%", "" + myPet.getRespawnTime()));
+                                                break;
+                                        }
+                                    }
+                                }
+                            });
+                        } else {
+                            myPetPlayer.sendMessage(Translation.getString("Message.No.HasPet", myPetPlayer));
                         }
                     }
                 });
