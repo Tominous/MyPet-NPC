@@ -20,11 +20,11 @@
 
 package de.keyle.mypet.npc.commands;
 
-import de.Keyle.MyPet.util.BukkitUtil;
-import de.Keyle.MyPet.util.hooks.EconomyHook;
-import de.Keyle.MyPet.util.hooks.Permissions;
-import de.keyle.mypet.npc.traits.MyPetWalletTrait;
-import de.keyle.mypet.npc.traits.MyPetWalletTrait.WalletType;
+import de.Keyle.MyPet.MyPetApi;
+import de.Keyle.MyPet.api.player.Permissions;
+import de.Keyle.MyPet.api.util.hooks.EconomyHook;
+import de.keyle.mypet.npc.traits.WalletTrait;
+import de.keyle.mypet.npc.traits.WalletTrait.WalletType;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.ChatColor;
@@ -57,7 +57,7 @@ public class CommandConfig implements CommandExecutor, TabCompleter {
             if (!Permissions.has((Player) sender, "MyPet.npc.admin", false)) {
                 return true;
             }
-            lang = BukkitUtil.getPlayerLanguage((Player) sender);
+            lang = MyPetApi.getBukkitHelper().getPlayerLanguage((Player) sender);
         }
         if (args.length < 1) {
             return false;
@@ -72,7 +72,7 @@ public class CommandConfig implements CommandExecutor, TabCompleter {
                 return true;
             }
 
-            if (!selectedNPC.hasTrait(MyPetWalletTrait.class)) {
+            if (!selectedNPC.hasTrait(WalletTrait.class)) {
                 sender.sendMessage("[" + ChatColor.AQUA + "MyPet-NPC" + ChatColor.RESET + "] This NPC doesn't has the " + ChatColor.GOLD + "mypet-wallet" + ChatColor.RESET + " trait!");
                 return true;
             }
@@ -83,7 +83,7 @@ public class CommandConfig implements CommandExecutor, TabCompleter {
                 return true;
             }
 
-            MyPetWalletTrait trait = selectedNPC.getTrait(MyPetWalletTrait.class);
+            WalletTrait trait = selectedNPC.getTrait(WalletTrait.class);
 
             if (!EconomyHook.canUseEconomy()) {
                 if (newWalletType == WalletType.Bank || newWalletType == WalletType.Owner) {

@@ -15,10 +15,10 @@
 
         <minecraft.version>1.8.8</minecraft.version>
         <bukkit.version>R0.1-SNAPSHOT</bukkit.version>
-        <mypet.build>823</mypet.build>
-        <mypet-premium.build>110</mypet-premium.build>
+        <mypet.build>833</mypet.build>
+        <mypet-premium.build>125</mypet-premium.build>
 
-        <mypet.version>1.3.0</mypet.version>
+        <mypet.version>1.3.2-SNAPSHOT</mypet.version>
         <citizensapi.version>2.0.14-SNAPSHOT</citizensapi.version>
         <vault.version>1.4</vault.version>
         <metrics-lite.version>R7</metrics-lite.version>

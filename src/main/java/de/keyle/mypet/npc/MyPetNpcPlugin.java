@@ -20,14 +20,13 @@
 
 package de.keyle.mypet.npc;
 
-import de.Keyle.MyPet.MyPetPlugin;
-import de.Keyle.MyPet.util.MyPetVersion;
-import de.Keyle.MyPet.util.configuration.ConfigurationYAML;
-import de.Keyle.MyPet.util.logger.DebugLogger;
+import de.Keyle.MyPet.MyPetApi;
+import de.Keyle.MyPet.api.MyPetVersion;
+import de.Keyle.MyPet.api.util.configuration.ConfigurationYAML;
 import de.Keyle.MyPet.util.logger.MyPetLogger;
 import de.keyle.mypet.npc.commands.CommandConfig;
-import de.keyle.mypet.npc.traits.MyPetStorageTrait;
-import de.keyle.mypet.npc.traits.MyPetWalletTrait;
+import de.keyle.mypet.npc.traits.StorageTrait;
+import de.keyle.mypet.npc.traits.WalletTrait;
 import de.keyle.mypet.npc.util.Configuration;
 import de.keyle.mypet.npc.util.MyPetNpcVersion;
 import net.citizensnpcs.api.CitizensAPI;
@@ -39,6 +38,7 @@ import org.mcstats.MetricsLite;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Field;
 
 public class MyPetNpcPlugin extends JavaPlugin {
     private static MyPetNpcPlugin plugin;
@@ -54,13 +54,7 @@ public class MyPetNpcPlugin extends JavaPlugin {
             return;
         }
 
-        DebugLogger.info("----------- loading MyPet-NPC ... -----------", "MyPet-NPC");
-
-        if (!getServer().getPluginManager().isPluginEnabled("MyPet")) {
-            MyPetLogger.write(ChatColor.RED + "MyPet plugin isn't enabled. Disable MyPet-NPC.", "MyPet-NPC");
-            this.setEnabled(false);
-            return;
-        }
+        replaceLogger();
 
         if (Integer.parseInt(MyPetVersion.getBuild()) < Integer.parseInt(MyPetNpcVersion.getRequiredMyPetBuild())) {
             boolean premium = false;
@@ -71,12 +65,12 @@ public class MyPetNpcPlugin extends JavaPlugin {
 
             if (premium) {
                 if (Integer.parseInt(MyPetVersion.getBuild()) < Integer.parseInt(MyPetNpcVersion.getRequiredMyPetPremiumBuild())) {
-                    MyPetLogger.write(ChatColor.RED + "This version of MyPet-NPC requires MyPet-Premium build-#" + MyPetNpcVersion.getRequiredMyPetPremiumBuild() + " or higher", "MyPet-NPC");
+                    getLogger().warning(ChatColor.RED + "This version of MyPet-NPC requires MyPet-Premium build-#" + MyPetNpcVersion.getRequiredMyPetPremiumBuild() + " or higher");
                     this.setEnabled(false);
                     return;
                 }
             } else {
-                MyPetLogger.write(ChatColor.RED + "This version of MyPet-NPC requires MyPet build-#" + MyPetNpcVersion.getRequiredMyPetBuild() + " or higher", "MyPet-NPC");
+                getLogger().warning(ChatColor.RED + "This version of MyPet-NPC requires MyPet build-#" + MyPetNpcVersion.getRequiredMyPetBuild() + " or higher");
                 this.setEnabled(false);
                 return;
             }
@@ -87,29 +81,35 @@ public class MyPetNpcPlugin extends JavaPlugin {
             if (!metrics.isOptOut()) {
                 metrics.start();
             }
-            DebugLogger.info("MetricsLite " + (!metrics.isOptOut() ? "" : "not ") + "activated", "MyPet-NPC");
-        } catch (IOException e) {
-            DebugLogger.info("MetricsLite not activated", "MyPet-NPC");
-            DebugLogger.info(e.getMessage(), "MyPet-NPC");
+        } catch (IOException ignored) {
         }
 
-        File configFile = new File(MyPetPlugin.getPlugin().getDataFolder().getPath() + File.separator + "plugins" + File.separator + "NPC" + File.separator + "config.yml");
+        File configFile = new File(MyPetApi.getPlugin().getDataFolder().getPath() + File.separator + "plugins" + File.separator + "NPC" + File.separator + "config.yml");
         configFile.getParentFile().mkdirs();
         Configuration.yamlConfig = new ConfigurationYAML(configFile);
 
         Configuration.setDefault();
         Configuration.loadConfiguration();
 
-        CitizensAPI.getTraitFactory().registerTrait(TraitInfo.create(MyPetStorageTrait.class).withName("mypet-storage"));
-        CitizensAPI.getTraitFactory().registerTrait(TraitInfo.create(MyPetWalletTrait.class).withName("mypet-wallet"));
+        CitizensAPI.getTraitFactory().registerTrait(TraitInfo.create(StorageTrait.class).withName("mypet-storage"));
+        CitizensAPI.getTraitFactory().registerTrait(TraitInfo.create(WalletTrait.class).withName("mypet-wallet"));
 
         getCommand("mypetnpcconfig").setExecutor(new CommandConfig());
 
-        MyPetLogger.write("version " + MyPetNpcVersion.getVersion() + "-b" + MyPetNpcVersion.getBuild() + ChatColor.GREEN + " ENABLED", "MyPet-NPC");
-        DebugLogger.info("----------- MyPet-NPC ready -----------", "MyPet-NPC");
+        getLogger().info("version " + MyPetNpcVersion.getVersion() + "-b" + MyPetNpcVersion.getBuild() + ChatColor.GREEN + " ENABLED");
     }
 
     public static MyPetNpcPlugin getPlugin() {
         return plugin;
+    }
+
+    private void replaceLogger() {
+        try {
+            Field logger = JavaPlugin.class.getDeclaredField("logger");
+            logger.setAccessible(true);
+            logger.set(this, new MyPetLogger(this));
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
     }
 }

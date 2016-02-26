@@ -20,7 +20,7 @@
 
 package de.keyle.mypet.npc.util;
 
-import de.Keyle.MyPet.util.configuration.ConfigurationYAML;
+import de.Keyle.MyPet.api.util.configuration.ConfigurationYAML;
 import org.bukkit.configuration.file.FileConfiguration;
 
 public class Configuration {

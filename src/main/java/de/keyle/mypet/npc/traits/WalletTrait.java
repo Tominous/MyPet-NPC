@@ -20,15 +20,15 @@
 
 package de.keyle.mypet.npc.traits;
 
-import de.Keyle.MyPet.util.hooks.EconomyHook;
-import de.Keyle.MyPet.util.logger.MyPetLogger;
+import de.Keyle.MyPet.api.util.hooks.EconomyHook;
+import de.keyle.mypet.npc.MyPetNpcPlugin;
 import net.citizensnpcs.api.persistence.Persist;
 import net.citizensnpcs.api.trait.Trait;
 import net.citizensnpcs.api.trait.trait.Owner;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 
-public class MyPetWalletTrait extends Trait {
+public class WalletTrait extends Trait {
     @Persist
     double privateWallet = 0.0D;
     @Persist
@@ -50,7 +50,7 @@ public class MyPetWalletTrait extends Trait {
         }
     }
 
-    public MyPetWalletTrait() {
+    public WalletTrait() {
         super("mypet-wallet");
     }
 
@@ -73,13 +73,13 @@ public class MyPetWalletTrait extends Trait {
                 return true;
             case Owner:
                 if (!EconomyHook.canUseEconomy()) {
-                    MyPetLogger.write(ChatColor.RED + "The MyPet-Wallet trait needs an economy plugin to use the \"Owner\" wallet type! (NPC: " + this.getNPC().getId() + ")", "MyPet-NPC");
+                    MyPetNpcPlugin.getPlugin().getLogger().info(ChatColor.RED + "The MyPet-Wallet trait needs an economy plugin to use the \"Owner\" wallet type! (NPC: " + this.getNPC().getId() + ")");
                     return false;
                 }
                 return EconomyHook.getEconomy().depositPlayer(Bukkit.getOfflinePlayer(this.npc.getTrait(Owner.class).getOwnerId()), amount).transactionSuccess();
             case Bank:
                 if (!EconomyHook.canUseEconomy()) {
-                    MyPetLogger.write(ChatColor.RED + "The MyPet-Wallet trait needs an economy plugin to use the \"Bank\" wallet type! (NPC: " + this.getNPC().getId() + ")", "MyPet-NPC");
+                    MyPetNpcPlugin.getPlugin().getLogger().info(ChatColor.RED + "The MyPet-Wallet trait needs an economy plugin to use the \"Bank\" wallet type! (NPC: " + this.getNPC().getId() + ")");
                     return false;
                 }
                 return EconomyHook.getEconomy().isBankOwner(accountName, Bukkit.getOfflinePlayer(this.npc.getTrait(Owner.class).getOwnerId())).transactionSuccess() && EconomyHook.getEconomy().bankDeposit(accountName, amount).transactionSuccess();
@@ -103,13 +103,13 @@ public class MyPetWalletTrait extends Trait {
                 return true;
             case Owner:
                 if (!EconomyHook.canUseEconomy()) {
-                    MyPetLogger.write(ChatColor.RED + "The MyPet-Wallet trait needs an economy plugin to use the \"Owner\" wallet type! (NPC: " + this.getNPC().getId() + ")", "MyPet-NPC");
+                    MyPetNpcPlugin.getPlugin().getLogger().info(ChatColor.RED + "The MyPet-Wallet trait needs an economy plugin to use the \"Owner\" wallet type! (NPC: " + this.getNPC().getId() + ")");
                     return false;
                 }
                 return EconomyHook.getEconomy().withdrawPlayer(Bukkit.getOfflinePlayer(this.npc.getTrait(Owner.class).getOwnerId()), amount).transactionSuccess();
             case Bank:
                 if (!EconomyHook.canUseEconomy()) {
-                    MyPetLogger.write(ChatColor.RED + "The MyPet-Wallet trait needs an economy plugin to use the \"Bank\" wallet type! (NPC: " + this.getNPC().getId() + ")", "MyPet-NPC");
+                    MyPetNpcPlugin.getPlugin().getLogger().info(ChatColor.RED + "The MyPet-Wallet trait needs an economy plugin to use the \"Bank\" wallet type! (NPC: " + this.getNPC().getId() + ")");
                     return false;
                 }
                 return EconomyHook.getEconomy().isBankOwner(accountName, Bukkit.getOfflinePlayer(this.npc.getTrait(Owner.class).getOwnerId())).transactionSuccess() && EconomyHook.getEconomy().bankWithdraw(accountName, amount).transactionSuccess();
@@ -128,13 +128,13 @@ public class MyPetWalletTrait extends Trait {
                 return this.privateWallet >= amount;
             case Owner:
                 if (!EconomyHook.canUseEconomy()) {
-                    MyPetLogger.write(ChatColor.RED + "The MyPet-Wallet trait needs an economy plugin to use the \"Owner\" wallet type! (NPC: " + this.getNPC().getId() + ")", "MyPet-NPC");
+                    MyPetNpcPlugin.getPlugin().getLogger().info(ChatColor.RED + "The MyPet-Wallet trait needs an economy plugin to use the \"Owner\" wallet type! (NPC: " + this.getNPC().getId() + ")");
                     return false;
                 }
                 return EconomyHook.getEconomy().has(Bukkit.getOfflinePlayer(this.npc.getTrait(Owner.class).getOwnerId()), amount);
             case Bank:
                 if (!EconomyHook.canUseEconomy()) {
-                    MyPetLogger.write(ChatColor.RED + "The MyPet-Wallet trait needs an economy plugin to use the \"Bank\" wallet type! (NPC: " + this.getNPC().getId() + ")", "MyPet-NPC");
+                    MyPetNpcPlugin.getPlugin().getLogger().info(ChatColor.RED + "The MyPet-Wallet trait needs an economy plugin to use the \"Bank\" wallet type! (NPC: " + this.getNPC().getId() + ")");
                     return false;
                 }
                 return EconomyHook.getEconomy().isBankOwner(accountName, Bukkit.getOfflinePlayer(this.npc.getTrait(Owner.class).getOwnerId())).transactionSuccess() && EconomyHook.getEconomy().bankHas(accountName, amount).transactionSuccess();
