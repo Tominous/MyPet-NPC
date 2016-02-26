@@ -3,7 +3,8 @@ main: de.keyle.mypet.npc.MyPetNpcPlugin
 version: ${parsedVersion.majorVersion}.${parsedVersion.minorVersion}.${parsedVersion.incrementalVersion}
 author: Keyle
 website: ${project.url}
-depend: [Citizens, MyPet]
+depend: [Citizens]
+softdepend: [MyPet]
 commands:
   mypetnpcconfig:
     aliases: [mpnpcc]

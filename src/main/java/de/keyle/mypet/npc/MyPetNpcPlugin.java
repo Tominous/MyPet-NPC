@@ -27,6 +27,8 @@ import de.Keyle.MyPet.util.logger.MyPetLogger;
 import de.keyle.mypet.npc.commands.CommandConfig;
 import de.keyle.mypet.npc.traits.StorageTrait;
 import de.keyle.mypet.npc.traits.WalletTrait;
+import de.keyle.mypet.npc.traits.dummy.DummyStorageTrait;
+import de.keyle.mypet.npc.traits.dummy.DummyWalletTrait;
 import de.keyle.mypet.npc.util.Configuration;
 import de.keyle.mypet.npc.util.MyPetNpcVersion;
 import net.citizensnpcs.api.CitizensAPI;
@@ -49,8 +51,11 @@ public class MyPetNpcPlugin extends JavaPlugin {
         MyPetNpcVersion.reset();
 
         if (!Bukkit.getPluginManager().isPluginEnabled("MyPet")) {
-            getLogger().info("MyPet is not installed/enabled, disabling MyPet-NPC");
-            Bukkit.getPluginManager().disablePlugin(this);
+            getLogger().info("MyPet is not installed/enabled. Activating dummy traits!");
+
+            CitizensAPI.getTraitFactory().registerTrait(TraitInfo.create(DummyStorageTrait.class).withName("mypet-storage"));
+            CitizensAPI.getTraitFactory().registerTrait(TraitInfo.create(DummyWalletTrait.class).withName("mypet-wallet"));
+
             return;
         }
 
