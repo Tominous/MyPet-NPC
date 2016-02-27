@@ -60,7 +60,7 @@ public class StorageTrait extends Trait {
 
         final Player player = npcEvent.getClicker();
 
-        if (!Permissions.has(player, "MyPet.npc.storage.interact")) {
+        if (!Permissions.has(player, "MyPet.npc.storage")) {
             player.sendMessage(Translation.getString("Message.No.Allowed", player));
             return;
         }
