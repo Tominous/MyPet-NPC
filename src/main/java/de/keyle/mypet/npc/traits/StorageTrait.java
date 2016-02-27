@@ -98,58 +98,94 @@ public class StorageTrait extends Trait {
                         } else {
                             maxPetCount = 54;
                         }
+
                         if (inactivePetCount >= maxPetCount) {
-                            player.sendMessage(Util.formatText(Translation.getString("Message.Npc.StorageFull", myPetPlayer), npc.getFullName(), maxPetCount));
-                            return;
-                        }
-                        IconMenu menu = new IconMenu(Translation.getString("Message.Npc.HandOverTitle", myPetPlayer), new IconMenu.OptionClickEventHandler() {
-                            @Override
-                            public void onOptionClick(IconMenu.OptionClickEvent event) {
-                                if (event.getPosition() == 3) {
-                                    boolean store = true;
-                                    double costs = calculateStorageCosts(myPetPlayer.getMyPet());
-                                    if (EconomyHook.canUseEconomy() && costs > 0 && npc.hasTrait(WalletTrait.class)) {
-                                        WalletTrait walletTrait = npc.getTrait(WalletTrait.class);
-                                        if (!EconomyHook.canPay(myPetPlayer, costs)) {
-                                            player.sendMessage(Util.formatText(Translation.getString("Message.No.Money", myPetPlayer), myPetPlayer.getMyPet().getPetName(), npcEvent.getNPC().getName()));
-                                            store = false;
-                                        }
-                                        if (EconomyHook.pay(myPetPlayer, costs)) {
-                                            walletTrait.deposit(costs);
-                                        } else {
-                                            store = false;
+                            if (Permissions.has(player, "MyPet.npc.storage.bypass")) {
+
+                                String stats = "(" + inactivePetCount + "/" + maxPetCount + ")";
+
+                                final MyPetSelectionGui gui = new MyPetSelectionGui(myPetPlayer, stats + " " + Translation.getString("Message.Npc.SwitchTitle", player));
+                                gui.open(pets, new RepositoryCallback<MyPet>() {
+                                    @Override
+                                    public void callback(MyPet myPet) {
+                                        MyPetApi.getMyPetList().deactivateMyPet(myPetPlayer, true);
+                                        ActiveMyPet activePet = MyPetApi.getMyPetList().activateMyPet(myPet);
+                                        if (activePet != null && myPetPlayer.isOnline()) {
+                                            Player p = myPetPlayer.getPlayer();
+                                            activePet.getOwner().sendMessage(Util.formatText(Translation.getString("Message.Npc.ChosenPet", player), activePet.getPetName()));
+                                            WorldGroup wg = WorldGroup.getGroupByWorld(p.getWorld().getName());
+                                            myPetPlayer.setMyPetForWorldGroup(wg.getName(), activePet.getUUID());
+
+                                            switch (activePet.createEntity()) {
+                                                case Canceled:
+                                                    activePet.getOwner().sendMessage(Util.formatText(Translation.getString("Message.Spawn.Prevent", player), activePet.getPetName()));
+                                                    break;
+                                                case NoSpace:
+                                                    activePet.getOwner().sendMessage(Util.formatText(Translation.getString("Message.Spawn.NoSpace", player), activePet.getPetName()));
+                                                    break;
+                                                case NotAllowed:
+                                                    activePet.getOwner().sendMessage(Translation.getString("Message.No.AllowedHere", player).replace("%petname%", activePet.getPetName()));
+                                                    break;
+                                                case Dead:
+                                                    activePet.getOwner().sendMessage(Translation.getString("Message.Spawn.Respawn.In", player).replace("%petname%", activePet.getPetName()).replace("%time%", "" + activePet.getRespawnTime()));
+                                                    break;
+                                            }
                                         }
                                     }
-
-                                    if (store) {
-                                        MyPet myPet = myPetPlayer.getMyPet();
-                                        if (MyPetApi.getMyPetList().deactivateMyPet(myPetPlayer, true)) {
-                                            // remove pet from world groups
-                                            String wg = myPetPlayer.getWorldGroupForMyPet(myPet.getUUID());
-                                            myPetPlayer.setMyPetForWorldGroup(wg, null);
-                                            MyPetApi.getRepository().updateMyPetPlayer(myPetPlayer, null);
-
-                                            player.sendMessage(Util.formatText(Translation.getString("Message.Npc.HandOver", myPetPlayer), myPet.getPetName(), npcEvent.getNPC().getName()));
-                                        }
-                                    }
-                                }
-                                event.setWillClose(true);
-                                event.setWillDestroy(true);
+                                });
+                            } else {
+                                player.sendMessage(Util.formatText(Translation.getString("Message.Npc.StorageFull", myPetPlayer), npc.getFullName(), maxPetCount));
                             }
-                        }, MyPetNpcPlugin.getPlugin());
-                        String[] lore;
-                        double storageCosts = calculateStorageCosts(myPetPlayer.getMyPet());
-                        if (EconomyHook.canUseEconomy() && npc.hasTrait(WalletTrait.class) && storageCosts > 0) {
-                            lore = new String[3];
-                            lore[1] = "";
-                            lore[2] = RESET + Translation.getString("Name.Costs", myPetPlayer) + ": " + (EconomyHook.canPay(myPetPlayer, storageCosts) ? GREEN : RED) + storageCosts + DARK_GREEN + " " + EconomyHook.getEconomy().currencyNameSingular();
                         } else {
-                            lore = new String[1];
+                            IconMenu menu = new IconMenu(Translation.getString("Message.Npc.HandOverTitle", myPetPlayer), new IconMenu.OptionClickEventHandler() {
+                                @Override
+                                public void onOptionClick(IconMenu.OptionClickEvent event) {
+                                    if (event.getPosition() == 3) {
+                                        boolean store = true;
+                                        double costs = calculateStorageCosts(myPetPlayer.getMyPet());
+                                        if (EconomyHook.canUseEconomy() && costs > 0 && npc.hasTrait(WalletTrait.class)) {
+                                            WalletTrait walletTrait = npc.getTrait(WalletTrait.class);
+                                            if (!EconomyHook.canPay(myPetPlayer, costs)) {
+                                                player.sendMessage(Util.formatText(Translation.getString("Message.No.Money", myPetPlayer), myPetPlayer.getMyPet().getPetName(), npcEvent.getNPC().getName()));
+                                                store = false;
+                                            }
+                                            if (EconomyHook.pay(myPetPlayer, costs)) {
+                                                walletTrait.deposit(costs);
+                                            } else {
+                                                store = false;
+                                            }
+                                        }
+
+                                        if (store) {
+                                            MyPet myPet = myPetPlayer.getMyPet();
+                                            if (MyPetApi.getMyPetList().deactivateMyPet(myPetPlayer, true)) {
+                                                // remove pet from world groups
+                                                String wg = myPetPlayer.getWorldGroupForMyPet(myPet.getUUID());
+                                                myPetPlayer.setMyPetForWorldGroup(wg, null);
+                                                MyPetApi.getRepository().updateMyPetPlayer(myPetPlayer, null);
+
+                                                player.sendMessage(Util.formatText(Translation.getString("Message.Npc.HandOver", myPetPlayer), myPet.getPetName(), npcEvent.getNPC().getName()));
+                                            }
+                                        }
+                                    }
+                                    event.setWillClose(true);
+                                    event.setWillDestroy(true);
+                                }
+                            }, MyPetNpcPlugin.getPlugin());
+                            String[] lore;
+                            double storageCosts = calculateStorageCosts(myPetPlayer.getMyPet());
+                            if (EconomyHook.canUseEconomy() && npc.hasTrait(WalletTrait.class) && storageCosts > 0) {
+                                lore = new String[3];
+                                lore[1] = "";
+                                lore[2] = RESET + Translation.getString("Name.Costs", myPetPlayer) + ": " + (EconomyHook.canPay(myPetPlayer, storageCosts) ? GREEN : RED) + storageCosts + DARK_GREEN + " " + EconomyHook.getEconomy().currencyNameSingular();
+                            } else {
+                                lore = new String[1];
+                            }
+                            lore[0] = RESET + Util.formatText(Translation.getString("Message.Npc.YesHandOver", myPetPlayer), myPetPlayer.getMyPet().getPetName());
+                            menu.setOption(3, new IconMenuItem().setMaterial(Material.WOOL).setData(5).setTitle(GREEN + Translation.getString("Name.Yes", myPetPlayer)).setLore(lore));
+                            menu.setOption(5, new IconMenuItem().setMaterial(Material.WOOL).setData(14).setTitle(RED + Translation.getString("Name.No", myPetPlayer)).setLore(RESET + Util.formatText(Translation.getString("Message.Npc.NoHandOver", myPetPlayer), myPetPlayer.getMyPet().getPetName())));
+                            menu.open(player);
                         }
-                        lore[0] = RESET + Util.formatText(Translation.getString("Message.Npc.YesHandOver", myPetPlayer), myPetPlayer.getMyPet().getPetName());
-                        menu.setOption(3, new IconMenuItem().setMaterial(Material.WOOL).setData(5).setTitle(GREEN + Translation.getString("Name.Yes", myPetPlayer)).setLore(lore));
-                        menu.setOption(5, new IconMenuItem().setMaterial(Material.WOOL).setData(14).setTitle(RED + Translation.getString("Name.No", myPetPlayer)).setLore(RESET + Util.formatText(Translation.getString("Message.Npc.NoHandOver", myPetPlayer), myPetPlayer.getMyPet().getPetName())));
-                        menu.open(player);
                     }
                 });
             } else {
