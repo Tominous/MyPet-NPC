@@ -23,8 +23,8 @@ package de.keyle.mypet.npc.traits;
 import de.Keyle.MyPet.MyPetApi;
 import de.Keyle.MyPet.api.Util;
 import de.Keyle.MyPet.api.WorldGroup;
-import de.Keyle.MyPet.api.entity.ActiveMyPet;
 import de.Keyle.MyPet.api.entity.MyPet;
+import de.Keyle.MyPet.api.entity.StoredMyPet;
 import de.Keyle.MyPet.api.player.MyPetPlayer;
 import de.Keyle.MyPet.api.player.Permissions;
 import de.Keyle.MyPet.api.repository.RepositoryCallback;
@@ -73,14 +73,14 @@ public class StorageTrait extends Trait {
 
                 final NPC npc = this.npc;
 
-                MyPetApi.getRepository().getMyPets(myPetPlayer, new RepositoryCallback<List<MyPet>>() {
+                MyPetApi.getRepository().getMyPets(myPetPlayer, new RepositoryCallback<List<StoredMyPet>>() {
                     @Override
-                    public void callback(List<MyPet> pets) {
+                    public void callback(List<StoredMyPet> pets) {
                         WorldGroup wg = WorldGroup.getGroupByWorld(myPetPlayer.getPlayer().getWorld().getName());
                         int inactivePetCount = 0;
                         UUID activePetUUID = myPetPlayer.getMyPet().getUUID();
 
-                        for (MyPet mypet : pets) {
+                        for (StoredMyPet mypet : pets) {
                             if (activePetUUID.equals(mypet.getUUID()) || (!mypet.getWorldGroup().equals("") && !mypet.getWorldGroup().equals(wg.getName()))) {
                                 continue;
                             }
@@ -105,11 +105,11 @@ public class StorageTrait extends Trait {
                                 String stats = "(" + inactivePetCount + "/" + maxPetCount + ")";
 
                                 final MyPetSelectionGui gui = new MyPetSelectionGui(myPetPlayer, stats + " " + Translation.getString("Message.Npc.SwitchTitle", player));
-                                gui.open(pets, new RepositoryCallback<MyPet>() {
+                                gui.open(pets, new RepositoryCallback<StoredMyPet>() {
                                     @Override
-                                    public void callback(MyPet myPet) {
+                                    public void callback(StoredMyPet storedMyPet) {
                                         MyPetApi.getMyPetList().deactivateMyPet(myPetPlayer, true);
-                                        ActiveMyPet activePet = MyPetApi.getMyPetList().activateMyPet(myPet);
+                                        MyPet activePet = MyPetApi.getMyPetList().activateMyPet(storedMyPet);
                                         if (activePet != null && myPetPlayer.isOnline()) {
                                             Player p = myPetPlayer.getPlayer();
                                             activePet.getOwner().sendMessage(Util.formatText(Translation.getString("Message.Npc.ChosenPet", player), activePet.getPetName()));
@@ -157,14 +157,14 @@ public class StorageTrait extends Trait {
                                         }
 
                                         if (store) {
-                                            MyPet myPet = myPetPlayer.getMyPet();
+                                            StoredMyPet storedMyPet = myPetPlayer.getMyPet();
                                             if (MyPetApi.getMyPetList().deactivateMyPet(myPetPlayer, true)) {
                                                 // remove pet from world groups
-                                                String wg = myPetPlayer.getWorldGroupForMyPet(myPet.getUUID());
+                                                String wg = myPetPlayer.getWorldGroupForMyPet(storedMyPet.getUUID());
                                                 myPetPlayer.setMyPetForWorldGroup(wg, null);
                                                 MyPetApi.getRepository().updateMyPetPlayer(myPetPlayer, null);
 
-                                                player.sendMessage(Util.formatText(Translation.getString("Message.Npc.HandOver", myPetPlayer), myPet.getPetName(), npcEvent.getNPC().getName()));
+                                                player.sendMessage(Util.formatText(Translation.getString("Message.Npc.HandOver", myPetPlayer), storedMyPet.getPetName(), npcEvent.getNPC().getName()));
                                             }
                                         }
                                     }
@@ -190,14 +190,14 @@ public class StorageTrait extends Trait {
                 });
             } else {
                 final MyPetSelectionGui gui = new MyPetSelectionGui(myPetPlayer, Translation.getString("Message.Npc.TakeTitle", myPetPlayer));
-                MyPetApi.getRepository().getMyPets(myPetPlayer, new RepositoryCallback<List<MyPet>>() {
+                MyPetApi.getRepository().getMyPets(myPetPlayer, new RepositoryCallback<List<StoredMyPet>>() {
                     @Override
-                    public void callback(List<MyPet> pets) {
+                    public void callback(List<StoredMyPet> pets) {
                         if (pets.size() > 0) {
-                            gui.open(pets, new RepositoryCallback<MyPet>() {
+                            gui.open(pets, new RepositoryCallback<StoredMyPet>() {
                                 @Override
-                                public void callback(MyPet inactiveMyPet) {
-                                    ActiveMyPet myPet = MyPetApi.getMyPetList().activateMyPet(inactiveMyPet);
+                                public void callback(StoredMyPet storedMyPet) {
+                                    MyPet myPet = MyPetApi.getMyPetList().activateMyPet(storedMyPet);
                                     if (myPet != null) {
                                         Player player = myPetPlayer.getPlayer();
                                         myPet.getOwner().sendMessage(Util.formatText(Translation.getString("Message.Npc.ChosenPet", myPetPlayer), myPet.getPetName()));
@@ -233,7 +233,7 @@ public class StorageTrait extends Trait {
         player.sendMessage(Translation.getString("Message.No.HasPet", player));
     }
 
-    public double calculateStorageCosts(ActiveMyPet myPet) {
+    public double calculateStorageCosts(MyPet myPet) {
         return Configuration.NPC_STORAGE_COSTS_FIXED + (myPet.getExperience().getLevel() * Configuration.NPC_STORAGE_COSTS_FACTOR);
     }
 }
