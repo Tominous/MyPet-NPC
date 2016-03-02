@@ -23,6 +23,7 @@ package de.keyle.mypet.npc;
 import de.Keyle.MyPet.MyPetApi;
 import de.Keyle.MyPet.api.MyPetVersion;
 import de.Keyle.MyPet.api.util.configuration.ConfigurationYAML;
+import de.Keyle.MyPet.util.Metrics;
 import de.Keyle.MyPet.util.logger.MyPetLogger;
 import de.keyle.mypet.npc.commands.CommandConfig;
 import de.keyle.mypet.npc.traits.StorageTrait;
@@ -36,7 +37,6 @@ import net.citizensnpcs.api.trait.TraitInfo;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.mcstats.MetricsLite;
 
 import java.io.File;
 import java.io.IOException;
@@ -82,7 +82,7 @@ public class MyPetNpcPlugin extends JavaPlugin {
         }
 
         try {
-            MetricsLite metrics = new MetricsLite(this);
+            Metrics metrics = new Metrics(this);
             if (!metrics.isOptOut()) {
                 metrics.start();
             }
