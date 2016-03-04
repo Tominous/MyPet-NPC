@@ -45,6 +45,12 @@ import java.lang.reflect.Field;
 public class MyPetNpcPlugin extends JavaPlugin {
     private static MyPetNpcPlugin plugin;
 
+    public void onDisable() {
+        if (getLogger() instanceof MyPetLogger) {
+            ((MyPetLogger) getLogger()).disableDebugLogger();
+        }
+    }
+
     public void onEnable() {
         plugin = this;
 
