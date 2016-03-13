@@ -57,7 +57,7 @@ public class CommandConfig implements CommandExecutor, TabCompleter {
             if (!Permissions.has((Player) sender, "MyPet.npc.admin", false)) {
                 return true;
             }
-            lang = MyPetApi.getBukkitHelper().getPlayerLanguage((Player) sender);
+            lang = MyPetApi.getPlatformHelper().getPlayerLanguage((Player) sender);
         }
         if (args.length < 1) {
             return false;

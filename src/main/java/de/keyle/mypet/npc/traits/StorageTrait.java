@@ -66,8 +66,8 @@ public class StorageTrait extends Trait {
         }
 
 
-        if (MyPetApi.getPlayerList().isMyPetPlayer(player)) {
-            final MyPetPlayer myPetPlayer = MyPetApi.getPlayerList().getMyPetPlayer(player);
+        if (MyPetApi.getPlayerManager().isMyPetPlayer(player)) {
+            final MyPetPlayer myPetPlayer = MyPetApi.getPlayerManager().getMyPetPlayer(player);
             assert myPetPlayer != null;
             if (myPetPlayer.hasMyPet()) {
 
@@ -108,8 +108,8 @@ public class StorageTrait extends Trait {
                                 gui.open(pets, new RepositoryCallback<StoredMyPet>() {
                                     @Override
                                     public void callback(StoredMyPet storedMyPet) {
-                                        MyPetApi.getMyPetList().deactivateMyPet(myPetPlayer, true);
-                                        MyPet activePet = MyPetApi.getMyPetList().activateMyPet(storedMyPet);
+                                        MyPetApi.getMyPetManager().deactivateMyPet(myPetPlayer, true);
+                                        MyPet activePet = MyPetApi.getMyPetManager().activateMyPet(storedMyPet);
                                         if (activePet != null && myPetPlayer.isOnline()) {
                                             Player p = myPetPlayer.getPlayer();
                                             activePet.getOwner().sendMessage(Util.formatText(Translation.getString("Message.Npc.ChosenPet", player), activePet.getPetName()));
@@ -158,7 +158,7 @@ public class StorageTrait extends Trait {
 
                                         if (store) {
                                             StoredMyPet storedMyPet = myPetPlayer.getMyPet();
-                                            if (MyPetApi.getMyPetList().deactivateMyPet(myPetPlayer, true)) {
+                                            if (MyPetApi.getMyPetManager().deactivateMyPet(myPetPlayer, true)) {
                                                 // remove pet from world groups
                                                 String wg = myPetPlayer.getWorldGroupForMyPet(storedMyPet.getUUID());
                                                 myPetPlayer.setMyPetForWorldGroup(wg, null);
@@ -197,7 +197,7 @@ public class StorageTrait extends Trait {
                             gui.open(pets, new RepositoryCallback<StoredMyPet>() {
                                 @Override
                                 public void callback(StoredMyPet storedMyPet) {
-                                    MyPet myPet = MyPetApi.getMyPetList().activateMyPet(storedMyPet);
+                                    MyPet myPet = MyPetApi.getMyPetManager().activateMyPet(storedMyPet);
                                     if (myPet != null) {
                                         Player player = myPetPlayer.getPlayer();
                                         myPet.getOwner().sendMessage(Util.formatText(Translation.getString("Message.Npc.ChosenPet", myPetPlayer), myPet.getPetName()));
