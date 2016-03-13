@@ -112,22 +112,25 @@ public class StorageTrait extends Trait {
                                         MyPet activePet = MyPetApi.getMyPetManager().activateMyPet(storedMyPet);
                                         if (activePet != null && myPetPlayer.isOnline()) {
                                             Player p = myPetPlayer.getPlayer();
-                                            activePet.getOwner().sendMessage(Util.formatText(Translation.getString("Message.Npc.ChosenPet", player), activePet.getPetName()));
+                                            myPetPlayer.sendMessage(Util.formatText(Translation.getString("Message.Npc.ChosenPet", player), activePet.getPetName()));
                                             WorldGroup wg = WorldGroup.getGroupByWorld(p.getWorld().getName());
                                             myPetPlayer.setMyPetForWorldGroup(wg.getName(), activePet.getUUID());
 
                                             switch (activePet.createEntity()) {
                                                 case Canceled:
-                                                    activePet.getOwner().sendMessage(Util.formatText(Translation.getString("Message.Spawn.Prevent", player), activePet.getPetName()));
+                                                    myPetPlayer.sendMessage(Util.formatText(Translation.getString("Message.Spawn.Prevent", player), activePet.getPetName()));
                                                     break;
                                                 case NoSpace:
-                                                    activePet.getOwner().sendMessage(Util.formatText(Translation.getString("Message.Spawn.NoSpace", player), activePet.getPetName()));
+                                                    myPetPlayer.sendMessage(Util.formatText(Translation.getString("Message.Spawn.NoSpace", player), activePet.getPetName()));
                                                     break;
                                                 case NotAllowed:
-                                                    activePet.getOwner().sendMessage(Translation.getString("Message.No.AllowedHere", player).replace("%petname%", activePet.getPetName()));
+                                                    myPetPlayer.sendMessage(Translation.getString("Message.No.AllowedHere", player).replace("%petname%", activePet.getPetName()));
                                                     break;
                                                 case Dead:
-                                                    activePet.getOwner().sendMessage(Translation.getString("Message.Spawn.Respawn.In", player).replace("%petname%", activePet.getPetName()).replace("%time%", "" + activePet.getRespawnTime()));
+                                                    myPetPlayer.sendMessage(Translation.getString("Message.Spawn.Respawn.In", player).replace("%petname%", activePet.getPetName()).replace("%time%", "" + activePet.getRespawnTime()));
+                                                    break;
+                                                case Spectator:
+                                                    myPetPlayer.sendMessage(Util.formatText(Translation.getString("Message.Spawn.Spectator", myPetPlayer), activePet.getPetName()));
                                                     break;
                                             }
                                         }
