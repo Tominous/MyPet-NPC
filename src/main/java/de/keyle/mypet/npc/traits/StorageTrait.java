@@ -20,6 +20,7 @@
 
 package de.keyle.mypet.npc.traits;
 
+import com.google.common.base.Optional;
 import de.Keyle.MyPet.MyPetApi;
 import de.Keyle.MyPet.api.Util;
 import de.Keyle.MyPet.api.WorldGroup;
@@ -109,28 +110,28 @@ public class StorageTrait extends Trait {
                                     @Override
                                     public void callback(StoredMyPet storedMyPet) {
                                         MyPetApi.getMyPetManager().deactivateMyPet(myPetPlayer, true);
-                                        MyPet activePet = MyPetApi.getMyPetManager().activateMyPet(storedMyPet);
-                                        if (activePet != null && myPetPlayer.isOnline()) {
+                                        Optional<MyPet> activePet = MyPetApi.getMyPetManager().activateMyPet(storedMyPet);
+                                        if (activePet.isPresent() && myPetPlayer.isOnline()) {
                                             Player p = myPetPlayer.getPlayer();
-                                            myPetPlayer.sendMessage(Util.formatText(Translation.getString("Message.Npc.ChosenPet", player), activePet.getPetName()));
+                                            myPetPlayer.sendMessage(Util.formatText(Translation.getString("Message.Npc.ChosenPet", player), activePet.get().getPetName()));
                                             WorldGroup wg = WorldGroup.getGroupByWorld(p.getWorld().getName());
-                                            myPetPlayer.setMyPetForWorldGroup(wg.getName(), activePet.getUUID());
+                                            myPetPlayer.setMyPetForWorldGroup(wg.getName(), activePet.get().getUUID());
 
-                                            switch (activePet.createEntity()) {
+                                            switch (activePet.get().createEntity()) {
                                                 case Canceled:
-                                                    myPetPlayer.sendMessage(Util.formatText(Translation.getString("Message.Spawn.Prevent", player), activePet.getPetName()));
+                                                    myPetPlayer.sendMessage(Util.formatText(Translation.getString("Message.Spawn.Prevent", player), activePet.get().getPetName()));
                                                     break;
                                                 case NoSpace:
-                                                    myPetPlayer.sendMessage(Util.formatText(Translation.getString("Message.Spawn.NoSpace", player), activePet.getPetName()));
+                                                    myPetPlayer.sendMessage(Util.formatText(Translation.getString("Message.Spawn.NoSpace", player), activePet.get().getPetName()));
                                                     break;
                                                 case NotAllowed:
-                                                    myPetPlayer.sendMessage(Translation.getString("Message.No.AllowedHere", player).replace("%petname%", activePet.getPetName()));
+                                                    myPetPlayer.sendMessage(Translation.getString("Message.No.AllowedHere", player).replace("%petname%", activePet.get().getPetName()));
                                                     break;
                                                 case Dead:
-                                                    myPetPlayer.sendMessage(Translation.getString("Message.Spawn.Respawn.In", player).replace("%petname%", activePet.getPetName()).replace("%time%", "" + activePet.getRespawnTime()));
+                                                    myPetPlayer.sendMessage(Translation.getString("Message.Spawn.Respawn.In", player).replace("%petname%", activePet.get().getPetName()).replace("%time%", "" + activePet.get().getRespawnTime()));
                                                     break;
                                                 case Spectator:
-                                                    myPetPlayer.sendMessage(Util.formatText(Translation.getString("Message.Spawn.Spectator", myPetPlayer), activePet.getPetName()));
+                                                    myPetPlayer.sendMessage(Util.formatText(Translation.getString("Message.Spawn.Spectator", myPetPlayer), activePet.get().getPetName()));
                                                     break;
                                             }
                                         }
@@ -200,26 +201,26 @@ public class StorageTrait extends Trait {
                             gui.open(pets, new RepositoryCallback<StoredMyPet>() {
                                 @Override
                                 public void callback(StoredMyPet storedMyPet) {
-                                    MyPet myPet = MyPetApi.getMyPetManager().activateMyPet(storedMyPet);
-                                    if (myPet != null) {
+                                    Optional<MyPet> myPet = MyPetApi.getMyPetManager().activateMyPet(storedMyPet);
+                                    if (myPet.isPresent()) {
                                         Player player = myPetPlayer.getPlayer();
-                                        myPet.getOwner().sendMessage(Util.formatText(Translation.getString("Message.Npc.ChosenPet", myPetPlayer), myPet.getPetName()));
+                                        myPetPlayer.sendMessage(Util.formatText(Translation.getString("Message.Npc.ChosenPet", myPetPlayer), myPet.get().getPetName()));
                                         WorldGroup wg = WorldGroup.getGroupByWorld(player.getWorld().getName());
-                                        myPetPlayer.setMyPetForWorldGroup(wg.getName(), myPet.getUUID());
+                                        myPetPlayer.setMyPetForWorldGroup(wg.getName(), myPet.get().getUUID());
                                         MyPetApi.getRepository().updateMyPetPlayer(myPetPlayer, null);
 
-                                        switch (myPet.createEntity()) {
+                                        switch (myPet.get().createEntity()) {
                                             case Canceled:
-                                                myPet.getOwner().sendMessage(Util.formatText(Translation.getString("Message.Spawn.Prevent", myPetPlayer), myPet.getPetName()));
+                                                myPetPlayer.sendMessage(Util.formatText(Translation.getString("Message.Spawn.Prevent", myPetPlayer), myPet.get().getPetName()));
                                                 break;
                                             case NoSpace:
-                                                myPet.getOwner().sendMessage(Util.formatText(Translation.getString("Message.Spawn.NoSpace", myPetPlayer), myPet.getPetName()));
+                                                myPetPlayer.sendMessage(Util.formatText(Translation.getString("Message.Spawn.NoSpace", myPetPlayer), myPet.get().getPetName()));
                                                 break;
                                             case NotAllowed:
-                                                myPet.getOwner().sendMessage(Translation.getString("Message.No.AllowedHere", myPetPlayer).replace("%petname%", myPet.getPetName()));
+                                                myPetPlayer.sendMessage(Translation.getString("Message.No.AllowedHere", myPetPlayer).replace("%petname%", myPet.get().getPetName()));
                                                 break;
                                             case Dead:
-                                                myPet.getOwner().sendMessage(Translation.getString("Message.Spawn.Respawn.In", myPetPlayer).replace("%petname%", myPet.getPetName()).replace("%time%", "" + myPet.getRespawnTime()));
+                                                myPetPlayer.sendMessage(Translation.getString("Message.Spawn.Respawn.In", myPetPlayer).replace("%petname%", myPet.get().getPetName()).replace("%time%", "" + myPet.get().getRespawnTime()));
                                                 break;
                                         }
                                     }

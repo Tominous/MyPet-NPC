@@ -15,8 +15,8 @@
 
         <minecraft.version>1.9</minecraft.version>
         <bukkit.version>R0.1-SNAPSHOT</bukkit.version>
-        <mypet.build>865</mypet.build>
-        <mypet-premium.build>157</mypet-premium.build>
+        <mypet.build>866</mypet.build>
+        <mypet-premium.build>159</mypet-premium.build>
 
         <mypet.version>1.3.2-SNAPSHOT</mypet.version>
         <citizensapi.version>2.0.17-SNAPSHOT</citizensapi.version>
