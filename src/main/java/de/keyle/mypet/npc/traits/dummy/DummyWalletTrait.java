@@ -20,10 +20,38 @@
 
 package de.keyle.mypet.npc.traits.dummy;
 
+import net.citizensnpcs.api.exception.NPCLoadException;
 import net.citizensnpcs.api.trait.Trait;
+import net.citizensnpcs.api.util.DataKey;
 
 public class DummyWalletTrait extends Trait {
+    private double credit = 0.0D;
+    private String type = "Private";
+    private String account = "";
+
     public DummyWalletTrait() {
         super("mypet-wallet");
+    }
+
+    public void load(DataKey key) throws NPCLoadException {
+        type = key.getString("walletTypeName", key.getString("type", "Private"));
+        account = key.getString("accountName", key.getString("account", ""));
+        credit = key.getDouble("privateWallet", key.getDouble("credit", 0D));
+    }
+
+    public void save(DataKey key) {
+        if (key.getString("walletTypeName") != null && !key.getString("walletTypeName").isEmpty()) {
+            key.removeKey("walletTypeName");
+        }
+        if (key.getString("accountName") != null && !key.getString("accountName").isEmpty()) {
+            key.removeKey("accountName");
+        }
+        if (key.getString("privateWallet") != null && !key.getString("privateWallet").isEmpty()) {
+            key.removeKey("privateWallet");
+        }
+
+        key.setString("type", this.type);
+        key.setString("account", this.account);
+        key.setDouble("credit", this.credit);
     }
 }

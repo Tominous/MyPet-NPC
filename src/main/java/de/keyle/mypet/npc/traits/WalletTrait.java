@@ -22,20 +22,17 @@ package de.keyle.mypet.npc.traits;
 
 import de.Keyle.MyPet.api.util.hooks.EconomyHook;
 import de.keyle.mypet.npc.MyPetNpcPlugin;
-import net.citizensnpcs.api.persistence.Persist;
+import net.citizensnpcs.api.exception.NPCLoadException;
 import net.citizensnpcs.api.trait.Trait;
 import net.citizensnpcs.api.trait.trait.Owner;
+import net.citizensnpcs.api.util.DataKey;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 
 public class WalletTrait extends Trait {
-    @Persist
-    double privateWallet = 0.0D;
-    @Persist
-    String walletTypeName = WalletType.Private.name();
-    public WalletType walletType = WalletType.Private;
-    @Persist
-    public String accountName = "";
+    private double credit = 0.0D;
+    private WalletType type = WalletType.Private;
+    private String account = "";
 
     public enum WalletType {
         Private, Owner, Bank, None;
@@ -54,22 +51,53 @@ public class WalletTrait extends Trait {
         super("mypet-wallet");
     }
 
+    public void load(DataKey key) throws NPCLoadException {
+        String type = key.getString("walletTypeName", key.getString("type", null));
+        if (type != null) {
+            WalletType wt = WalletType.getByName(type);
+            if (wt != null) {
+                this.type = wt;
+            } else {
+                this.type = WalletType.Private;
+            }
+        } else {
+            this.type = WalletType.Private;
+        }
+        account = key.getString("accountName", key.getString("account", ""));
+        credit = key.getDouble("privateWallet", key.getDouble("credit", 0D));
+    }
+
+    public void save(DataKey key) {
+        if (key.getString("walletTypeName") != null && !key.getString("walletTypeName").isEmpty()) {
+            key.removeKey("walletTypeName");
+        }
+        if (key.getString("accountName") != null && !key.getString("accountName").isEmpty()) {
+            key.removeKey("accountName");
+        }
+        if (key.getString("privateWallet") != null && !key.getString("privateWallet").isEmpty()) {
+            key.removeKey("privateWallet");
+        }
+
+        key.setString("type", this.type.name());
+        key.setString("account", this.account);
+        key.setDouble("credit", this.credit);
+    }
+
     public void setWalletType(WalletType newType) {
-        walletType = newType;
-        walletTypeName = newType.name();
+        type = newType;
     }
 
     public void setAccount(String accountName) {
-        this.accountName = accountName;
+        this.account = accountName;
     }
 
     public boolean deposit(double amount) {
         if (amount <= 0.0D) {
             return false;
         }
-        switch (walletType) {
+        switch (type) {
             case Private:
-                this.privateWallet += amount;
+                this.credit += amount;
                 return true;
             case Owner:
                 if (!EconomyHook.canUseEconomy()) {
@@ -82,62 +110,7 @@ public class WalletTrait extends Trait {
                     MyPetNpcPlugin.getPlugin().getLogger().info(ChatColor.RED + "The MyPet-Wallet trait needs an economy plugin to use the \"Bank\" wallet type! (NPC: " + this.getNPC().getId() + ")");
                     return false;
                 }
-                return EconomyHook.getEconomy().isBankOwner(accountName, Bukkit.getOfflinePlayer(this.npc.getTrait(Owner.class).getOwnerId())).transactionSuccess() && EconomyHook.getEconomy().bankDeposit(accountName, amount).transactionSuccess();
-            case None:
-                return true;
-        }
-        return false;
-    }
-
-    public boolean withdraw(double amount) {
-        if (amount <= 0.0D) {
-            return false;
-        }
-
-        switch (walletType) {
-            case Private:
-                if (amount > this.privateWallet) {
-                    return false;
-                }
-                this.privateWallet -= amount;
-                return true;
-            case Owner:
-                if (!EconomyHook.canUseEconomy()) {
-                    MyPetNpcPlugin.getPlugin().getLogger().info(ChatColor.RED + "The MyPet-Wallet trait needs an economy plugin to use the \"Owner\" wallet type! (NPC: " + this.getNPC().getId() + ")");
-                    return false;
-                }
-                return EconomyHook.getEconomy().withdrawPlayer(Bukkit.getOfflinePlayer(this.npc.getTrait(Owner.class).getOwnerId()), amount).transactionSuccess();
-            case Bank:
-                if (!EconomyHook.canUseEconomy()) {
-                    MyPetNpcPlugin.getPlugin().getLogger().info(ChatColor.RED + "The MyPet-Wallet trait needs an economy plugin to use the \"Bank\" wallet type! (NPC: " + this.getNPC().getId() + ")");
-                    return false;
-                }
-                return EconomyHook.getEconomy().isBankOwner(accountName, Bukkit.getOfflinePlayer(this.npc.getTrait(Owner.class).getOwnerId())).transactionSuccess() && EconomyHook.getEconomy().bankWithdraw(accountName, amount).transactionSuccess();
-            case None:
-                return true;
-        }
-        return false;
-    }
-
-    public boolean has(double amount) {
-        if (amount <= 0.0D) {
-            return false;
-        }
-        switch (walletType) {
-            case Private:
-                return this.privateWallet >= amount;
-            case Owner:
-                if (!EconomyHook.canUseEconomy()) {
-                    MyPetNpcPlugin.getPlugin().getLogger().info(ChatColor.RED + "The MyPet-Wallet trait needs an economy plugin to use the \"Owner\" wallet type! (NPC: " + this.getNPC().getId() + ")");
-                    return false;
-                }
-                return EconomyHook.getEconomy().has(Bukkit.getOfflinePlayer(this.npc.getTrait(Owner.class).getOwnerId()), amount);
-            case Bank:
-                if (!EconomyHook.canUseEconomy()) {
-                    MyPetNpcPlugin.getPlugin().getLogger().info(ChatColor.RED + "The MyPet-Wallet trait needs an economy plugin to use the \"Bank\" wallet type! (NPC: " + this.getNPC().getId() + ")");
-                    return false;
-                }
-                return EconomyHook.getEconomy().isBankOwner(accountName, Bukkit.getOfflinePlayer(this.npc.getTrait(Owner.class).getOwnerId())).transactionSuccess() && EconomyHook.getEconomy().bankHas(accountName, amount).transactionSuccess();
+                return EconomyHook.getEconomy().isBankOwner(account, Bukkit.getOfflinePlayer(this.npc.getTrait(Owner.class).getOwnerId())).transactionSuccess() && EconomyHook.getEconomy().bankDeposit(account, amount).transactionSuccess();
             case None:
                 return true;
         }
@@ -146,6 +119,6 @@ public class WalletTrait extends Trait {
 
     @Override
     public String toString() {
-        return "MyPetWalletTrait{walletType: " + walletTypeName + ", privateWallet: " + String.format("%1.4f", privateWallet) + ", account: " + accountName + "}";
+        return "MyPetWalletTrait{type: " + type + ", credit: " + String.format("%1.4f", credit) + ", account: " + account + "}";
     }
 }
