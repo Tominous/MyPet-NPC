@@ -46,6 +46,7 @@ import org.bukkit.event.EventHandler;
 import java.util.List;
 import java.util.UUID;
 
+import static de.Keyle.MyPet.api.Configuration.Misc;
 import static org.bukkit.ChatColor.*;
 
 public class StorageTrait extends Trait {
@@ -90,14 +91,14 @@ public class StorageTrait extends Trait {
 
                         int maxPetCount = 0;
                         if (!player.isOp()) {
-                            for (int i = 54; i > 0; i--) {
+                            for (int i = Misc.MAX_STORED_PET_COUNT; i > 0; i--) {
                                 if (Permissions.has(player, "MyPet.npc.storage.max." + i)) {
                                     maxPetCount = i;
                                     break;
                                 }
                             }
                         } else {
-                            maxPetCount = 54;
+                            maxPetCount = Misc.MAX_STORED_PET_COUNT;
                         }
 
                         if (inactivePetCount >= maxPetCount) {
