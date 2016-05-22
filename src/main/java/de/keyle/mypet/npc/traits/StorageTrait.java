@@ -116,7 +116,7 @@ public class StorageTrait extends Trait {
                                             Player p = myPetPlayer.getPlayer();
                                             myPetPlayer.sendMessage(Util.formatText(Translation.getString("Message.Npc.ChosenPet", player), activePet.get().getPetName()));
                                             WorldGroup wg = WorldGroup.getGroupByWorld(p.getWorld().getName());
-                                            myPetPlayer.setMyPetForWorldGroup(wg.getName(), activePet.get().getUUID());
+                                            myPetPlayer.setMyPetForWorldGroup(wg, activePet.get().getUUID());
 
                                             switch (activePet.get().createEntity()) {
                                                 case Canceled:
@@ -207,7 +207,7 @@ public class StorageTrait extends Trait {
                                         Player player = myPetPlayer.getPlayer();
                                         myPetPlayer.sendMessage(Util.formatText(Translation.getString("Message.Npc.ChosenPet", myPetPlayer), myPet.get().getPetName()));
                                         WorldGroup wg = WorldGroup.getGroupByWorld(player.getWorld().getName());
-                                        myPetPlayer.setMyPetForWorldGroup(wg.getName(), myPet.get().getUUID());
+                                        myPetPlayer.setMyPetForWorldGroup(wg, myPet.get().getUUID());
                                         MyPetApi.getRepository().updateMyPetPlayer(myPetPlayer, null);
 
                                         switch (myPet.get().createEntity()) {
