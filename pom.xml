@@ -18,7 +18,7 @@
         <mypet.build>949</mypet.build>
         <mypet-premium.build>233</mypet-premium.build>
 
-        <mypet.version>2.1.1-SNAPSHOT</mypet.version>
+        <mypet.version>2.1.1</mypet.version>
         <citizensapi.version>2.0.18-SNAPSHOT</citizensapi.version>
         <vault.version>1.4</vault.version>
     </properties>
