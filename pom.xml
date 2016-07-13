@@ -13,13 +13,13 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <minecraft.version>1.9</minecraft.version>
+        <minecraft.version>1.10.2</minecraft.version>
         <bukkit.version>R0.1-SNAPSHOT</bukkit.version>
         <mypet.build>949</mypet.build>
         <mypet-premium.build>233</mypet-premium.build>
 
-        <mypet.version>2.1.1</mypet.version>
-        <citizensapi.version>2.0.18-SNAPSHOT</citizensapi.version>
+        <mypet.version>2.1.5</mypet.version>
+        <citizensapi.version>2.0.19-SNAPSHOT</citizensapi.version>
         <vault.version>1.4</vault.version>
     </properties>
 
@@ -32,8 +32,8 @@
             </snapshots>
         </repository>
         <repository>
-            <id>bukkit-repo</id>
-            <url>http://repo.bukkit.org/content/groups/public/</url>
+            <id>spigot-repo</id>
+            <url>https://hub.spigotmc.org/nexus/content/groups/public/</url>
         </repository>
         <repository>
             <id>metrics-repo</id>
@@ -52,7 +52,7 @@
     <dependencies>
         <dependency>
             <groupId>org.bukkit</groupId>
-            <artifactId>craftbukkit</artifactId>
+            <artifactId>bukkit</artifactId>
             <version>${minecraft.version}-${bukkit.version}</version>
             <scope>provided</scope>
             <optional>true</optional>
