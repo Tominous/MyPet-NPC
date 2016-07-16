@@ -139,7 +139,11 @@ public class StorageTrait extends Trait {
                                     }
                                 });
                             } else {
-                                player.sendMessage(Util.formatText(Translation.getString("Message.Npc.StorageFull", myPetPlayer), npc.getFullName(), maxPetCount));
+                                if (maxPetCount == 0) {
+                                    player.sendMessage(Translation.getString("Message.No.Allowed", player));
+                                } else {
+                                    player.sendMessage(Util.formatText(Translation.getString("Message.Npc.StorageFull", myPetPlayer), npc.getFullName(), maxPetCount));
+                                }
                             }
                         } else {
                             IconMenu menu = new IconMenu(Translation.getString("Message.Npc.HandOverTitle", myPetPlayer), new IconMenu.OptionClickEventHandler() {
