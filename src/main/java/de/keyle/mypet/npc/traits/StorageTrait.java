@@ -29,10 +29,10 @@ import de.Keyle.MyPet.api.entity.StoredMyPet;
 import de.Keyle.MyPet.api.player.MyPetPlayer;
 import de.Keyle.MyPet.api.player.Permissions;
 import de.Keyle.MyPet.api.repository.RepositoryCallback;
-import de.Keyle.MyPet.api.util.hooks.EconomyHook;
 import de.Keyle.MyPet.api.util.inventory.IconMenu;
 import de.Keyle.MyPet.api.util.inventory.IconMenuItem;
 import de.Keyle.MyPet.api.util.locale.Translation;
+import de.Keyle.MyPet.util.hooks.VaultHook;
 import de.Keyle.MyPet.util.selectionmenu.MyPetSelectionGui;
 import de.keyle.mypet.npc.MyPetNpcPlugin;
 import de.keyle.mypet.npc.util.Configuration;
@@ -152,13 +152,13 @@ public class StorageTrait extends Trait {
                                     if (event.getPosition() == 3) {
                                         boolean store = true;
                                         double costs = calculateStorageCosts(myPetPlayer.getMyPet());
-                                        if (EconomyHook.canUseEconomy() && costs > 0 && npc.hasTrait(WalletTrait.class)) {
+                                        if (MyPetApi.getPluginHookManager().isHookActive(VaultHook.class) && costs > 0 && npc.hasTrait(WalletTrait.class)) {
                                             WalletTrait walletTrait = npc.getTrait(WalletTrait.class);
-                                            if (!EconomyHook.canPay(myPetPlayer, costs)) {
+                                            if (!MyPetApi.getHookHelper().getEconomy().canPay(myPetPlayer, costs)) {
                                                 player.sendMessage(Util.formatText(Translation.getString("Message.No.Money", myPetPlayer), myPetPlayer.getMyPet().getPetName(), npcEvent.getNPC().getName()));
                                                 store = false;
                                             }
-                                            if (EconomyHook.pay(myPetPlayer, costs)) {
+                                            if (MyPetApi.getHookHelper().getEconomy().pay(myPetPlayer, costs)) {
                                                 walletTrait.deposit(costs);
                                             } else {
                                                 store = false;
@@ -183,10 +183,10 @@ public class StorageTrait extends Trait {
                             }, MyPetNpcPlugin.getPlugin());
                             String[] lore;
                             double storageCosts = calculateStorageCosts(myPetPlayer.getMyPet());
-                            if (EconomyHook.canUseEconomy() && npc.hasTrait(WalletTrait.class) && storageCosts > 0) {
+                            if (MyPetApi.getPluginHookManager().isHookActive(VaultHook.class) && npc.hasTrait(WalletTrait.class) && storageCosts > 0) {
                                 lore = new String[3];
                                 lore[1] = "";
-                                lore[2] = RESET + Translation.getString("Name.Costs", myPetPlayer) + ": " + (EconomyHook.canPay(myPetPlayer, storageCosts) ? GREEN : RED) + storageCosts + DARK_GREEN + " " + EconomyHook.getEconomy().currencyNameSingular();
+                                lore[2] = RESET + Translation.getString("Name.Costs", myPetPlayer) + ": " + (MyPetApi.getHookHelper().getEconomy().canPay(myPetPlayer, storageCosts) ? GREEN : RED) + storageCosts + DARK_GREEN + " " + MyPetApi.getHookHelper().getEconomy().currencyNameSingular();
                             } else {
                                 lore = new String[1];
                             }

@@ -20,7 +20,8 @@
 
 package de.keyle.mypet.npc.traits;
 
-import de.Keyle.MyPet.api.util.hooks.EconomyHook;
+import de.Keyle.MyPet.MyPetApi;
+import de.Keyle.MyPet.util.hooks.VaultHook;
 import de.keyle.mypet.npc.MyPetNpcPlugin;
 import net.citizensnpcs.api.exception.NPCLoadException;
 import net.citizensnpcs.api.trait.Trait;
@@ -100,17 +101,17 @@ public class WalletTrait extends Trait {
                 this.credit += amount;
                 return true;
             case Owner:
-                if (!EconomyHook.canUseEconomy()) {
+                if (!MyPetApi.getPluginHookManager().isHookActive(VaultHook.class)) {
                     MyPetNpcPlugin.getPlugin().getLogger().info(ChatColor.RED + "The MyPet-Wallet trait needs an economy plugin to use the \"Owner\" wallet type! (NPC: " + this.getNPC().getId() + ")");
                     return false;
                 }
-                return EconomyHook.getEconomy().depositPlayer(Bukkit.getOfflinePlayer(this.npc.getTrait(Owner.class).getOwnerId()), amount).transactionSuccess();
+                return ((VaultHook) MyPetApi.getHookHelper().getEconomy()).getEconomy().depositPlayer(Bukkit.getOfflinePlayer(this.npc.getTrait(Owner.class).getOwnerId()), amount).transactionSuccess();
             case Bank:
-                if (!EconomyHook.canUseEconomy()) {
+                if (!MyPetApi.getPluginHookManager().isHookActive(VaultHook.class)) {
                     MyPetNpcPlugin.getPlugin().getLogger().info(ChatColor.RED + "The MyPet-Wallet trait needs an economy plugin to use the \"Bank\" wallet type! (NPC: " + this.getNPC().getId() + ")");
                     return false;
                 }
-                return EconomyHook.getEconomy().isBankOwner(account, Bukkit.getOfflinePlayer(this.npc.getTrait(Owner.class).getOwnerId())).transactionSuccess() && EconomyHook.getEconomy().bankDeposit(account, amount).transactionSuccess();
+                return ((VaultHook) MyPetApi.getHookHelper().getEconomy()).getEconomy().isBankOwner(account, Bukkit.getOfflinePlayer(this.npc.getTrait(Owner.class).getOwnerId())).transactionSuccess() && ((VaultHook) MyPetApi.getHookHelper().getEconomy()).getEconomy().bankDeposit(account, amount).transactionSuccess();
             case None:
                 return true;
         }

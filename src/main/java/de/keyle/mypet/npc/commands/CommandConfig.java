@@ -22,7 +22,7 @@ package de.keyle.mypet.npc.commands;
 
 import de.Keyle.MyPet.MyPetApi;
 import de.Keyle.MyPet.api.player.Permissions;
-import de.Keyle.MyPet.api.util.hooks.EconomyHook;
+import de.Keyle.MyPet.util.hooks.VaultHook;
 import de.keyle.mypet.npc.traits.WalletTrait;
 import de.keyle.mypet.npc.traits.WalletTrait.WalletType;
 import net.citizensnpcs.api.CitizensAPI;
@@ -85,13 +85,13 @@ public class CommandConfig implements CommandExecutor, TabCompleter {
 
             WalletTrait trait = selectedNPC.getTrait(WalletTrait.class);
 
-            if (!EconomyHook.canUseEconomy()) {
+            if (!MyPetApi.getPluginHookManager().isHookActive(VaultHook.class)) {
                 if (newWalletType == WalletType.Bank || newWalletType == WalletType.Owner) {
                     sender.sendMessage("[" + ChatColor.AQUA + "MyPet-NPC" + ChatColor.RESET + "] You can not use the \"Owner\" and \"Bank\" wallet types without an economy plugin installed!");
                     return true;
                 }
             } else {
-                if (newWalletType == WalletType.Bank && !EconomyHook.getEconomy().hasBankSupport()) {
+                if (newWalletType == WalletType.Bank && !((VaultHook) MyPetApi.getHookHelper().getEconomy()).getEconomy().hasBankSupport()) {
                     sender.sendMessage("[" + ChatColor.AQUA + "MyPet-NPC" + ChatColor.RESET + "] Your economy plugin doesn't has \"Banks\" support!");
                     return true;
                 }

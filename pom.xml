@@ -15,10 +15,10 @@
 
         <minecraft.version>1.10.2</minecraft.version>
         <bukkit.version>R0.1-SNAPSHOT</bukkit.version>
-        <mypet.build>949</mypet.build>
-        <mypet-premium.build>233</mypet-premium.build>
+        <mypet.build>999</mypet.build>
+        <mypet-premium.build>298</mypet-premium.build>
 
-        <mypet.version>2.1.5</mypet.version>
+        <mypet.version>2.1.6-SNAPSHOT</mypet.version>
         <citizensapi.version>2.0.19-SNAPSHOT</citizensapi.version>
         <vault.version>1.4</vault.version>
     </properties>
