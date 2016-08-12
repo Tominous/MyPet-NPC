@@ -198,11 +198,23 @@ public class StorageTrait extends Trait {
                     }
                 });
             } else {
-                final MyPetSelectionGui gui = new MyPetSelectionGui(myPetPlayer, Translation.getString("Message.Npc.TakeTitle", myPetPlayer));
                 MyPetApi.getRepository().getMyPets(myPetPlayer, new RepositoryCallback<List<StoredMyPet>>() {
                     @Override
                     public void callback(List<StoredMyPet> pets) {
                         if (pets.size() > 0) {
+                            int maxPetCount = 0;
+                            if (!player.isOp()) {
+                                for (int i = Misc.MAX_STORED_PET_COUNT; i > 0; i--) {
+                                    if (Permissions.has(player, "MyPet.npc.storage.max." + i)) {
+                                        maxPetCount = i;
+                                        break;
+                                    }
+                                }
+                            } else {
+                                maxPetCount = Misc.MAX_STORED_PET_COUNT;
+                            }
+                            String stats = "(" + pets.size() + "/" + maxPetCount + ")";
+                            MyPetSelectionGui gui = new MyPetSelectionGui(myPetPlayer, Translation.getString("Message.Npc.TakeTitle", myPetPlayer) + " " + stats);
                             gui.open(pets, new RepositoryCallback<StoredMyPet>() {
                                 @Override
                                 public void callback(StoredMyPet storedMyPet) {
