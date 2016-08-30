@@ -21,6 +21,7 @@
 package de.keyle.mypet.npc.traits;
 
 import de.Keyle.MyPet.MyPetApi;
+import de.Keyle.MyPet.api.util.WalletType;
 import de.Keyle.MyPet.util.hooks.VaultHook;
 import de.keyle.mypet.npc.MyPetNpcPlugin;
 import net.citizensnpcs.api.exception.NPCLoadException;
@@ -35,32 +36,18 @@ public class WalletTrait extends Trait {
     private WalletType type = WalletType.Private;
     private String account = "";
 
-    public enum WalletType {
-        Private, Owner, Bank, None;
-
-        public static WalletType getByName(String name) {
-            for (WalletType walletType : values()) {
-                if (walletType.name().equalsIgnoreCase(name)) {
-                    return walletType;
-                }
-            }
-            return null;
-        }
-    }
-
     public WalletTrait() {
         super("mypet-wallet");
     }
 
     public void load(DataKey key) throws NPCLoadException {
-        String type = key.getString("walletTypeName", key.getString("type", null));
-        if (type != null) {
-            WalletType wt = WalletType.getByName(type);
-            if (wt != null) {
-                this.type = wt;
-            } else {
-                this.type = WalletType.Private;
-            }
+        String type = key.getString("type", "Private");
+        if (type.equalsIgnoreCase("Owner")) {
+            type = "Player";
+        }
+        WalletType wt = WalletType.getByName(type);
+        if (wt != null) {
+            this.type = wt;
         } else {
             this.type = WalletType.Private;
         }
@@ -100,7 +87,7 @@ public class WalletTrait extends Trait {
             case Private:
                 this.credit += amount;
                 return true;
-            case Owner:
+            case Player:
                 if (!MyPetApi.getPluginHookManager().isHookActive(VaultHook.class)) {
                     MyPetNpcPlugin.getPlugin().getLogger().info(ChatColor.RED + "The MyPet-Wallet trait needs an economy plugin to use the \"Owner\" wallet type! (NPC: " + this.getNPC().getId() + ")");
                     return false;

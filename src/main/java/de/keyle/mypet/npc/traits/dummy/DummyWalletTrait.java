@@ -34,7 +34,11 @@ public class DummyWalletTrait extends Trait {
     }
 
     public void load(DataKey key) throws NPCLoadException {
-        type = key.getString("walletTypeName", key.getString("type", "Private"));
+        String walletType = key.getString("type", "Private");
+        if (walletType.equalsIgnoreCase("Owner")) {
+            walletType = "Player";
+        }
+        type = key.getString("walletTypeName", walletType);
         account = key.getString("accountName", key.getString("account", ""));
         credit = key.getDouble("privateWallet", key.getDouble("credit", 0D));
     }
