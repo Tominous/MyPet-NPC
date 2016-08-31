@@ -26,8 +26,10 @@ import de.Keyle.MyPet.api.util.configuration.ConfigurationYAML;
 import de.Keyle.MyPet.util.Metrics;
 import de.Keyle.MyPet.util.logger.MyPetLogger;
 import de.keyle.mypet.npc.commands.CommandConfig;
+import de.keyle.mypet.npc.traits.ShopTrait;
 import de.keyle.mypet.npc.traits.StorageTrait;
 import de.keyle.mypet.npc.traits.WalletTrait;
+import de.keyle.mypet.npc.traits.dummy.DummyShopTrait;
 import de.keyle.mypet.npc.traits.dummy.DummyStorageTrait;
 import de.keyle.mypet.npc.traits.dummy.DummyWalletTrait;
 import de.keyle.mypet.npc.util.Configuration;
@@ -61,6 +63,7 @@ public class MyPetNpcPlugin extends JavaPlugin {
 
             CitizensAPI.getTraitFactory().registerTrait(TraitInfo.create(DummyStorageTrait.class).withName("mypet-storage"));
             CitizensAPI.getTraitFactory().registerTrait(TraitInfo.create(DummyWalletTrait.class).withName("mypet-wallet"));
+            CitizensAPI.getTraitFactory().registerTrait(TraitInfo.create(DummyShopTrait.class).withName("mypet-shop"));
 
             return;
         }
@@ -104,6 +107,9 @@ public class MyPetNpcPlugin extends JavaPlugin {
 
         CitizensAPI.getTraitFactory().registerTrait(TraitInfo.create(StorageTrait.class).withName("mypet-storage"));
         CitizensAPI.getTraitFactory().registerTrait(TraitInfo.create(WalletTrait.class).withName("mypet-wallet"));
+        if (MyPetVersion.isPremium()) {
+            CitizensAPI.getTraitFactory().registerTrait(TraitInfo.create(ShopTrait.class).withName("mypet-shop"));
+        }
 
         getCommand("mypetnpcconfig").setExecutor(new CommandConfig());
 
