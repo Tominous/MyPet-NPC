@@ -90,9 +90,9 @@ public class StorageTrait extends Trait {
                         }
 
                         int maxPetCount = 0;
-                        if (!player.isOp()) {
+                        if (!Permissions.has(player, "MyPet.admin")) {
                             for (int i = Misc.MAX_STORED_PET_COUNT; i > 0; i--) {
-                                if (Permissions.has(player, "MyPet.npc.storage.max." + i)) {
+                                if (Permissions.hasLegacy(player, "MyPet.petstorage.limit.", i)) {
                                     maxPetCount = i;
                                     break;
                                 }
@@ -102,49 +102,40 @@ public class StorageTrait extends Trait {
                         }
 
                         if (inactivePetCount >= maxPetCount) {
-                            if (Permissions.has(player, "MyPet.npc.storage.bypass")) {
+                            String stats = "(" + inactivePetCount + "/" + maxPetCount + ")";
 
-                                String stats = "(" + inactivePetCount + "/" + maxPetCount + ")";
+                            final MyPetSelectionGui gui = new MyPetSelectionGui(myPetPlayer, stats + " " + Translation.getString("Message.Npc.SwitchTitle", player));
+                            gui.open(pets, new RepositoryCallback<StoredMyPet>() {
+                                @Override
+                                public void callback(StoredMyPet storedMyPet) {
+                                    MyPetApi.getMyPetManager().deactivateMyPet(myPetPlayer, true);
+                                    Optional<MyPet> activePet = MyPetApi.getMyPetManager().activateMyPet(storedMyPet);
+                                    if (activePet.isPresent() && myPetPlayer.isOnline()) {
+                                        Player p = myPetPlayer.getPlayer();
+                                        myPetPlayer.sendMessage(Util.formatText(Translation.getString("Message.Npc.ChosenPet", player), activePet.get().getPetName()));
+                                        WorldGroup wg = WorldGroup.getGroupByWorld(p.getWorld().getName());
+                                        myPetPlayer.setMyPetForWorldGroup(wg, activePet.get().getUUID());
 
-                                final MyPetSelectionGui gui = new MyPetSelectionGui(myPetPlayer, stats + " " + Translation.getString("Message.Npc.SwitchTitle", player));
-                                gui.open(pets, new RepositoryCallback<StoredMyPet>() {
-                                    @Override
-                                    public void callback(StoredMyPet storedMyPet) {
-                                        MyPetApi.getMyPetManager().deactivateMyPet(myPetPlayer, true);
-                                        Optional<MyPet> activePet = MyPetApi.getMyPetManager().activateMyPet(storedMyPet);
-                                        if (activePet.isPresent() && myPetPlayer.isOnline()) {
-                                            Player p = myPetPlayer.getPlayer();
-                                            myPetPlayer.sendMessage(Util.formatText(Translation.getString("Message.Npc.ChosenPet", player), activePet.get().getPetName()));
-                                            WorldGroup wg = WorldGroup.getGroupByWorld(p.getWorld().getName());
-                                            myPetPlayer.setMyPetForWorldGroup(wg, activePet.get().getUUID());
-
-                                            switch (activePet.get().createEntity()) {
-                                                case Canceled:
-                                                    myPetPlayer.sendMessage(Util.formatText(Translation.getString("Message.Spawn.Prevent", player), activePet.get().getPetName()));
-                                                    break;
-                                                case NoSpace:
-                                                    myPetPlayer.sendMessage(Util.formatText(Translation.getString("Message.Spawn.NoSpace", player), activePet.get().getPetName()));
-                                                    break;
-                                                case NotAllowed:
-                                                    myPetPlayer.sendMessage(Translation.getString("Message.No.AllowedHere", player).replace("%petname%", activePet.get().getPetName()));
-                                                    break;
-                                                case Dead:
-                                                    myPetPlayer.sendMessage(Translation.getString("Message.Spawn.Respawn.In", player).replace("%petname%", activePet.get().getPetName()).replace("%time%", "" + activePet.get().getRespawnTime()));
-                                                    break;
-                                                case Spectator:
-                                                    myPetPlayer.sendMessage(Util.formatText(Translation.getString("Message.Spawn.Spectator", myPetPlayer), activePet.get().getPetName()));
-                                                    break;
-                                            }
+                                        switch (activePet.get().createEntity()) {
+                                            case Canceled:
+                                                myPetPlayer.sendMessage(Util.formatText(Translation.getString("Message.Spawn.Prevent", player), activePet.get().getPetName()));
+                                                break;
+                                            case NoSpace:
+                                                myPetPlayer.sendMessage(Util.formatText(Translation.getString("Message.Spawn.NoSpace", player), activePet.get().getPetName()));
+                                                break;
+                                            case NotAllowed:
+                                                myPetPlayer.sendMessage(Translation.getString("Message.No.AllowedHere", player).replace("%petname%", activePet.get().getPetName()));
+                                                break;
+                                            case Dead:
+                                                myPetPlayer.sendMessage(Translation.getString("Message.Spawn.Respawn.In", player).replace("%petname%", activePet.get().getPetName()).replace("%time%", "" + activePet.get().getRespawnTime()));
+                                                break;
+                                            case Spectator:
+                                                myPetPlayer.sendMessage(Util.formatText(Translation.getString("Message.Spawn.Spectator", myPetPlayer), activePet.get().getPetName()));
+                                                break;
                                         }
                                     }
-                                });
-                            } else {
-                                if (maxPetCount == 0) {
-                                    player.sendMessage(Translation.getString("Message.No.Allowed", player));
-                                } else {
-                                    player.sendMessage(Util.formatText(Translation.getString("Message.Npc.StorageFull", myPetPlayer), npc.getFullName(), maxPetCount));
                                 }
-                            }
+                            });
                         } else {
                             IconMenu menu = new IconMenu(Translation.getString("Message.Npc.HandOverTitle", myPetPlayer), new IconMenu.OptionClickEventHandler() {
                                 @Override
@@ -203,9 +194,9 @@ public class StorageTrait extends Trait {
                     public void callback(List<StoredMyPet> pets) {
                         if (pets.size() > 0) {
                             int maxPetCount = 0;
-                            if (!player.isOp()) {
+                            if (!Permissions.has(player, "MyPet.admin")) {
                                 for (int i = Misc.MAX_STORED_PET_COUNT; i > 0; i--) {
-                                    if (Permissions.has(player, "MyPet.npc.storage.max." + i)) {
+                                    if (Permissions.hasLegacy(player, "MyPet.petstorage.limit.", i)) {
                                         maxPetCount = i;
                                         break;
                                     }
