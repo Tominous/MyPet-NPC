@@ -109,6 +109,8 @@ public class MyPetNpcPlugin extends JavaPlugin {
         CitizensAPI.getTraitFactory().registerTrait(TraitInfo.create(WalletTrait.class).withName("mypet-wallet"));
         if (MyPetVersion.isPremium()) {
             CitizensAPI.getTraitFactory().registerTrait(TraitInfo.create(ShopTrait.class).withName("mypet-shop"));
+        } else {
+            CitizensAPI.getTraitFactory().registerTrait(TraitInfo.create(DummyShopTrait.class).withName("mypet-shop"));
         }
 
         getCommand("mypetnpcconfig").setExecutor(new CommandConfig());
