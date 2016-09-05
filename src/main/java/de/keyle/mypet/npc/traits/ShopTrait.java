@@ -21,6 +21,8 @@
 package de.keyle.mypet.npc.traits;
 
 import de.Keyle.MyPet.MyPetApi;
+import de.Keyle.MyPet.api.player.Permissions;
+import de.Keyle.MyPet.api.util.locale.Translation;
 import de.Keyle.MyPet.api.util.service.types.ShopService;
 import net.citizensnpcs.api.event.NPCRightClickEvent;
 import net.citizensnpcs.api.exception.NPCLoadException;
@@ -57,6 +59,11 @@ public class ShopTrait extends Trait {
         }
 
         final Player player = npcEvent.getClicker();
+
+        if (!Permissions.has(player, "MyPet.npc.shop")) {
+            player.sendMessage(Translation.getString("Message.No.Allowed", player));
+            return;
+        }
 
         List<ShopService> shopServiceList = MyPetApi.getServiceManager().getServices(ShopService.class);
         for (ShopService service : shopServiceList) {
