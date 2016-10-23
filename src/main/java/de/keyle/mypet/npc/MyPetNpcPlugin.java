@@ -20,6 +20,7 @@
 
 package de.keyle.mypet.npc;
 
+import com.google.common.base.Optional;
 import de.Keyle.MyPet.MyPetApi;
 import de.Keyle.MyPet.api.MyPetVersion;
 import de.Keyle.MyPet.api.util.configuration.ConfigurationYAML;
@@ -34,8 +35,10 @@ import de.keyle.mypet.npc.traits.dummy.DummyStorageTrait;
 import de.keyle.mypet.npc.traits.dummy.DummyWalletTrait;
 import de.keyle.mypet.npc.util.Configuration;
 import de.keyle.mypet.npc.util.MyPetNpcVersion;
+import de.keyle.mypet.npc.util.UpdateCheck;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.trait.TraitInfo;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -69,6 +72,16 @@ public class MyPetNpcPlugin extends JavaPlugin {
         }
 
         replaceLogger();
+
+        if (MyPetApi.getPlugin().getConfig().getBoolean("MyPet.Update-Check", true)) {
+            Optional<String> message = UpdateCheck.checkForUpdate();
+            if (message.isPresent()) {
+                String m = "#  A new version is available: " + message.get() + "  #";
+                MyPetApi.getLogger().info(StringUtils.repeat("#", m.length()));
+                MyPetApi.getLogger().info(m);
+                MyPetApi.getLogger().info(StringUtils.repeat("#", m.length()));
+            }
+        }
 
         if (Integer.parseInt(MyPetVersion.getBuild()) < Integer.parseInt(MyPetNpcVersion.getRequiredMyPetBuild())) {
             boolean premium = false;
