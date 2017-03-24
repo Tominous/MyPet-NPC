@@ -101,6 +101,11 @@ public class StorageTrait extends Trait {
                             maxPetCount = Misc.MAX_STORED_PET_COUNT;
                         }
 
+                        if (inactivePetCount == 0 && maxPetCount == 0) {
+                            player.sendMessage(Translation.getString("Message.No.Allowed", player));
+                            return;
+                        }
+
                         if (inactivePetCount >= maxPetCount) {
                             String stats = "(" + inactivePetCount + "/" + maxPetCount + ")";
 
