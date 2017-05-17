@@ -44,7 +44,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
-import java.io.IOException;
 import java.lang.reflect.Field;
 
 public class MyPetNpcPlugin extends JavaPlugin {
@@ -103,13 +102,7 @@ public class MyPetNpcPlugin extends JavaPlugin {
             }
         }
 
-        try {
-            Metrics metrics = new Metrics(this);
-            if (!metrics.isOptOut()) {
-                metrics.start();
-            }
-        } catch (IOException ignored) {
-        }
+        new Metrics(this);
 
         File configFile = new File(MyPetApi.getPlugin().getDataFolder().getPath() + File.separator + "plugins" + File.separator + "NPC" + File.separator + "config.yml");
         configFile.getParentFile().mkdirs();
