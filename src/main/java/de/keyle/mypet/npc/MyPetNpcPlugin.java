@@ -20,7 +20,6 @@
 
 package de.keyle.mypet.npc;
 
-import com.google.common.base.Optional;
 import de.Keyle.MyPet.MyPetApi;
 import de.Keyle.MyPet.api.MyPetVersion;
 import de.Keyle.MyPet.api.util.configuration.ConfigurationYAML;
@@ -35,16 +34,16 @@ import de.keyle.mypet.npc.traits.dummy.DummyStorageTrait;
 import de.keyle.mypet.npc.traits.dummy.DummyWalletTrait;
 import de.keyle.mypet.npc.util.Configuration;
 import de.keyle.mypet.npc.util.MyPetNpcVersion;
-import de.keyle.mypet.npc.util.UpdateCheck;
+import de.keyle.mypet.npc.util.Updater;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.trait.TraitInfo;
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.lang.reflect.Field;
+import java.util.logging.Logger;
 
 public class MyPetNpcPlugin extends JavaPlugin {
     private static MyPetNpcPlugin plugin;
@@ -72,15 +71,14 @@ public class MyPetNpcPlugin extends JavaPlugin {
 
         replaceLogger();
 
-        if (MyPetApi.getPlugin().getConfig().getBoolean("MyPet.Update-Check", true)) {
-            Optional<String> message = UpdateCheck.checkForUpdate();
-            if (message.isPresent()) {
-                String m = "#  A new version is available: " + message.get() + "  #";
-                MyPetApi.getLogger().info(StringUtils.repeat("#", m.length()));
-                MyPetApi.getLogger().info(m);
-                MyPetApi.getLogger().info(StringUtils.repeat("#", m.length()));
-            }
-        }
+        File configFile = new File(MyPetApi.getPlugin().getDataFolder().getPath() + File.separator + "plugins" + File.separator + "NPC" + File.separator + "config.yml");
+        configFile.getParentFile().mkdirs();
+        Configuration.yamlConfig = new ConfigurationYAML(configFile);
+        Configuration.setDefault();
+        Configuration.loadConfiguration();
+
+        Updater updater = new Updater("MyPet-NPC");
+        updater.update();
 
         if (Integer.parseInt(MyPetVersion.getBuild()) < Integer.parseInt(MyPetNpcVersion.getRequiredMyPetBuild())) {
             boolean premium = false;
@@ -102,14 +100,13 @@ public class MyPetNpcPlugin extends JavaPlugin {
             }
         }
 
-        new Metrics(this);
-
-        File configFile = new File(MyPetApi.getPlugin().getDataFolder().getPath() + File.separator + "plugins" + File.separator + "NPC" + File.separator + "config.yml");
-        configFile.getParentFile().mkdirs();
-        Configuration.yamlConfig = new ConfigurationYAML(configFile);
-
-        Configuration.setDefault();
-        Configuration.loadConfiguration();
+        Metrics metrics = new Metrics(this);
+        metrics.addCustomChart(new Metrics.SimplePie("build") {
+            @Override
+            public String getValue() {
+                return MyPetNpcVersion.getBuild();
+            }
+        });
 
         CitizensAPI.getTraitFactory().registerTrait(TraitInfo.create(StorageTrait.class).withName("mypet-storage"));
         CitizensAPI.getTraitFactory().registerTrait(TraitInfo.create(WalletTrait.class).withName("mypet-wallet"));
@@ -121,11 +118,17 @@ public class MyPetNpcPlugin extends JavaPlugin {
 
         getCommand("mypetnpcconfig").setExecutor(new CommandConfig());
 
+        updater.waitForDownload();
+
         getLogger().info("version " + MyPetNpcVersion.getVersion() + "-b" + MyPetNpcVersion.getBuild() + ChatColor.GREEN + " ENABLED");
     }
 
     public static MyPetNpcPlugin getPlugin() {
         return plugin;
+    }
+
+    public static Logger getPluginLogger() {
+        return plugin.getLogger();
     }
 
     private void replaceLogger() {
@@ -136,5 +139,9 @@ public class MyPetNpcPlugin extends JavaPlugin {
         } catch (NoSuchFieldException | IllegalAccessException e) {
             e.printStackTrace();
         }
+    }
+
+    public File getFile() {
+        return super.getFile();
     }
 }

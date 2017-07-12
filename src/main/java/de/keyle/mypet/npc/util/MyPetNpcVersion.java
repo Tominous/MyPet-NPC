@@ -82,6 +82,10 @@ public class MyPetNpcVersion {
         return build;
     }
 
+    public static boolean isDevBuild() {
+        return getVersion().contains("SNAPSHOT");
+    }
+
     public static String getRequiredMyPetBuild() {
         if (!updated) {
             getManifestVersion();

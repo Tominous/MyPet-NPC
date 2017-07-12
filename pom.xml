@@ -7,20 +7,15 @@
     <groupId>de.keyle</groupId>
     <artifactId>mypet-npc</artifactId>
     <name>MyPet-NPC</name>
-    <version>1.1.1-SNAPSHOT</version>
-    <url>http://mypet.keyle.de/doku.php?id=en:plugins:npc</url>
+    <version>1.2-SNAPSHOT</version>
+    <url>https://www.spigotmc.org/resources/mypet-npc.15572/</url>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <minecraft.version>1.10.2</minecraft.version>
-        <bukkit.version>R0.1-SNAPSHOT</bukkit.version>
         <mypet.build>1131</mypet.build>
         <mypet-premium.build>466</mypet-premium.build>
-
         <mypet.version>2.3.0-SNAPSHOT</mypet.version>
-        <citizensapi.version>2.0.19-SNAPSHOT</citizensapi.version>
-        <vault.version>1.5</vault.version>
     </properties>
 
     <repositories>
@@ -45,21 +40,21 @@
         <dependency>
             <groupId>org.bukkit</groupId>
             <artifactId>bukkit</artifactId>
-            <version>${minecraft.version}-${bukkit.version}</version>
+            <version>1.12-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
             <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>net.citizensnpcs</groupId>
             <artifactId>citizensapi</artifactId>
-            <version>${citizensapi.version}</version>
+            <version>2.0.19-SNAPSHOT</version>
             <scope>provided</scope>
             <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>net.milkbowl.vault</groupId>
             <artifactId>VaultAPI</artifactId>
-            <version>${vault.version}</version>
+            <version>1.5</version>
             <type>jar</type>
             <scope>provided</scope>
             <optional>true</optional>
@@ -146,8 +141,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.3</version>
                 <configuration>
-                    <source>1.7</source>
-                    <target>1.7</target>
+                    <source>1.8</source>
+                    <target>1.8</target>
                 </configuration>
             </plugin>
             <plugin>

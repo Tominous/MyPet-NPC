@@ -29,11 +29,18 @@ public class Configuration {
     public static double NPC_STORAGE_COSTS_FIXED = 5;
     public static double NPC_STORAGE_COSTS_FACTOR = 1;
 
+    public static boolean CHECK = true;
+    public static boolean DOWNLOAD = false;
+    public static boolean REPLACE_OLD = false;
+
     public static void setDefault() {
         FileConfiguration config = yamlConfig.getConfig();
 
         config.addDefault("Trait.Storage.Costs.Fixed", 5.0);
         config.addDefault("Trait.Storage.Costs.Factor", 5.0);
+        config.addDefault("Update.Check", CHECK);
+        config.addDefault("Update.Download", DOWNLOAD);
+        config.addDefault("Update.ReplaceOld", REPLACE_OLD);
 
         config.options().copyDefaults(true);
         yamlConfig.saveConfig();
@@ -44,5 +51,8 @@ public class Configuration {
 
         NPC_STORAGE_COSTS_FIXED = config.getDouble("Trait.Storage.Costs.Fixed", 5.0);
         NPC_STORAGE_COSTS_FACTOR = config.getDouble("Trait.Storage.Costs.Factor", 1.0);
+        CHECK = config.getBoolean("Update.Check", CHECK);
+        DOWNLOAD = config.getBoolean("Update.Download", DOWNLOAD);
+        REPLACE_OLD = config.getBoolean("Update.ReplaceOld", REPLACE_OLD);
     }
 }
