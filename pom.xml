@@ -7,7 +7,7 @@
     <groupId>de.keyle</groupId>
     <artifactId>mypet-npc</artifactId>
     <name>MyPet-NPC</name>
-    <version>1.2-SNAPSHOT</version>
+    <version>1.2</version>
     <url>https://www.spigotmc.org/resources/mypet-npc.15572/</url>
 
     <properties>
