@@ -193,7 +193,6 @@
                                     <pattern>org.bstats</pattern>
                                     <shadedPattern>de.Keyle.MyPet.util</shadedPattern>
                                 </relocation>
-
                             </relocations>
                         </configuration>
                     </execution>

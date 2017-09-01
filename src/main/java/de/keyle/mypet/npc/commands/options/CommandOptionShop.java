@@ -22,7 +22,6 @@ package de.keyle.mypet.npc.commands.options;
 
 import de.Keyle.MyPet.MyPetApi;
 import de.Keyle.MyPet.api.commands.CommandOptionTabCompleter;
-import de.Keyle.MyPet.api.util.WalletType;
 import de.Keyle.MyPet.api.util.service.types.ShopService;
 import de.Keyle.MyPet.commands.CommandAdmin;
 import de.keyle.mypet.npc.traits.ShopTrait;
@@ -35,15 +34,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CommandOptionShop implements CommandOptionTabCompleter {
-
-    private static List<String> walletTypeList = new ArrayList<>();
-
-    static {
-        for (WalletType walletType : WalletType.values()) {
-            walletTypeList.add(walletType.name());
-        }
-    }
-
     @Override
     public boolean onCommandOption(CommandSender sender, String[] args) {
         if (args.length >= 1) {
@@ -60,18 +50,35 @@ public class CommandOptionShop implements CommandOptionTabCompleter {
 
             String shop = args[0];
 
+            List<ShopService> shopServiceList = MyPetApi.getServiceManager().getServices(ShopService.class);
+            if (shopServiceList.size() > 0) {
+                boolean shopFound = false;
+                for (ShopService shopService : shopServiceList) {
+                    if (shopService.getShopNames().contains(shop)) {
+                        shopFound = true;
+                        break;
+                    }
+                }
+                if (!shopFound) {
+                    sender.sendMessage("[" + ChatColor.AQUA + "MyPet-NPC" + ChatColor.RESET + "] No shop with this name found: " + shop);
+                    return true;
+                }
+            }
+
             ShopTrait trait = selectedNPC.getTrait(ShopTrait.class);
 
             trait.setShop(shop);
 
-            sender.sendMessage("[" + ChatColor.AQUA + "MyPet-NPC" + ChatColor.RESET + "] shop trait updated.");
+            sender.sendMessage("[" + ChatColor.AQUA + "MyPet-NPC" + ChatColor.RESET + "] Shop trait updated.");
+            return true;
         }
+        sender.sendMessage("[" + ChatColor.AQUA + "MyPet-NPC" + ChatColor.RESET + "] Please enter a shopname!");
         return false;
     }
 
     @Override
     public List<String> onTabComplete(CommandSender commandSender, String[] strings) {
-        if (strings.length == 2) {
+        if (strings.length == 3) {
             List<ShopService> shopServiceList = MyPetApi.getServiceManager().getServices(ShopService.class);
             if (shopServiceList.size() > 0) {
                 return new ArrayList<>(shopServiceList.get(0).getShopNames());

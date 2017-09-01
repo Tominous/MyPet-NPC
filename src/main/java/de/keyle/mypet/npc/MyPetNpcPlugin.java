@@ -23,8 +23,9 @@ package de.keyle.mypet.npc;
 import de.Keyle.MyPet.MyPetApi;
 import de.Keyle.MyPet.api.MyPetVersion;
 import de.Keyle.MyPet.api.util.configuration.ConfigurationYAML;
+import de.Keyle.MyPet.commands.CommandAdmin;
 import de.Keyle.MyPet.util.logger.MyPetLogger;
-import de.keyle.mypet.npc.commands.CommandConfig;
+import de.keyle.mypet.npc.commands.CommandNpcConfig;
 import de.keyle.mypet.npc.traits.ShopTrait;
 import de.keyle.mypet.npc.traits.StorageTrait;
 import de.keyle.mypet.npc.traits.WalletTrait;
@@ -116,7 +117,7 @@ public class MyPetNpcPlugin extends JavaPlugin {
             CitizensAPI.getTraitFactory().registerTrait(TraitInfo.create(DummyShopTrait.class).withName("mypet-shop"));
         }
 
-        getCommand("mypetnpcconfig").setExecutor(new CommandConfig());
+        CommandAdmin.COMMAND_OPTIONS.put("npc", new CommandNpcConfig());
 
         updater.waitForDownload();
 

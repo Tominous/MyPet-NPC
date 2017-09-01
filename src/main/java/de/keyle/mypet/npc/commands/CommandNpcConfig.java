@@ -27,31 +27,24 @@ import de.Keyle.MyPet.api.player.Permissions;
 import de.Keyle.MyPet.commands.CommandAdmin;
 import de.keyle.mypet.npc.commands.options.CommandOptionShop;
 import de.keyle.mypet.npc.commands.options.CommandOptionWallet;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
 import java.util.*;
 
-public class CommandConfig implements CommandExecutor, TabCompleter {
+public class CommandNpcConfig implements CommandOptionTabCompleter {
     private static List<String> optionsList = new ArrayList<>();
-    private static Map<String, CommandOption> commandOptions = new HashMap<>();
+    public static final Map<String, CommandOption> COMMAND_OPTIONS = new HashMap<>();
 
-    public CommandConfig() {
-        commandOptions.put("wallet", new CommandOptionWallet());
+    public CommandNpcConfig() {
+        COMMAND_OPTIONS.put("wallet", new CommandOptionWallet());
         if (MyPetVersion.isPremium()) {
-            commandOptions.put("shop", new CommandOptionShop());
-        }
-
-        if (optionsList.size() != commandOptions.keySet().size()) {
-            optionsList = new ArrayList<>(commandOptions.keySet());
-            Collections.sort(optionsList);
+            COMMAND_OPTIONS.put("shop", new CommandOptionShop());
         }
     }
 
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    @Override
+    public boolean onCommandOption(CommandSender sender, String[] args) {
         if (sender instanceof Player) {
             if (!Permissions.has((Player) sender, "MyPet.npc.admin", false)) {
                 return true;
@@ -63,25 +56,26 @@ public class CommandConfig implements CommandExecutor, TabCompleter {
         }
 
         String[] parameter = Arrays.copyOfRange(args, 1, args.length);
-        CommandOption option = commandOptions.get(args[0].toLowerCase());
+        CommandOption option = COMMAND_OPTIONS.get(args[0].toLowerCase());
 
-        if (option != null) {
-            return option.onCommandOption(sender, parameter);
-        }
-        return false;
+        return option != null && option.onCommandOption(sender, parameter);
     }
 
     @Override
-    public List<String> onTabComplete(CommandSender commandSender, Command command, String s, String[] strings) {
+    public List<String> onTabComplete(CommandSender commandSender, String[] strings) {
         if (commandSender instanceof Player) {
             if (!Permissions.has((Player) commandSender, "MyPet.npc.admin", false)) {
                 return CommandAdmin.EMPTY_LIST;
             }
         }
-        if (strings.length == 1) {
+        if (strings.length == 2) {
+            if (optionsList.size() != COMMAND_OPTIONS.keySet().size()) {
+                optionsList = new ArrayList<>(COMMAND_OPTIONS.keySet());
+                Collections.sort(optionsList);
+            }
             return optionsList;
-        } else if (strings.length >= 1) {
-            CommandOption co = commandOptions.get(strings[0]);
+        } else if (strings.length >= 2) {
+            CommandOption co = COMMAND_OPTIONS.get(strings[1].toLowerCase());
             if (co != null) {
                 if (co instanceof CommandOptionTabCompleter) {
                     return ((CommandOptionTabCompleter) co).onTabComplete(commandSender, strings);

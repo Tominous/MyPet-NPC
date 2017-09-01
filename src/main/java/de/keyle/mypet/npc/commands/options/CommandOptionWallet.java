@@ -91,7 +91,7 @@ public class CommandOptionWallet implements CommandOptionTabCompleter {
 
     @Override
     public List<String> onTabComplete(CommandSender commandSender, String[] strings) {
-        if (strings.length == 2) {
+        if (strings.length == 3) {
             return walletTypeList;
         }
         return CommandAdmin.EMPTY_LIST;
