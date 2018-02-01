@@ -13,9 +13,9 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <mypet.build>1183</mypet.build>
-        <mypet-premium.build>518</mypet-premium.build>
-        <mypet.version>2.3.2-SNAPSHOT</mypet.version>
+        <mypet.build>1207</mypet.build>
+        <mypet-premium.build>540</mypet-premium.build>
+        <mypet.version>2.3.4-SNAPSHOT</mypet.version>
     </properties>
 
     <repositories>
