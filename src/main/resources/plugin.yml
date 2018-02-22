@@ -5,7 +5,3 @@ author: Keyle
 website: ${project.url}
 depend: [Citizens]
 softdepend: [MyPet]
-commands:
-  mypetnpcconfig:
-    aliases: [mpnpcc]
-    description: Configuration command for MyPet-NPC
