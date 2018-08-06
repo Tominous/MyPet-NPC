@@ -33,9 +33,9 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <mypet.build>1214</mypet.build>
-        <mypet-premium.build>547</mypet-premium.build>
-        <mypet.version>2.3.4-SNAPSHOT</mypet.version>
+        <mypet.build>1248</mypet.build>
+        <mypet-premium.build>587</mypet-premium.build>
+        <mypet.version>3.0-SNAPSHOT</mypet.version>
     </properties>
 
     <repositories>

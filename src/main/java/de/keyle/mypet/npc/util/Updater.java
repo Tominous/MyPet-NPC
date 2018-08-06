@@ -1,7 +1,7 @@
 /*
  * This file is part of MyPet
  *
- * Copyright © 2011-2016 Keyle
+ * Copyright © 2011-2018 Keyle
  * MyPet is licensed under the GNU Lesser General Public License.
  *
  * MyPet is free software: you can redistribute it and/or modify
@@ -103,8 +103,8 @@ public class Updater {
                 int build = ((Long) result.get("build")).intValue();
                 return Optional.of(new Updater.Update(version, build));
             }
-        } catch (Exception ignored) {
-            ignored.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return Optional.empty();
     }
