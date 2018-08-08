@@ -149,10 +149,14 @@ public class StorageTrait extends Trait {
                                                 myPetPlayer.sendMessage(Util.formatText(Translation.getString("Message.Spawn.NoSpace", player), activePet.get().getPetName()));
                                                 break;
                                             case NotAllowed:
-                                                myPetPlayer.sendMessage(Translation.getString("Message.No.AllowedHere", player).replace("%petname%", activePet.get().getPetName()));
+                                                myPetPlayer.sendMessage(Util.formatText(Translation.getString("Message.No.AllowedHere", player), activePet.get().getPetName()));
                                                 break;
                                             case Dead:
-                                                myPetPlayer.sendMessage(Translation.getString("Message.Spawn.Respawn.In", player).replace("%petname%", activePet.get().getPetName()).replace("%time%", "" + activePet.get().getRespawnTime()));
+                                                if (de.Keyle.MyPet.api.Configuration.Respawn.DISABLE_AUTO_RESPAWN) {
+                                                    myPetPlayer.sendMessage(Util.formatText(Translation.getString("Message.Call.Dead", myPetPlayer), activePet.get().getPetName()));
+                                                } else {
+                                                    myPetPlayer.sendMessage(Util.formatText(Translation.getString("Message.Call.Dead.Respawn", myPetPlayer), activePet.get().getPetName(), activePet.get().getRespawnTime()));
+                                                }
                                                 break;
                                             case Spectator:
                                                 myPetPlayer.sendMessage(Util.formatText(Translation.getString("Message.Spawn.Spectator", myPetPlayer), activePet.get().getPetName()));
@@ -253,7 +257,11 @@ public class StorageTrait extends Trait {
                                                 myPetPlayer.sendMessage(Translation.getString("Message.No.AllowedHere", myPetPlayer).replace("%petname%", myPet.get().getPetName()));
                                                 break;
                                             case Dead:
-                                                myPetPlayer.sendMessage(Translation.getString("Message.Spawn.Respawn.In", myPetPlayer).replace("%petname%", myPet.get().getPetName()).replace("%time%", "" + myPet.get().getRespawnTime()));
+                                                if (de.Keyle.MyPet.api.Configuration.Respawn.DISABLE_AUTO_RESPAWN) {
+                                                    myPetPlayer.sendMessage(Util.formatText(Translation.getString("Message.Call.Dead", myPetPlayer), myPet.get().getPetName()));
+                                                } else {
+                                                    myPetPlayer.sendMessage(Util.formatText(Translation.getString("Message.Call.Dead.Respawn", myPetPlayer), myPet.get().getPetName(), myPet.get().getRespawnTime()));
+                                                }
                                                 break;
                                         }
                                     }
