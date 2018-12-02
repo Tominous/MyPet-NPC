@@ -1,7 +1,7 @@
 /*
  * This file is part of MyPet
  *
- * Copyright © 2011-2016 Keyle
+ * Copyright © 2011-2018 Keyle
  * MyPet is licensed under the GNU Lesser General Public License.
  *
  * MyPet is free software: you can redistribute it and/or modify
@@ -23,7 +23,6 @@ package de.keyle.mypet.npc.commands.options;
 import de.Keyle.MyPet.MyPetApi;
 import de.Keyle.MyPet.api.commands.CommandOptionTabCompleter;
 import de.Keyle.MyPet.api.util.WalletType;
-import de.Keyle.MyPet.commands.CommandAdmin;
 import de.Keyle.MyPet.util.hooks.VaultHook;
 import de.keyle.mypet.npc.traits.WalletTrait;
 import net.citizensnpcs.api.CitizensAPI;
@@ -32,6 +31,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class CommandOptionWallet implements CommandOptionTabCompleter {
@@ -94,6 +94,6 @@ public class CommandOptionWallet implements CommandOptionTabCompleter {
         if (strings.length == 3) {
             return walletTypeList;
         }
-        return CommandAdmin.EMPTY_LIST;
+        return Collections.emptyList();
     }
 }
