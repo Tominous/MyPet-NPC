@@ -1,7 +1,7 @@
 /*
  * This file is part of MyPet-NPC
  *
- * Copyright (C) 2011-2013 Keyle
+ * Copyright © 2011-2018 Keyle
  * MyPet-NPC is licensed under the GNU Lesser General Public License.
  *
  * MyPet-NPC is free software: you can redistribute it and/or modify
